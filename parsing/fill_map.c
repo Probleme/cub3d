@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 05:22:01 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/13 08:24:29 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,13 @@ char *ft_extract_texture(t_parse *parse, char *line)
     if (texture)
     {
         if (*texture != NULL)
-            return (ft_print_error("Error\n(You can't set a texture more than once)\n"));
+            return (ft_print_error("Error\nYou can't set a texture more than once\n"));
         *texture = ft_get_str(line);
         if (!*texture)
             return (0);
         fd = open(*texture, O_RDONLY);
         if (fd < 0)
-            return (ft_print_error("Error\n(Unable to open texture file)\n"));
+            return (ft_print_error("Error\nUnable to open texture file\n"));
     }
     return (*texture);
 }

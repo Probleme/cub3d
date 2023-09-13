@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 06:44:50 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/13 09:08:42 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,14 @@ static int ft_check_extension(char *file)
     i = 0;
     while (file[i])
         i++;
+    if ( i < 4)
+        return (0);
     if (file[i - 1] == 'b' && file[i - 2] == 'u' && file[i - 3] == 'c' && file[i - 4] == '.')
         return (1);
     return (0);
 }
 
-static int ft_fill_map(t_parse *parse, char **line, int fd)
+int ft_fill_map(t_parse *parse, char **line, int fd)
 {
     while (*line != NULL)
     {
@@ -60,23 +62,30 @@ static int ft_fill_map(t_parse *parse, char **line, int fd)
     return (1);
 }
 
+int check_is_empty(char *line)
+{
+    if (ft_strlen(line) == 0 && line[0] == '\n')
+        return (1);
+    return (0);
+}
+
 static int ft_check_is_valid(char *line)
 {
     if (!ft_check_char(line))
     {
-        printf("Error\nMap conatins invalid characters\n");
+        printf("Error\nMap contains invalid characters\n");
         return (0);
     }
-    else if (ft_strlen(line) == 1 && line[0] == '\n')
+    else if (check_is_empty(line))
     {
-        printf("Error\nMap is empty\n");
+        printf("Error\nMap is empty (empty lines)\n");
         return (0);
     }
-    else if (!ft_check_map(line))
-    {
-        printf("Error\nMap is not valid\n");
-        return (0);
-    }
+    // else if (ft_is_only(line, ' '))
+    // {
+    //     printf("Error\nMap contains only spaces on line\n");
+    //     return (0);
+    // }
     return (1);
 }
 
@@ -89,14 +98,11 @@ static char *ft_get_content(t_parse *parse, char **line, int fd)
     {
         if (!ft_check_content(parse))
         {
-            printf("Error\nMissing conten textures or colorst\n");
+            printf("Error\nMissing content textures or colorst\n");
             exit(1);
         }
         else if (!ft_check_is_valid(*line))
-        {
-            printf("Error\nMap is not valid\n");
             exit(1);
-        }
         else
         {
             map = ft_strappend(&map, *line);
@@ -117,15 +123,16 @@ char *ft_parse_map(t_parse *parse, char *file)
 
     fd = open(file, O_RDONLY);
     if (fd < 0)
-        return (ft_free_parse(parse), ft_print_error("Error\nCan't open file\n"));
+        return (ft_free_parse(parse), ft_print_error("Error\nCan't open file\n"), NULL);
     if (!ft_check_extension(file))
-        return (ft_free_parse(parse), ft_print_error("Error\nWrong extension\n"));
+        return (ft_free_parse(parse), ft_print_error("Error\nWrong extension\n"), NULL);
     line = get_next_line(fd, GNL_KEEP);
     if (!ft_fill_map(parse, &line, fd))
         return (NULL);
     map = ft_get_content(parse, &line, fd);
     if (!map)
         return (NULL);
-    
+    if (ft_strlen(map) == 0) // free map
+        return (ft_free_parse(parse), ft_print_error("Error\nEmpty map\n"), NULL);
     return (line);
 }

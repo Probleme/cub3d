@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 04:16:23 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 05:13:27 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/13 08:15:52 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ size_t ft_strlen(const char *str)
     return (i);
 }
 
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
+// char	*ft_strchr(const char *s, int c)
+// {
+// 	int	i;
 
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (char )c)
-			return ((char *)s + i);
-		i++;
-	}
-	if ((char)c == '\0')
-		return ((char *) s + i);
-	return (NULL);
-}
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] == (char )c)
+// 			return ((char *)s + i);
+// 		i++;
+// 	}
+// 	if ((char)c == '\0')
+// 		return ((char *) s + i);
+// 	return (NULL);
+// }
 
 static size_t	word_count(const char *s, char c)
 {

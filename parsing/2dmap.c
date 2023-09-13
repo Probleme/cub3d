@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   2dmap.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 05:14:51 by ataouaf          ###   ########.fr       */
+/*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
+/*   Updated: 2023/09/11 06:37:08 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int main(int argc, char **argv)
+int ft_check_map(t_parse *parse)
 {
-    (void)argv;
-    (void)argc;
-    return (0);
+    t_map2d *map2d;
+    t_player player;
+    int count;
+
+    
 }

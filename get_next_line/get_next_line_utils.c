@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 03:05:22 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 05:07:25 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/13 08:15:13 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@
 // 	return (i);
 // }
 
-// char	*ft_strchr(char *s, int c)
-// {
-// 	int	i;
+char	*ft_strchr(char *s, int c)
+{
+	int	i;
 
-// 	i = 0;
-// 	if (!s)
-// 		return (NULL);
-// 	while (s[i])
-// 	{
-// 		if (s[i] == (char )c)
-// 			return ((char *)s + i);
-// 		i++;
-// 	}
-// 	return (NULL);
-// }
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+	{
+		if (s[i] == (char )c)
+			return ((char *)s + i);
+		i++;
+	}
+	return (NULL);
+}
 
 // char	*ft_strjoin(char *s1, char *s2)
 // {
