@@ -6,28 +6,52 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 08:36:02 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 09:54:18 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-#define WIDTH 256
-#define HEIGHT 256
-
-// Exit the program as failure.
-static void ft_error(void)
+void ft_check_player_direction(t_cube *cube)
 {
-    fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-    exit(EXIT_FAILURE);
+    if (cube->parse->player.direction == 'N')
+        cube->pos.angle = -PI / 2;
+    if (cube->parse->player.direction == 'S')
+        cube->pos.angle = PI / 2;
+    if (cube->parse->player.direction == 'E')
+        cube->pos.angle = 0;
+    if (cube->parse->player.direction == 'W')
+        cube->pos.angle = PI;
 }
 
-// Print the window width and height.
-static void ft_hook(void* param)
+void ft_init_cub_render(t_cube *cube)
 {
-    const mlx_t* mlx = param;
+    cube->pos.direction_x = cos(cube->pos.angle) * 5;
+    cube->pos.direction_y = sin(cube->pos.angle) * 5;
+    cube->data.focal = 0;
+    cube->map_width = cube->parse->map1d->width;
+    cube->map_height = cube->parse->map1d->height;
+    cube->map_scale = 64;
+    cube->pos.position_x = cube->map_scale * ((double)cube->parse->player.x + 0.5);
+    cube->pos.position_y = cube->map_scale * ((double)cube->parse->player.y - 0.5);
+    cube->mouse_grabbed = 0;
+    cube->display_map = 0;
+    cube->parse->player.y += 1;
+}
 
-    printf("WIDTH: %d | HEIGHT: %d\n", mlx->width, mlx->height);
+int init_cub(t_cube *cube)
+{
+    cube->mlx.mlx = mlx_init(1920, 1080, "Cub3D", false);
+    if (!cube->mlx.mlx)
+        return (0);
+    ft_check_player_direction(cube);
+    ft_init_cub_render(cube);
+    if (cube->map_height > cube->map_width)
+        cube->map_max = cube->map_height;
+    else
+        cube->map_max = cube->map_width;
+    
+    return (1);   
 }
 
 int main(int argc, char **argv)
@@ -42,26 +66,11 @@ int main(int argc, char **argv)
     cube.parse = parsing(argv[1]);
     if (!cube.parse)
         return (1);
-    // MLX allows you to define its core behaviour before startup.
-    mlx_set_setting(MLX_MAXIMIZED, true);
-    cube.mlx.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
-    if (!cube.mlx.mlx)
-        ft_error();
-
-    /* Do stuff */
-
-    // Create and display the image.
-    cube.mlx.img.img = mlx_new_image(cube.mlx.mlx, 256, 256);
-    if (!cube.mlx.img.img || (mlx_image_to_window(cube.mlx.mlx, cube.mlx.img.img, 0, 0) < 0))
-        ft_error();
-
-    // Even after the image is being displayed, we can still modify the buffer.
-    mlx_put_pixel(cube.mlx.img.img, 0, 0, 0xFF0000FF);
-
-    // Register a hook and pass mlx as an optional param.
-    // NOTE: Do this before calling mlx_loop!
-    mlx_loop_hook(cube.mlx.mlx, ft_hook, cube.mlx.mlx);
+    if (!init_cub(&cube))
+    {
+        printf("Error\nMLX failed to initialize\n");
+        return (1);
+    }
     mlx_loop(cube.mlx.mlx);
-    mlx_terminate(cube.mlx.mlx);
     return (EXIT_SUCCESS);
 }

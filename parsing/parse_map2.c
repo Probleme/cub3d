@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/11 06:10:33 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 04:36:25 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,21 @@ static char **ft_allocation(char *line)
 	return (map);
 }
 
+int	ft_strlcpy2(char *dst, const char *src, int size)
+{
+	int	cur;
+
+	if (size == 0)
+		return (ft_strlen(src));
+	cur = 0;
+	while (src[cur] && cur < (size - 1))
+	{
+		dst[cur] = src[cur];
+		cur++;
+	}
+	return (ft_strlen(src));
+}
+
 char **ft_parse_map2d(char *line)
 {
 	char **map;
@@ -94,7 +109,7 @@ char **ft_parse_map2d(char *line)
 	{
 		if (line[i] == '\n')
 		{
-			strlcpy(map[pos_y], line + pos_x, i - pos_x + 1);
+			ft_strlcpy2(map[pos_y++], line + pos_x, i - pos_x + 1);
 			pos_x = i + 1;
 		}
 		i++;

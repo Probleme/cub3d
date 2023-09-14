@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 09:05:02 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 04:39:08 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ int	ft_check_content(t_parse *parse)
 	if (parse->ceil != -1)
 		count++;
 	if (count == 6)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 
 int	ft_is_in_str(char *str, char c)

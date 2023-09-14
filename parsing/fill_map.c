@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 08:24:29 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 02:23:23 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,21 @@ int ft_is_only(char *str, char c)
 
 char *ft_get_str(char *line)
 {
-    size_t cur;
+    int i;
     int len;
 
     len = 2; // to skip the prefix (NO, SO, WE, EA)
     while (line[len] == ' ')
         len++;
-    cur = len;
-    size_t size = 0;
-    while (line[cur + size] != '\n')
+    i = len;
+    int size = 0;
+    while (line[i + size] != '\n')
     {
         size++;
-        if (ft_is_only(line + cur + size, ' ') && line[cur + size + 1] != '\n')
+        if (ft_is_only(line + i + size, ' ') && line[i + size + 1] != '\n')
             break;
     }
-    return ft_substr(line, cur, size);
+    return ft_substr(line, i, size);
 }
 
 char *ft_extract_texture(t_parse *parse, char *line)

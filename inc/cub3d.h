@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 08:38:00 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 09:47:02 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 #include <limits.h>
 #include "MLX42/MLX42.h"
 
+# define PI 	3.1415926535
+
 #define GNL_CLEAR 1
 #define GNL_KEEP 0
 
@@ -36,12 +38,14 @@ typedef struct s_img
     int     bits_per_pixel;
     int     line_length;
     int     endian;
+    int     width;
+    int     height;
 } t_img;
 
 typedef struct s_mlx
 {
     void    *mlx;
-    void    *win;
+    // void    *win;
     t_img   img;
 } t_mlx;
 typedef struct s_data
@@ -58,11 +62,11 @@ typedef struct s_data
 } t_data;
 typedef struct s_pos
 {
-    float   x;
-    float   y;
-    float   pdx;
-    float   pdy;
-    float   pa;
+    float   position_x;
+    float   position_y;
+    float   direction_x;
+    float   direction_y;
+    float   angle;
     int     ipx;
     int     ipx_add_xo;
     int     ipx_sub_xo;
@@ -102,15 +106,15 @@ typedef struct s_player
 
 typedef struct s_parse
 {
+    t_map1d *map1d;
+    t_map2d *map2d;
+    t_player player;
     char *north;
     char *south;
     char *east;
     char *west;
     int floor;
     int ceil;
-    t_player player;
-    t_map1d *map1d;
-    t_map2d *map2d;
 } t_parse;
 
 typedef struct s_cube
@@ -119,9 +123,10 @@ typedef struct s_cube
     t_parse *parse;
     t_pos   pos;
     t_data  data;
-    int     mapw;
-    int     maph;
-    int     mapscale;
+    int     map_width;
+    int     map_height;
+    int     map_max;
+    int     map_scale;
     int     mouse_grabbed;
     int     display_map;
 } t_cube;

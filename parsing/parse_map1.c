@@ -6,24 +6,17 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 09:08:42 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 04:55:01 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int ft_is_empty(char *line)
+int check_is_empty(char *line)
 {
-    int i;
-
-    i = 0;
-    while (line[i])
-    {
-        if (line[i] != ' ')
-            return (0);
-        i++;
-    }
-    return (1);
+    if (ft_strlen(line) == 1 && line[0] == '\n')
+        return (1);
+    return (0);
 }
 
 static int ft_check_extension(char *file)
@@ -54,19 +47,12 @@ int ft_fill_map(t_parse *parse, char **line, int fd)
             if (!ft_extract_texture(parse, *line))
                 return (ft_free_parse(parse), free(*line), free(get_next_line(fd, GNL_CLEAR)), 0);
         }
-        else if (!ft_is_empty(*line))
+        else if (!check_is_empty(*line))
             return (1);
         free(*line);
         *line = get_next_line(fd, GNL_KEEP);
     }
     return (1);
-}
-
-int check_is_empty(char *line)
-{
-    if (ft_strlen(line) == 0 && line[0] == '\n')
-        return (1);
-    return (0);
 }
 
 static int ft_check_is_valid(char *line)
@@ -81,11 +67,11 @@ static int ft_check_is_valid(char *line)
         printf("Error\nMap is empty (empty lines)\n");
         return (0);
     }
-    // else if (ft_is_only(line, ' '))
-    // {
-    //     printf("Error\nMap contains only spaces on line\n");
-    //     return (0);
-    // }
+    else if (ft_is_only(line, ' '))
+    {
+        printf("Error\nMap contains only spaces on line\n");
+        return (0);
+    }
     return (1);
 }
 
@@ -98,7 +84,7 @@ static char *ft_get_content(t_parse *parse, char **line, int fd)
     {
         if (!ft_check_content(parse))
         {
-            printf("Error\nMissing content textures or colorst\n");
+            printf("Error\nMissing content textures or colors\n");
             exit(1);
         }
         else if (!ft_check_is_valid(*line))
@@ -134,5 +120,5 @@ char *ft_parse_map(t_parse *parse, char *file)
         return (NULL);
     if (ft_strlen(map) == 0) // free map
         return (ft_free_parse(parse), ft_print_error("Error\nEmpty map\n"), NULL);
-    return (line);
+    return (map);
 }

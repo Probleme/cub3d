@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/12 02:14:05 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/12 08:15:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/14 04:44:26 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,13 @@ t_map2d *ft_fill_map2d(t_map2d *map2d)
         return (NULL);
     duplicate->width = map2d->width;
     duplicate->height = map2d->height;
-    duplicate->map = malloc(sizeof(char *) * duplicate->height + 1);
+    duplicate->map = malloc(sizeof(char *) * (duplicate->height + 1));
     if (!duplicate->map)
         return (free(duplicate), NULL);
     i = 0;
     while (i < duplicate->height)
     {
-        duplicate->map[i] = ft_strdup(duplicate->map[i]);
-        if (!duplicate->map[i])
-            return (free(duplicate->map), free(duplicate), NULL);
+        duplicate->map[i] = ft_strdup(map2d->map[i]);
         i++;
     }
     duplicate->map[i] = NULL;
@@ -89,6 +87,6 @@ int ft_check_player(t_parse *parse)
     //     exit(1);
     // }
     // free_map2d(map2d);
-    parse->player = player;
+    // parse->player = player;
     return (1);
 }
