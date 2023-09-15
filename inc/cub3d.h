@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/14 09:47:02 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/15 04:02:39 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_img
 {
     void    *img;
     int     *addr;
+    u_int32_t     **arr;
     int     bits_per_pixel;
     int     line_length;
     int     endian;
@@ -44,10 +45,11 @@ typedef struct s_img
 
 typedef struct s_mlx
 {
-    void    *mlx;
-    // void    *win;
-    t_img   img;
+    mlx_t   *mlx;
+    t_img   img[3];
+    t_img   texture[5];
 } t_mlx;
+
 typedef struct s_data
 {
     int     focal;
@@ -123,12 +125,16 @@ typedef struct s_cube
     t_parse *parse;
     t_pos   pos;
     t_data  data;
+    int     *map;
+    int     check_img;
     int     map_width;
     int     map_height;
+    int     resize_map;
     int     map_max;
     int     map_scale;
     int     mouse_grabbed;
     int     display_map;
+    char    keyboard[7];
 } t_cube;
 
 char	*get_next_line(int fd, int clear);
@@ -163,5 +169,12 @@ int ft_check_char(char *line);
 char **ft_parse_map2d(char *line);
 int ft_check_player(t_parse *parse);
 int ft_count_player(char **map, t_player *player);
+
+
+
+
+
+
+void init_imagespartone(t_cube *cube, int *i);
 
 #endif

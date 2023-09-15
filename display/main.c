@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/14 09:54:18 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/15 04:03:51 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ void ft_init_cub_render(t_cube *cube)
 
 int init_cub(t_cube *cube)
 {
+    int i;
+
+    i = 2;
     cube->mlx.mlx = mlx_init(1920, 1080, "Cub3D", false);
     if (!cube->mlx.mlx)
         return (0);
@@ -50,7 +53,15 @@ int init_cub(t_cube *cube)
         cube->map_max = cube->map_height;
     else
         cube->map_max = cube->map_width;
-    
+    cube->resize_map = 2;
+    while (cube->map_max / i > 25)
+    {
+        cube->resize_map += 1;
+        i += 1;
+    }
+    cube->map = cube->parse->map1d->map;
+    init_imagespartone(cube, &cube->check_img);
+    ft_bzero(cube->keyboard, sizeof(char) * 7);
     return (1);   
 }
 
@@ -66,11 +77,9 @@ int main(int argc, char **argv)
     cube.parse = parsing(argv[1]);
     if (!cube.parse)
         return (1);
-    if (!init_cub(&cube))
-    {
-        printf("Error\nMLX failed to initialize\n");
+    init_cube(&cube);
+    if (!cube.check_img != 9)
         return (1);
-    }
     mlx_loop(cube.mlx.mlx);
     return (EXIT_SUCCESS);
 }
