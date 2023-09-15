@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/15 04:03:51 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/15 08:36:46 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void ft_init_cub_render(t_cube *cube)
     cube->parse->player.y += 1;
 }
 
-int init_cub(t_cube *cube)
+int init_cube(t_cube *cube)
 {
     int i;
 
@@ -61,7 +61,7 @@ int init_cub(t_cube *cube)
     }
     cube->map = cube->parse->map1d->map;
     init_imagespartone(cube, &cube->check_img);
-    ft_bzero(cube->keyboard, sizeof(char) * 7);
+    bzero(cube->keyboard, sizeof(char) * 7);
     return (1);   
 }
 
@@ -78,8 +78,8 @@ int main(int argc, char **argv)
     if (!cube.parse)
         return (1);
     init_cube(&cube);
-    if (!cube.check_img != 9)
-        return (1);
+    // if (cube.check_img != 9)
+    //     return (1);
     mlx_loop(cube.mlx.mlx);
     return (EXIT_SUCCESS);
 }
