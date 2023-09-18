@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/14 04:39:08 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/18 13:24:21 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,6 +153,8 @@ t_parse	*parsing(char *file)
 	if (!ft_check_player(parse))
 		return (ft_free_parse(parse), NULL);
 	if (!ft_create_map1d(parse))
+		return (ft_free_parse(parse), NULL);
+	if (!ft_check_map(parse))
 		return (ft_free_parse(parse), NULL);
 	ft_count_player(parse->map2d->map, &(parse->player));
 	return (parse);

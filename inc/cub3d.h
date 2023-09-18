@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/15 04:02:39 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/18 13:24:12 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,6 +169,7 @@ int ft_check_char(char *line);
 char **ft_parse_map2d(char *line);
 int ft_check_player(t_parse *parse);
 int ft_count_player(char **map, t_player *player);
+int	ft_check_map(t_parse *parse);
 
 
 
