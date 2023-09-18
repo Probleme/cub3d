@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/14 04:55:01 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/18 02:10:08 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,15 @@ static char *ft_get_content(t_parse *parse, char **line, int fd)
         if (!ft_check_content(parse))
         {
             printf("Error\nMissing content textures or colors\n");
-            exit(1);
+            exit(EXIT_FAILURE);
         }
         else if (!ft_check_is_valid(*line))
-            exit(1);
+            exit(EXIT_FAILURE);
         else
         {
             map = ft_strappend(&map, *line);
             if (!map)
-                return (ft_free_parse(parse), free(*line), free(get_next_line(fd, GNL_CLEAR)), NULL);
+                return (NULL);
         }
         free(*line);
         *line = get_next_line(fd, GNL_KEEP);
@@ -109,16 +109,25 @@ char *ft_parse_map(t_parse *parse, char *file)
 
     fd = open(file, O_RDONLY);
     if (fd < 0)
-        return (ft_free_parse(parse), ft_print_error("Error\nCan't open file\n"), NULL);
+    {
+        printf("Error\nFile not found\n");
+        exit (EXIT_FAILURE);
+    }
     if (!ft_check_extension(file))
-        return (ft_free_parse(parse), ft_print_error("Error\nWrong extension\n"), NULL);
+    {
+        printf("Error\nFile extension is not .cub\n");
+        exit (EXIT_FAILURE);
+    }
     line = get_next_line(fd, GNL_KEEP);
     if (!ft_fill_map(parse, &line, fd))
         return (NULL);
     map = ft_get_content(parse, &line, fd);
     if (!map)
-        return (NULL);
-    if (ft_strlen(map) == 0) // free map
-        return (ft_free_parse(parse), ft_print_error("Error\nEmpty map\n"), NULL);
+        exit(EXIT_FAILURE);
+    if (ft_strlen(map) == 0)
+    {
+        printf("Error\nMap is empty\n");
+        exit (EXIT_FAILURE);
+    }
     return (map);
 }

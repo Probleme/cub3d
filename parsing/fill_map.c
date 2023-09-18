@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/14 02:23:23 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/18 02:11:14 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void *ft_extract_color(t_parse *parse, char *line)
 
     color_num = ft_get_color_num(parse, line);
     if (*color_num != -1)
-        return ft_print_error("Error\n(You can't set a color more than once)\n");
+        return ft_print_error("Error\nYou can't set a color more than once\n");
     color = ft_rgb_to_hexa_dec(ft_get_str(line));
     if (!color)
         return NULL;

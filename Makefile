@@ -6,13 +6,13 @@
 #    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/09/15 01:08:00 by ataouaf          ###   ########.fr        #
+#    Updated: 2023/09/17 02:24:37 by ataouaf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:= cub3D
 CFLAGS	:= -Wextra -Wall -Werror -g -Wunreachable-code -Ofast
-LDFLAGSss := -g -fsanitize=address,undefined
+SANITIZE := -g -fsanitize=address,undefined
 LIBMLX	:= ./MLX42
 
 INCLUDE = ./inc
@@ -37,7 +37,7 @@ $(OBJECTS)/%.o: %.c $(INCLUDE)/cub3d.h
 	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) $(HEADERS) $(LDFLAGSss) -o $(NAME)
+	$(CC) $(OBJS) $(LIBS) $(HEADERS) $(SANITIZE) -o $(NAME)
 
 clean:
 	rm -rf $(OBJECTS)

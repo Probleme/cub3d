@@ -6,63 +6,59 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/15 08:36:46 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/18 08:59:41 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void ft_check_player_direction(t_cube *cube)
+void ft_hook(void* param)
 {
-    if (cube->parse->player.direction == 'N')
-        cube->pos.angle = -PI / 2;
-    if (cube->parse->player.direction == 'S')
-        cube->pos.angle = PI / 2;
-    if (cube->parse->player.direction == 'E')
-        cube->pos.angle = 0;
-    if (cube->parse->player.direction == 'W')
-        cube->pos.angle = PI;
+    t_cube *cube = (t_cube *)param;
+
 }
 
-void ft_init_cub_render(t_cube *cube)
+void ft_main_hook(void* param)
 {
-    cube->pos.direction_x = cos(cube->pos.angle) * 5;
-    cube->pos.direction_y = sin(cube->pos.angle) * 5;
-    cube->data.focal = 0;
-    cube->map_width = cube->parse->map1d->width;
-    cube->map_height = cube->parse->map1d->height;
-    cube->map_scale = 64;
-    cube->pos.position_x = cube->map_scale * ((double)cube->parse->player.x + 0.5);
-    cube->pos.position_y = cube->map_scale * ((double)cube->parse->player.y - 0.5);
-    cube->mouse_grabbed = 0;
-    cube->display_map = 0;
-    cube->parse->player.y += 1;
-}
+    t_cube *cube = (t_cube *)param;
+    unsigned int i;
 
-int init_cube(t_cube *cube)
-{
-    int i;
-
-    i = 2;
-    cube->mlx.mlx = mlx_init(1920, 1080, "Cub3D", false);
-    if (!cube->mlx.mlx)
-        return (0);
-    ft_check_player_direction(cube);
-    ft_init_cub_render(cube);
-    if (cube->map_height > cube->map_width)
-        cube->map_max = cube->map_height;
-    else
-        cube->map_max = cube->map_width;
-    cube->resize_map = 2;
-    while (cube->map_max / i > 25)
+    i = 0;
+    while (i < WIDTH * HEIGHT)
     {
-        cube->resize_map += 1;
-        i += 1;
+        if (i < WIDTH * (HEIGHT / 2))
+            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->floor);
+        else if (i > WIDTH * (HEIGHT / 2))
+            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->ceil);
+        i++;
     }
-    cube->map = cube->parse->map1d->map;
-    init_imagespartone(cube, &cube->check_img);
-    bzero(cube->keyboard, sizeof(char) * 7);
-    return (1);   
+    if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))
+        mlx_close_window(cube->mlx.mlx);
+}
+
+static void init_images(t_cube *cube)
+{
+    cube->mlx.img = malloc(sizeof(t_img));
+    if (!(cube->mlx.mlx = mlx_init(1920, 1080, "Cub3D", true)))
+    {
+        printf("%s\n", mlx_strerror(mlx_errno));
+        exit(EXIT_FAILURE);
+    }
+    if (!(cube->mlx.img->screen = mlx_new_image(cube->mlx.mlx, 1920, 1080)))
+    {
+        mlx_close_window(cube->mlx.mlx);
+        printf("%s\n", mlx_strerror(mlx_errno));
+        exit(EXIT_FAILURE);
+    }
+    mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
+    if ((mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->screen, 0, 0)) == -1)
+    {
+        mlx_close_window(cube->mlx.mlx);
+        printf("%s\n", mlx_strerror(mlx_errno));
+        exit(EXIT_FAILURE);
+    }
+    cube->ray_depth = 30;
+    cube->fov = (80 * M_PI / 180);
 }
 
 int main(int argc, char **argv)
@@ -77,9 +73,10 @@ int main(int argc, char **argv)
     cube.parse = parsing(argv[1]);
     if (!cube.parse)
         return (1);
-    init_cube(&cube);
-    // if (cube.check_img != 9)
-    //     return (1);
+    init_images(&cube);
+    mlx_loop_hook(cube.mlx.mlx, ft_main_hook, &cube);
+    // mlx_loop_hook(cube.mlx.mlx, ft_hook, &cube);
     mlx_loop(cube.mlx.mlx);
+    mlx_terminate(cube.mlx.mlx);
     return (EXIT_SUCCESS);
 }
