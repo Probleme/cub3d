@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/18 13:24:48 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/09/18 22:25:34 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ static int	column_size(char **map, int idx)
 	return (i);
 }
 
+static int	row_size(char **map, int idx)
+{
+	int	i;
+
+	i = 0;
+	while (map[idx][i] == ' ')
+		i++;
+	while (map[idx][i] != 0 && map[idx][i] != ' ')
+		i++;
+	return (i);
+}
+
+
+// void	flood_fill(char ***map, int x, int y); if there is any other cases this should solve the problem
+
 int	ft_check_map(t_parse *parse) // checks the borders of the map
 {
 	// t_map2d *map2d;
@@ -38,7 +53,7 @@ int	ft_check_map(t_parse *parse) // checks the borders of the map
 	map = parse->map2d->map;
 	while(map[i])
 	{
-		if (map[i][0] != 1 || map[i][ft_strlen(map[i]) - 1] != 1)
+		if (map[i][0] != 1 || map[i][row_size(map[i]) - 1] != 1)
 			return (0);
 		i++;
 	}
