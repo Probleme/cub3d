@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 02:27:37 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 05:12:35 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int ft_fill_map(t_parse *parse, char **line, int fd)
         else if (!ft_strncmp("NO", *line, 2) || !ft_strncmp("SO", *line, 2) || !ft_strncmp("WE", *line, 2) || !ft_strncmp("EA", *line, 2))
         {
             if (!ft_extract_texture(parse, *line))
-                return (ft_free_parse(parse), free(*line), free(get_next_line(fd, GNL_CLEAR)), 0);
+                exit (EXIT_FAILURE);
         }
         else if (!check_is_empty(*line))
             return (1);

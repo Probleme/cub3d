@@ -6,11 +6,25 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:57:49 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 02:17:33 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 05:14:16 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+void ft_free_rgb(char **rgb, char *rgb_str)
+{
+    int i;
+
+    i = 0;
+    while (rgb[i])
+    {
+        free(rgb[i]);
+        i++;
+    }
+    free(rgb);
+    free(rgb_str);
+}
 
 static int ft_check_string_format(char *rgb)
 {

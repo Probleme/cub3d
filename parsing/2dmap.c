@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/11 06:37:08 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 05:16:38 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int ft_check_map(t_parse *parse)
 {
     t_map2d *map2d;
-    t_player player;
     int count;
 
     

@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 01:44:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 08:12:41 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,9 +111,10 @@ t_parse	*parsing(char *file)
 		return (NULL);
 	parse->map2d->map = ft_parse_map2d(line);
 	if (!parse->map2d->map)
-		return (free(line), free(parse), NULL);
+		exit (EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(line);
 	parse->map2d->height = ft_get_map_height(line);
+	parse->map2d->lenght = ft_strlen(line);
 	free(line);
 	// if (!ft_check_player(parse))
 	// 	return (ft_free_parse(parse), NULL);
