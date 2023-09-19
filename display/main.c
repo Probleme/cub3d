@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 08:22:41 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 08:28:58 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int main(int argc, char **argv)
     if (!cube.parse)
         return (1);
     init_images(&cube);
-    validate_map(&cube);
+    // validate_map(&cube);
     mlx_loop_hook(cube.mlx.mlx, ft_main_hook, &cube);
     // mlx_loop_hook(cube.mlx.mlx, ft_hook, &cube);
     mlx_loop(cube.mlx.mlx);

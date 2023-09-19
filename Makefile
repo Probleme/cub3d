@@ -6,7 +6,7 @@
 #    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/09/19 06:27:09 by ataouaf          ###   ########.fr        #
+#    Updated: 2023/09/19 08:28:11 by ataouaf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ DISPLAY = $(addprefix display/, )
 GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
-LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -L/Users/ataouaf/.brew/Cellar/glfw/3.3.8/lib -lglfw -pthread -lm
+LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl $(GFLWFLAGS) -lglfw -pthread -lm
 
 FILES = $(PARSING) $(GNL) $(DISPLAY) display/main.c
 OBJS = $(addprefix $(OBJECTS)/, $(FILES:.c=.o))
