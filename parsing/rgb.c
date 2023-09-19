@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:57:49 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/18 02:50:11 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 02:17:33 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,19 +44,10 @@ static char **ft_rgb_to_array(char *rgb)
     char **rgb_split;
 
     if (!ft_check_string_format(rgb))
-    {
-        free(rgb);
-        printf("Error\nRGB string format is not valid\n");
-        return (NULL);
-    }
+        exit (printf("Error\nRGB string format is not valid\n"));
     rgb_split = ft_split(rgb, ',');
     if (!rgb_split)
-    {
-        free(rgb);
-        printf("Error\nMalloc failed\n");
-        return (NULL);
-    }
-    // free(rgb);
+        exit (printf("Error\nMalloc failed\n"));
     return (rgb_split);
 }
 
@@ -95,13 +86,13 @@ char *ft_rgb_to_hexa_dec(char *rgb)
     while (rgb_split[i])
     {
         if (ft_atoi(rgb_split[i]) < 0 || ft_atoi(rgb_split[i]) > 255)
-            return (ft_free_rgb(rgb_split, rgb), free(color), ft_print_error("Error\nColor must between [0, 255]\n"));
+            exit (printf("Error\nColor must between [0, 255]\n"));
         hex = ft_dec_to_hex(ft_atoi(rgb_split[i++]));
         if (!hex)
-            return (ft_free_rgb(rgb_split, rgb), free(color), NULL);
+            exit (EXIT_FAILURE);
         color = ft_strappend(&color, hex);
         if (!color)
-            return (ft_free_rgb(rgb_split, rgb), free(hex), NULL);
+            exit (EXIT_FAILURE);
         free(hex);
     }
     ft_free_rgb(rgb_split, rgb);

@@ -6,31 +6,30 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/18 08:59:41 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 05:00:27 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void ft_hook(void* param)
-{
-    t_cube *cube = (t_cube *)param;
-
-}
+// void ft_hook(void* param)
+// {
+//     t_cube *cube = (t_cube *)param;
+    
+// }
 
 void ft_main_hook(void* param)
 {
     t_cube *cube = (t_cube *)param;
     unsigned int i;
 
-    i = 0;
-    while (i < WIDTH * HEIGHT)
+    i = -1;
+    while (++i < WIDTH * HEIGHT)
     {
         if (i < WIDTH * (HEIGHT / 2))
-            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->floor);
+            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->parse->floor);
         else if (i > WIDTH * (HEIGHT / 2))
-            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->ceil);
-        i++;
+            mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->parse->ceil);
     }
     if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))
         mlx_close_window(cube->mlx.mlx);
@@ -40,22 +39,17 @@ static void init_images(t_cube *cube)
 {
     cube->mlx.img = malloc(sizeof(t_img));
     if (!(cube->mlx.mlx = mlx_init(1920, 1080, "Cub3D", true)))
-    {
-        printf("%s\n", mlx_strerror(mlx_errno));
-        exit(EXIT_FAILURE);
-    }
+        exit(printf("%s\n", mlx_strerror(mlx_errno)));
     if (!(cube->mlx.img->screen = mlx_new_image(cube->mlx.mlx, 1920, 1080)))
     {
         mlx_close_window(cube->mlx.mlx);
-        printf("%s\n", mlx_strerror(mlx_errno));
-        exit(EXIT_FAILURE);
+        exit(printf("%s\n", mlx_strerror(mlx_errno)));
     }
     mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
     if ((mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->screen, 0, 0)) == -1)
     {
         mlx_close_window(cube->mlx.mlx);
-        printf("%s\n", mlx_strerror(mlx_errno));
-        exit(EXIT_FAILURE);
+        exit(printf("%s\n", mlx_strerror(mlx_errno)));
     }
     cube->ray_depth = 30;
     cube->fov = (80 * M_PI / 180);

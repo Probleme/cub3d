@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/18 08:59:05 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 04:57:53 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@
 # include <string.h>
 # include <unistd.h>
 
-# define PI 3.1415926535
 
 # define GNL_CLEAR 1
 # define GNL_KEEP 0
@@ -60,13 +59,6 @@ typedef struct s_mlx
 	t_img		*img;
 }				t_mlx;
 
-typedef struct s_map1d
-{
-	int			width;
-	int			height;
-	int			*map;
-}				t_map1d;
-
 typedef struct s_map2d
 {
 	int			width;
@@ -87,9 +79,7 @@ typedef struct s_raycast
 
 typedef struct s_parse
 {
-	t_map1d		*map1d;
 	t_map2d		*map2d;
-	// t_player	player;
 	char		*north;
 	char		*south;
 	char		*east;
@@ -102,14 +92,11 @@ typedef struct s_cube
 {
 	t_mlx		mlx;
 	t_parse		*parse;
-	// t_player	*player;
-	t_raycast	raycast[1920 + 1];
+	t_raycast	raycast[WIDTH + 1];
 	t_float_vect	pos_player;
 	float		angle;
-	int			ray_depth;
 	float		fov;
-	unsigned int	floor;
-	unsigned int	ceil;
+	int			ray_depth;
 }				t_cube;
 
 char			*get_next_line(int fd, int clear);
@@ -130,7 +117,6 @@ char			**ft_split(char const *s, char c);
 int				ft_is_only(char *str, char c);
 
 void			ft_free_rgb(char **rgb, char *rgb_str);
-char			*ft_print_error(char *str);
 void			ft_free_parse(t_parse *parse);
 
 t_parse			*parsing(char *file);
