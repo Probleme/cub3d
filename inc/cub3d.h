@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 08:11:55 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/20 12:00:19 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,13 @@
 # include <string.h>
 # include <unistd.h>
 
+# define UINT unsigned int
+
 # define WIDTH 1920
 # define HEIGHT 1080
 
 # define GNL_CLEAR 1
 # define GNL_KEEP 0
-
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
@@ -62,7 +63,7 @@ typedef struct s_mlx
 
 typedef struct s_map2d
 {
-	int				lenght;
+	size_t			length;
 	int				width;
 	int				height;
 	char			**map;
@@ -75,8 +76,8 @@ typedef struct s_raycast
 	char			wall_type;
 	char			wall_face;
 	float			pos_on_wall;
-	float			lenght;
-	float			eye_lenght;
+	float			length;
+	float			eye_length;
 }					t_raycast;
 
 typedef struct s_parse
@@ -94,7 +95,7 @@ typedef struct s_cube
 {
 	t_mlx			mlx;
 	t_parse			*parse;
-	t_raycast		raycast[WIDTH + 1];
+	t_raycast		rays[WIDTH + 1];
 	t_float_vect	pos_player;
 	float			angle;
 	float			fov;
@@ -126,8 +127,10 @@ char				*ft_rgb_to_hexa_dec(char *rgb);
 int					ft_check_content(t_parse *parse);
 int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line);
-int					ft_check_player(t_parse *parse);
+void				check_map(t_cube *cube);
+char				map_get_at(t_map2d *map, int x, int y);
 
 uint32_t			ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
 
+void				ft_cast_rays(void *param);
 #endif

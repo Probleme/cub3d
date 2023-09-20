@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 08:12:41 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/20 11:55:34 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,21 @@ int	ft_get_map_height(char *line)
 	return (i);
 }
 
+void ft_remove_newlines(t_parse *parse)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (parse->map2d->map[i])
+	{
+		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
+		temp = ft_strjoin_opt(temp, "\0", 1);
+		parse->map2d->map[i] = temp;
+		i++;
+	}
+}
+
 t_parse	*parsing(char *file)
 {
 	t_parse	*parse;
@@ -114,7 +129,8 @@ t_parse	*parsing(char *file)
 		exit (EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(line);
 	parse->map2d->height = ft_get_map_height(line);
-	parse->map2d->lenght = ft_strlen(line);
+	parse->map2d->length = ft_strlen(line);
+	ft_remove_newlines(parse);
 	free(line);
 	// if (!ft_check_player(parse))
 	// 	return (ft_free_parse(parse), NULL);

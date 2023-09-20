@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 04:16:23 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 05:38:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/20 07:19:20 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,14 +138,14 @@ int	ft_atoi(const char *str)
 	return (r * s);
 }
 
-char *ft_strappend(char **dest, char *str)
+char	*ft_strappend(char **dest, char *str)
 {
-    char *old_dest;
+	char	*old_dest;
 
-    old_dest = *dest;
-    *dest = ft_strjoin_opt(*dest, str, 0);
-    free(old_dest);
-    return (*dest);
+	old_dest = *dest;
+	*dest = ft_strjoin_opt(*dest, str, 0);
+	free(old_dest);
+	return (*dest);
 }
 
 char	*ft_strdup(const char *s1)
@@ -153,8 +153,8 @@ char	*ft_strdup(const char *s1)
 	int		i;
 	char	*str;
 
-    if (!s1)
-        return (NULL);
+	if (!s1)
+		return (NULL);
 	i = 0;
 	str = malloc(ft_strlen(s1) + 1);
 	if (!str)
@@ -197,7 +197,7 @@ void	*ft_calloc(size_t count, size_t size)
 	res = malloc(count * size);
 	if (!res)
 		return (0);
-    ft_memset(res, 0, (count * size));
+	ft_memset(res, 0, (count * size));
 	return (res);
 }
 
@@ -215,7 +215,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len >= ft_strlen(s + start))
 		len = ft_strlen(s + start);
-	str = (char *) malloc((len + 1) * sizeof(char));
+	str = (char *)malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	while (s[start] && len--)
