@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/20 12:00:19 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/21 04:44:54 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line);
 void				check_map(t_cube *cube);
 char				map_get_at(t_map2d *map, int x, int y);
-
+void ft_load_png(t_cube *cube);
 uint32_t			ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
 
 void				ft_cast_rays(void *param);
