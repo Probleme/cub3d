@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/21 07:27:05 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/21 10:34:24 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,8 @@ void ft_draw_walls(void *param)
 		texture = decide_image(cube, cube->rays[i]);
 		if (!texture)
 			continue;
-		printf("cube->rays[i].eye_length = %f\n", cube->rays[i].eye_length);
-		printf("cube->rays[i].pos_on_wall: %f\n", cube->rays[i].pos_on_wall);
-		if (i == 10)
-			exit(0);
+		// printf("cube->rays[i].eye_length = %f\n", cube->rays[i].eye_length);
+		// printf("cube->rays[i].pos_on_wall: %f\n", cube->rays[i].pos_on_wall);
 		args[0] = fminf(fabsf(HEIGHT / cube->rays[i].eye_length), 10000000) + 2;
 		args[1] = ((float)texture->height) / args[0];
 		ft_draw_lines(cube->mlx.img, texture, i, args, cube);
@@ -111,7 +109,7 @@ static void init_images(t_cube *cube)
 		mlx_close_window(cube->mlx.mlx);
 		exit(printf("%s\n", mlx_strerror(mlx_errno)));
 	}
-	cube->ray_depth = 30;
+	cube->ray_depth = 20;
 	cube->fov = (80 * M_PI / 180);
 	cube->pos_player = (t_float_vect){0, 0};
 	cube->angle = 2.0 * M_PI;
@@ -190,10 +188,13 @@ int main(int argc, char **argv)
 	if (!cube.parse)
 		return (1);
 	init_images(&cube);
+	// check_map(&cube);
 	ft_load_png(&cube);
+	printf("cube->parse->map2d->length = %zu\n", cube.parse->map2d->length);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_colors, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop(cube.mlx.mlx);
 	mlx_terminate(cube.mlx.mlx);
 	return (EXIT_SUCCESS);

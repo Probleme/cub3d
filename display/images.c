@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/21 06:02:45 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/21 09:03:57 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 uint32_t ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 uint32_t *get_color(mlx_texture_t *texture)
@@ -48,19 +48,19 @@ void load_png_image(t_cube *cube, char *path)
 	texture = mlx_load_png(path);
 	if (path == cube->parse->north)
 		cube->mlx.img->north = mlx_texture_to_image(cube->mlx.mlx, texture);
-	if (path == cube->parse->south)
+	else if (path == cube->parse->south)
 		cube->mlx.img->south = mlx_texture_to_image(cube->mlx.mlx, texture);
-	if (path == cube->parse->east)
+	else if (path == cube->parse->east)
 		cube->mlx.img->east = mlx_texture_to_image(cube->mlx.mlx, texture);
-	if (path == cube->parse->west)
+	else if (path == cube->parse->west)
 		cube->mlx.img->west = mlx_texture_to_image(cube->mlx.mlx, texture);
 	mlx_delete_texture(texture);
 }
 
 void ft_load_png(t_cube *cube)
-{
+{ 
 	load_png_image(cube, cube->parse->north);
-	load_png_image(cube, cube->parse->south);
 	load_png_image(cube, cube->parse->east);
 	load_png_image(cube, cube->parse->west);
+	load_png_image(cube, cube->parse->south);
 }

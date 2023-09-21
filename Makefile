@@ -6,7 +6,7 @@
 #    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/09/21 04:24:44 by ataouaf          ###   ########.fr        #
+#    Updated: 2023/09/21 09:25:24 by ataouaf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBMLX	:= ./MLX42
 INCLUDE = ./inc
 OBJECTS = ./obj
 PARSING = $(addprefix parsing/, parse.c parse_map2.c utils.c rgb.c fill_map.c parse_map1.c)
-DISPLAY = $(addprefix display/, raycasting.c images.c)
+DISPLAY = $(addprefix display/, raycasting.c images.c utils.c)
 GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
