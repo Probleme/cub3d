@@ -88,9 +88,9 @@ char	*ft_read_and_save(int fd, char *save)
 char	*get_next_line(int fd, int clear)
 {
 	char		*line;
-	static char	*save[OPEN_MAX];
+	static char	*save[10480];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 10480)
 		return (NULL);
 	save[fd] = ft_read_and_save(fd, save[fd]);
 	if (!save[fd])

@@ -22,10 +22,12 @@
 # include <string.h>
 # include <unistd.h>
 
-# define UINT unsigned int
-
 # define WIDTH 1920
 # define HEIGHT 1080
+# define TILE_SIZE 64
+# define FOV_ANGLE 60
+# define WALL_STRIP_WIDTH 1
+# define MINI_SCALE 0.2
 
 # define GNL_CLEAR 1
 # define GNL_KEEP 0
@@ -49,10 +51,15 @@ typedef struct s_int_vect
 typedef struct s_img
 {
 	mlx_image_t		*screen;
-	mlx_image_t		*north;
-	mlx_image_t		*east;
-	mlx_image_t		*west;
-	mlx_image_t		*south;
+		mlx_image_t		*north;
+		mlx_image_t		*east;
+		mlx_image_t		*west;
+		mlx_image_t		*south;
+	mlx_image_t		*ceileing;
+	mlx_image_t		*floor;
+	mlx_image_t		*walls;
+	mlx_image_t		*rays;
+	mlx_image_t		*mini_map;
 }					t_img;
 
 typedef struct s_mlx
@@ -71,13 +78,20 @@ typedef struct s_map2d
 
 typedef struct s_raycast
 {
-	t_float_vect	hit_pos;
-	t_int_vect		wall_hit_pos;
-	char			wall_type;
-	char			wall_face;
-	float			pos_on_wall;
-	float			length;
-	float			eye_length;
+	double		ray_angle;
+	t_float_vect	horizontal_step;
+	t_float_vect	horizontal_wall_hit;
+	t_float_vect	vertical_step;
+	t_float_vect	vertical_wall_hit;
+	float		distance;
+	bool		hit_vertical;
+	bool		hit_horizontal;
+	bool		ray_facing_up;
+	bool		ray_facing_right;
+	// t_direction	hit_wall_direction;
+	float		wall_height;
+	int			draw_start;
+	int			draw_end;
 }					t_raycast;
 
 typedef struct s_parse
@@ -91,15 +105,29 @@ typedef struct s_parse
 	int				ceil;
 }					t_parse;
 
+typedef struct s_player
+{
+	t_float_vect	pos;
+	float			turn_dir;
+	int				walk_dir;
+	int				strafe_dir;
+	float			rotation_angle;
+	float			move_speed;
+	float			rotation_speed;
+}					t_player;
+
 typedef struct s_cube
 {
 	t_mlx			mlx;
 	t_parse			*parse;
 	t_raycast		rays[WIDTH + 1];
+	t_player		player;
+	float			num_rays;
+	float			distance_proj_plane;
+	double			last_time;
 	t_float_vect	pos_player;
 	float			angle;
 	float			fov;
-	int				ray_depth;
 }					t_cube;
 
 char				*get_next_line(int fd, int clear);
@@ -127,8 +155,7 @@ char				*ft_rgb_to_hexa_dec(char *rgb);
 int					ft_check_content(t_parse *parse);
 int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line, t_parse *parse);
-void				check_map(t_cube *cube);
-char				map_get_at(t_map2d *map, int x, int y);
+
 void ft_load_png(t_cube *cube);
 uint32_t			ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
 void ft_player_movement(void *param);

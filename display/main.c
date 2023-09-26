@@ -12,69 +12,6 @@
 
 #include "../inc/cub3d.h"
 
-mlx_image_t *decide_image(t_cube *cube, t_raycast ray)
-{
-	if (ray.wall_face == 'n')
-		return (cube->mlx.img->north);
-	if (ray.wall_face == 'e')
-		return (cube->mlx.img->east);
-	if (ray.wall_face == 's')
-		return (cube->mlx.img->south);
-	if (ray.wall_face == 'w')
-		return (cube->mlx.img->west);
-	return (NULL);
-}
-
-unsigned int ml_color_at(mlx_image_t *img, unsigned int x, unsigned int y)
-{
-	if (x >= img->width)
-		x = img->width - 1;
-	if (y >= img->height)
-		y = img->height - 1;
-	
-	unsigned int *pixel = (unsigned int *)(img->pixels + (x + y * img->width) * sizeof(unsigned int));
-	return *pixel;
-}
-
-void ft_draw_lines(t_img *img, mlx_image_t *texture, int i, float args[2], t_cube *cube)
-{
-	float texel_step = args[1];
-	float height = args[0];
-	unsigned int color;
-	int j;
-
-	if (height > HEIGHT)
-		j = fmaxf((height - HEIGHT) / 2, 0);
-	else
-		j = 0;
-	while (j < height && j + (HEIGHT - height) / 2 < HEIGHT)
-	{
-		color = ml_color_at(texture, texture->width * (cube->rays[i].pos_on_wall), j * texel_step);
-		mlx_put_pixel(img->screen, i, j + (int)(HEIGHT - height) / 2, color);
-		j++;
-	}
-}
-
-void ft_draw_walls(void *param)
-{
-	t_cube *cube = (t_cube *)param;
-	int i;
-	float args[2];
-	mlx_image_t *texture;
-	
-	i = -1;
-	while (++i < WIDTH - 1)
-	{
-		texture = decide_image(cube, cube->rays[i]);
-		if (!texture)
-			continue;
-		// printf("cube->rays[i].eye_length = %f\n", cube->rays[i].eye_length);
-		// printf("cube->rays[i].pos_on_wall: %f\n", cube->rays[i].pos_on_wall);
-		args[0] = fminf(fabsf(HEIGHT / cube->rays[i].eye_length), 10000000) + 2;
-		args[1] = ((float)texture->height) / args[0];
-		ft_draw_lines(cube->mlx.img, texture, i, args, cube);
-	}
-}
 
 void ft_draw_colors(void* param)
 {
@@ -93,86 +30,87 @@ void ft_draw_colors(void* param)
 		mlx_close_window(cube->mlx.mlx);
 }
 
-static void init_images(t_cube *cube)
-{
-	cube->mlx.img = malloc(sizeof(t_img));
-	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true)))
-		exit(printf("%s\n", mlx_strerror(mlx_errno)));
-	if (!(cube->mlx.img->screen = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT)))
-	{
-		mlx_close_window(cube->mlx.mlx);
-		exit(printf("%s\n", mlx_strerror(mlx_errno)));
-	}
-	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
-	if ((mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->screen, 0, 0)) == -1)
-	{
-		mlx_close_window(cube->mlx.mlx);
-		exit(printf("%s\n", mlx_strerror(mlx_errno)));
-	}
-	cube->ray_depth = 20;
-	cube->fov = (80 * M_PI / 180);
-	cube->pos_player = (t_float_vect){0, 0};
-	cube->angle = 2.0 * M_PI;
-}
-
-int ft_is_in_wall(t_cube *cube, t_int_vect pos, char c)
-{
-	if (c == 'S' || c == 'N' || c == 'E' || c == 'W')
-	{
-		if (cube->pos_player.x != 0)
-			exit(printf("Error\nReassingning player position\n"));
-		cube->pos_player = (t_float_vect){pos.x + .5, pos.y + .5};
-		if (c == 'S')
-			cube->angle += M_PI / 2;
-		else if (c == 'N')
-			cube->angle += M_PI + M_PI / 2;
-		else if (c == 'W')
-			cube->angle = M_PI;
-		return (1);
-	}
-	return (c == '0');
-}
-
-void ft_do_check(t_cube *cube, t_int_vect pos)
-{
-	char c;
-
-	c = map_get_at(cube->parse->map2d, pos.x, pos.y);
-	if (ft_is_in_wall(cube, pos, c))
-	{
-		if (map_get_at(cube->parse->map2d, pos.x + 1, pos.y) == ' '
-		|| map_get_at(cube->parse->map2d, pos.x - 1, pos.y) == ' '
-		|| map_get_at(cube->parse->map2d, pos.x, pos.y + 1) == ' '
-		|| map_get_at(cube->parse->map2d, pos.x, pos.y - 1) == ' '
-		|| map_get_at(cube->parse->map2d, pos.x + 1, pos.y) == '\0'
-		|| map_get_at(cube->parse->map2d, pos.x - 1, pos.y) == '\0'
-		|| map_get_at(cube->parse->map2d, pos.x, pos.y + 1) == '\0'
-		|| map_get_at(cube->parse->map2d, pos.x, pos.y - 1) == '\0')
-			exit(printf("Error\nInvalid Map\n"));
-	}
-	else if (c != ' ' && c != '1')
-		exit(printf("Error\nInvalid Map\n"));
-}
-
-void check_map(t_cube *cube)
+t_int_vect ft_getplayer_pos(char **map)
 {
 	t_int_vect pos;
 
 	pos.y = 0;
-	while (pos.y < (int)cube->parse->map2d->length - 1)
+	while (map[pos.y])
 	{
 		pos.x = 0;
-		if (cube->parse->map2d->map[pos.y][pos.x] == '\0')
-			exit(printf("Error\nInvalid Map\n"));
-		while (pos.x < (int)cube->parse->map2d->length -1)
+		while (map[pos.y][pos.x])
 		{
-			ft_do_check(cube, pos);
+			if (map[pos.y][pos.x] == 'N' || map[pos.y][pos.x] == 'S' || map[pos.y][pos.x] == 'E' || map[pos.y][pos.x] == 'W')
+				return (pos);
 			pos.x++;
 		}
 		pos.y++;
 	}
-	if (cube->pos_player.x == 0)
-		exit(printf("Error\nInvalid Map\n"));
+	return (pos);
+}
+
+void ft_init_player(t_cube *cube)
+{
+	t_int_vect pos;
+
+	pos = ft_getplayer_pos(cube->parse->map2d->map);
+	cube->pos_player.x = pos.x;
+	cube->pos_player.y = pos.y;
+	if (cube->parse->map2d->map[pos.y][pos.x] == 'N')
+		cube->player.rotation_angle = M_PI * 1.5;
+	else if (cube->parse->map2d->map[pos.y][pos.x] == 'E')
+		cube->player.rotation_angle = 0;
+	else if (cube->parse->map2d->map[pos.y][pos.x] == 'S')
+		cube->player.rotation_angle = M_PI * 0.5;
+	else if (cube->parse->map2d->map[pos.y][pos.x] == 'W')
+		cube->player.rotation_angle = M_PI;
+	cube->player.move_speed = 2;
+	cube->player.rotation_speed = 1.5 * (M_PI / 180);	
+	cube->player.strafe_dir = 0;
+	cube->player.walk_dir = 0;
+	cube->player.turn_dir = 0;
+	cube->fov = (FOV_ANGLE * (M_PI / 180));
+	cube->distance_proj_plane = (WIDTH / 2) / tan(cube->fov / 2);
+	cube->num_rays = (WIDTH / WALL_STRIP_WIDTH);
+	// cube->rays = NULL;
+}
+
+mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
+{
+	mlx_image_t *img;
+	int x;
+	int y;
+
+	img = mlx_new_image(mlx, WIDTH, HEIGHT / 2);
+	if (!img)
+		exit(printf("Failed to create background image"));
+	x = 0;
+	while (x < (int)img->height)
+	{
+		y = 0;
+		while (y < (int)img->width)
+		{
+			mlx_put_pixel(img, y, x, color);
+			y++;
+		}
+		x++;
+	}
+	return (img);
+}
+
+void ft_init_images(t_cube *cube)
+{
+	cube->mlx.img = malloc(sizeof(t_img));
+	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true)))
+		exit(printf("%s\n", mlx_strerror(mlx_errno)));
+	cube->mlx.img->ceileing = ft_draw_background(cube->mlx.mlx, cube->parse->ceil);
+	cube->mlx.img->floor = ft_draw_background(cube->mlx.mlx, cube->parse->floor);
+	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->ceileing, 0, 0);
+	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->floor, 0, HEIGHT / 2);
+	cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
+	if (!cube->mlx.img->walls)
+		exit(printf("Failed to create walls image"));
+	cube->mlx.img->rays = NULL;
 }
 
 int main(int argc, char **argv)
@@ -187,13 +125,11 @@ int main(int argc, char **argv)
 	cube.parse = parsing(argv[1]);
 	if (!cube.parse)
 		return (1);
-	init_images(&cube);
-	// check_map(&cube);
+	ft_init_player(&cube);
+	ft_init_images(&cube);
 	ft_load_png(&cube);
-	printf("cube->parse->map2d->length = %zu\n", cube.parse->map2d->length);
-	mlx_loop_hook(cube.mlx.mlx, &ft_draw_colors, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
-	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
+	// mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop(cube.mlx.mlx);
 	mlx_terminate(cube.mlx.mlx);

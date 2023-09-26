@@ -36,6 +36,8 @@ void ft_player_movement(void *param)
 
     ft_player_rotation(cube);
     new_pos = (t_float_vect){0, 0};
+    if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))
+        exit(0);
     if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_W))
         new_pos.x++;
     if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_S))
