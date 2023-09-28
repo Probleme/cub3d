@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/18 13:24:21 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/09/21 10:33:04 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,12 @@ int	ft_init_struct(t_parse **parse)
 	(*parse)->map2d = malloc(sizeof(t_map2d));
 	if (!((*parse)->map2d))
 		return (free(*parse), 0);
-	(*parse)->map1d = malloc(sizeof(t_map1d));
-	if (!((*parse)->map1d))
-		return (free((*parse)->map2d), free(*parse), 0);
 	(*parse)->north = NULL;
 	(*parse)->south = NULL;
 	(*parse)->east = NULL;
 	(*parse)->west = NULL;
 	(*parse)->floor = -1;
 	(*parse)->ceil = -1;
-	(*parse)->map1d->map = NULL;
-	(*parse)->map1d->width = 0;
-	(*parse)->map1d->height = 0;
 	(*parse)->map2d->map = NULL;
 	(*parse)->map2d->width = 0;
 	(*parse)->map2d->height = 0;
@@ -105,33 +99,19 @@ int	ft_get_map_height(char *line)
 	return (i);
 }
 
-int	ft_create_map1d(t_parse *parse)
+void ft_remove_newlines(t_parse *parse)
 {
-	int	x;
-	int	y;
-	int	cur;
+	int		i;
+	char	*temp;
 
-	parse->map1d->width = parse->map2d->width;
-	parse->map1d->height = parse->map2d->height;
-	parse->map1d->map = malloc(sizeof(int) * (parse->map1d->width
-				* parse->map1d->height));
-	if (!parse->map1d->map)
-		return (0);
-	y = -1;
-	cur = -1;
-	while (parse->map2d->map[++y])
+	i = 0;
+	while (parse->map2d->map[i])
 	{
-		x = -1;
-		while (parse->map2d->map[y][++x])
-		{
-			parse->map1d->map[++cur] = 1;
-			if (parse->map2d->map[y][x] == 'P')
-				parse->map1d->map[cur] = 2;
-			else if (ft_is_in_str("0NSEW", parse->map2d->map[y][x]))
-				parse->map1d->map[cur] = 0;
-		}
+		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
+		temp = ft_strjoin_opt(temp, "\0", 1);
+		parse->map2d->map[i] = temp;
+		i++;
 	}
-	return (1);
 }
 
 t_parse	*parsing(char *file)
@@ -144,18 +124,14 @@ t_parse	*parsing(char *file)
 	line = ft_parse_map(parse, file);
 	if (!line)
 		return (NULL);
-	parse->map2d->map = ft_parse_map2d(line);
+	parse->map2d->map = ft_parse_map2d(line, parse);
 	if (!parse->map2d->map)
-		return (free(line), free(parse), NULL);
+		exit (EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(line);
 	parse->map2d->height = ft_get_map_height(line);
+	ft_remove_newlines(parse);
 	free(line);
-	if (!ft_check_player(parse))
-		return (ft_free_parse(parse), NULL);
-	if (!ft_create_map1d(parse))
-		return (ft_free_parse(parse), NULL);
-	if (!ft_check_map(parse))
-		return (ft_free_parse(parse), NULL);
-	ft_count_player(parse->map2d->map, &(parse->player));
+	// if (!ft_check_player(parse))
+	// 	return (ft_free_parse(parse), NULL);
 	return (parse);
 }

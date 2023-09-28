@@ -1,51 +1,37 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/09/15 01:08:00 by ataouaf          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+CC := gcc
+NAME := cub
+CFLAGS := -Wextra -Wall -g -fsanitize=address -Ofast
+LIBMLX := $(HOME)/MLX42
+LIBS := libmlx42.a -ldl -lglfw -pthread -lm -lX11 -lXrandr -lXi -lXxf86vm -lXinerama -lXcursor
+SRCS := parsing/parse.c\
+		parsing/parse_map2.c\
+		parsing/utils.c\
+		parsing/rgb.c\
+    	parsing/fill_map.c\
+		parsing/parse_map1.c\
+		display/raycasting.c\
+		display/images.c\
+    	display/utils.c\
+		display/main.c\
+		display/minimap.c\
+		get_next_line/get_next_line.c\
+		get_next_line/get_next_line_utils.c
 
-NAME	:= cub3D
-CFLAGS	:= -Wextra -Wall -Werror -g -Wunreachable-code -Ofast
-LDFLAGSss := -g -fsanitize=address,undefined
-LIBMLX	:= ./MLX42
 
-INCLUDE = ./inc
-OBJECTS = ./obj
-PARSING = $(addprefix parsing/, parse.c player.c parse_map2.c utils.c rgb.c fill_map.c parse_map1.c free.c ft_utils.c)
-DISPLAY = $(addprefix display/, images.c)
-GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
+OBJS := ${SRCS:.c=.o}
 
-HEADERS	:= -I ./include -I $(LIBMLX)/include
-LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -L/Users/ataouaf/.brew/Cellar/glfw/3.3.8/lib -lglfw -pthread -lm
+all: $(NAME)
 
-FILES = $(PARSING) $(GNL) $(DISPLAY) display/main.c
-OBJS = $(addprefix $(OBJECTS)/, $(FILES:.c=.o))
-
-all: libmlx $(NAME)
-
-libmlx:
-	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
-
-$(OBJECTS)/%.o: %.c $(INCLUDE)/cub3d.h
-	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS)
+%.o: %.c cub3d.h
+	@$(CC) $(CFLAGS) -Imlx -o $@ -c $<
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) $(LIBS) $(HEADERS) $(LDFLAGSss) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(framework) -L"/usr/lib64/libglfw.so.3" -o $(NAME)
 
 clean:
-	rm -rf $(OBJECTS)
-	rm -rf $(LIBMLX)/build
+	@rm -rf $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME)
+	@rm -rf $(NAME)
 
 re: clean all
-
-.PHONY: all libmlx clean fclean re

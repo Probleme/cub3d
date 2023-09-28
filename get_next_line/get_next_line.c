@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 03:04:46 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/09 04:58:04 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/19 05:37:16 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ char	*ft_read_and_save(int fd, char *save)
 			return (NULL);
 		}
 		buffer[bytes] = '\0';
-		save = ft_strjoin1(save, buffer);
+		save = ft_strjoin_opt(save, buffer, 1);
 	}
 	free(buffer);
 	return (save);
@@ -88,9 +88,9 @@ char	*ft_read_and_save(int fd, char *save)
 char	*get_next_line(int fd, int clear)
 {
 	char		*line;
-	static char	*save[OPEN_MAX];
+	static char	*save[10480];
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= OPEN_MAX)
+	if (fd < 0 || BUFFER_SIZE <= 0 || fd >= 10480)
 		return (NULL);
 	save[fd] = ft_read_and_save(fd, save[fd]);
 	if (!save[fd])

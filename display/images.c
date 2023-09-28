@@ -6,64 +6,61 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/15 03:53:54 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/21 09:03:57 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-u_int32_t	**ft_mem2array(uint32_t *mem, size_t len_x, size_t len_y)
+uint32_t ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a)
 {
-	u_int32_t	**arr;
-	size_t		i;
+	return (r << 24 | g << 16 | b << 8 | a);
+}
 
-	arr = malloc(len_y * sizeof(u_int32_t *));
-	if (!arr)
-		return (NULL);
+uint32_t *get_color(mlx_texture_t *texture)
+{
+	uint32_t *color;
+	uint8_t rgb[4];
+	unsigned int position;
+	int i;
+
 	i = 0;
-	while (i < len_y)
+	color = malloc(sizeof(uint32_t) * (texture->width + 1)* (texture->height + 1));
+	if (!color)
+		return (NULL);
+	position = 0;
+	while (position < texture->width * texture->height * texture->bytes_per_pixel)
 	{
-		arr[i] = &(mem[i * len_x]);
-		++i;
+		rgb[0] = texture->pixels[position];
+		rgb[1] = texture->pixels[position + 1];
+		rgb[2] = texture->pixels[position + 2];
+		rgb[3] = texture->pixels[position + 3];
+		color[i] = ft_pixel(rgb[0], rgb[1], rgb[2], rgb[3]);
+		position += texture->bytes_per_pixel;
 	}
-	return (arr);
+	return (color);
 }
 
-void init_texture(t_cube *cube, int index, int *i)
+void load_png_image(t_cube *cube, char *path)
 {
-    cube->mlx.texture[index].img = mlx_new_image(cube->mlx.mlx, cube->mlx.texture[index].width, cube->mlx.texture[index].height);
-    if (!cube->mlx.texture[index].img)
-        return;
-    *i += 1;
-    cube->mlx.texture[index].arr = ft_mem2array((uint32_t *)cube->mlx.texture[index].addr, cube->mlx.texture[index].width, cube->mlx.texture[index].height);
+	mlx_texture_t *texture;
+
+	texture = mlx_load_png(path);
+	if (path == cube->parse->north)
+		cube->mlx.img->north = mlx_texture_to_image(cube->mlx.mlx, texture);
+	else if (path == cube->parse->south)
+		cube->mlx.img->south = mlx_texture_to_image(cube->mlx.mlx, texture);
+	else if (path == cube->parse->east)
+		cube->mlx.img->east = mlx_texture_to_image(cube->mlx.mlx, texture);
+	else if (path == cube->parse->west)
+		cube->mlx.img->west = mlx_texture_to_image(cube->mlx.mlx, texture);
+	mlx_delete_texture(texture);
 }
 
-void init_imagesparthree(t_cube *cube, int *i)
-{
-    init_texture(cube, 2, i);
-    init_texture(cube, 3, i);
-    init_texture(cube, 4, i);
-}
-
-void init_imagesparttwo(t_cube *cube, int *i)
-{
-    *i += 1;
-    cube->mlx.img[2].arr = ft_mem2array((uint32_t *)cube->mlx.img[2].addr, 1920, 1080);
-    init_texture(cube, 0, i);
-    init_texture(cube, 1, i);
-    init_imagesparthree(cube, i);
-}
-
-void init_imagespartone(t_cube *cube, int *i)
-{
-    cube->mlx.img[0].img = mlx_new_image(cube->mlx.mlx, 1920, 1080);
-    cube->mlx.img[1].img = mlx_new_image(cube->mlx.mlx, 1920, 1080);
-    cube->mlx.img[2].img = mlx_new_image(cube->mlx.mlx, 1920, 1080);
-    if (!cube->mlx.img[0].img || !cube->mlx.img[1].img || !cube->mlx.img[2].img)
-        return;
-    *i += 3;
-    cube->mlx.img[0].arr = ft_mem2array((uint32_t *)cube->mlx.img[0].addr, 1920, 1080);
-    cube->mlx.img[1].arr = ft_mem2array((uint32_t *)cube->mlx.img[1].addr, 1920, 1080);
-    cube->mlx.img[2].arr = ft_mem2array((uint32_t *)cube->mlx.img[2].addr, 1920, 1080);
-    init_imagesparttwo(cube, i);
+void ft_load_png(t_cube *cube)
+{ 
+	load_png_image(cube, cube->parse->north);
+	load_png_image(cube, cube->parse->east);
+	load_png_image(cube, cube->parse->west);
+	load_png_image(cube, cube->parse->south);
 }

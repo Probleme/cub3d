@@ -6,37 +6,11 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 04:16:23 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/13 08:15:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/09/20 07:19:20 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
-
-size_t ft_strlen(const char *str)
-{
-    size_t i;
-
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
-}
-
-// char	*ft_strchr(const char *s, int c)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] == (char )c)
-// 			return ((char *)s + i);
-// 		i++;
-// 	}
-// 	if ((char)c == '\0')
-// 		return ((char *) s + i);
-// 	return (NULL);
-// }
 
 static size_t	word_count(const char *s, char c)
 {
@@ -164,41 +138,14 @@ int	ft_atoi(const char *str)
 	return (r * s);
 }
 
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strappend(char **dest, char *str)
 {
-	char	*str;
-	size_t	lens;
-	int		i;
+	char	*old_dest;
 
-	i = 0;
-	if (!s1 || !s2)
-		return (NULL);
-	lens = ft_strlen(s1);
-	str = (char *) malloc(sizeof(char) * (lens + ft_strlen(s2) + 1));
-	if (!str)
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	i = 0;
-	while (s2[i])
-	{
-		str[lens++] = s2[i];
-		i++;
-	}
-	str[lens] = '\0';
-	return (str);
-}
-char *ft_strappend(char **dest, char const *str)
-{
-    char *old_dest;
-
-    old_dest = *dest;
-    *dest = ft_strjoin(*dest, str);
-    free(old_dest);
-    return (*dest);
+	old_dest = *dest;
+	*dest = ft_strjoin_opt(*dest, str, 0);
+	free(old_dest);
+	return (*dest);
 }
 
 char	*ft_strdup(const char *s1)
@@ -206,8 +153,8 @@ char	*ft_strdup(const char *s1)
 	int		i;
 	char	*str;
 
-    if (!s1)
-        return (NULL);
+	if (!s1)
+		return (NULL);
 	i = 0;
 	str = malloc(ft_strlen(s1) + 1);
 	if (!str)
@@ -250,7 +197,7 @@ void	*ft_calloc(size_t count, size_t size)
 	res = malloc(count * size);
 	if (!res)
 		return (0);
-    ft_memset(res, 0, (count * size));
+	ft_memset(res, 0, (count * size));
 	return (res);
 }
 
@@ -268,7 +215,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (ft_strdup(""));
 	if (len >= ft_strlen(s + start))
 		len = ft_strlen(s + start);
-	str = (char *) malloc((len + 1) * sizeof(char));
+	str = (char *)malloc((len + 1) * sizeof(char));
 	if (!str)
 		return (0);
 	while (s[start] && len--)
