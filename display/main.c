@@ -6,7 +6,7 @@
 /*   By: aaoutem- <aaoutem-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/28 23:16:06 by aaoutem-         ###   ########.fr       */
+/*   Updated: 2023/09/30 14:41:40 by aaoutem-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void ft_init_player(t_cube *cube)
 	cube->pos_player.x = pos.x * TILE_SIZE;
 	cube->pos_player.y = pos.y * TILE_SIZE;
 	if (cube->parse->map2d->map[pos.y][pos.x] == 'N')
-		cube->player.rotation_angle = M_PI * 1.5;
+		cube->player.rotation_angle = M_PI * (M_PI_2 + M_PI);
 	else if (cube->parse->map2d->map[pos.y][pos.x] == 'E')
 		cube->player.rotation_angle = 0;
 	else if (cube->parse->map2d->map[pos.y][pos.x] == 'S')
