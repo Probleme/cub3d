@@ -82,37 +82,50 @@ int	ft_check_char(char *line)
 	return (1);
 }
 
-int	ft_get_map_width(char *line)
+int	ft_get_map_width(char **map)
 {
-	if (line[0])
-		return (ft_strlen(line));
-	return (0);
+	int	i;
+	int	j;
+	int	max;
+
+	i = 0;
+	max = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+			j++;
+		if (j > max)
+			max = j;
+		i++;
+	}
+	return (max);
 }
 
-int	ft_get_map_height(char *line)
+int	ft_get_map_height(char **map)
 {
 	int	i;
 
 	i = 0;
-	while (line[i])
+	while (map[i])
 		i++;
 	return (i);
 }
 
-void ft_remove_newlines(t_parse *parse)
-{
-	int		i;
-	char	*temp;
+// void ft_remove_newlines(t_parse *parse)
+// {
+// 	int		i;
+// 	char	*temp;
 
-	i = 0;
-	while (parse->map2d->map[i])
-	{
-		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
-		temp = ft_strjoin_opt(temp, "\0", 1);
-		parse->map2d->map[i] = temp;
-		i++;
-	}
-}
+// 	i = 0;
+// 	while (parse->map2d->map[i])
+// 	{
+// 		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
+// 		temp = ft_strjoin_opt(temp, "\0", 1);
+// 		parse->map2d->map[i] = temp;
+// 		i++;
+// 	}
+// }
 
 t_parse	*parsing(char *file)
 {
@@ -127,9 +140,9 @@ t_parse	*parsing(char *file)
 	parse->map2d->map = ft_parse_map2d(line, parse);
 	if (!parse->map2d->map)
 		exit (EXIT_FAILURE);
-	parse->map2d->width = ft_get_map_width(line);
-	parse->map2d->height = ft_get_map_height(line);
-	ft_remove_newlines(parse);
+	parse->map2d->width = ft_get_map_width(parse->map2d->map);
+	parse->map2d->height = ft_get_map_height(parse->map2d->map);
+	// ft_remove_newlines(parse);
 	free(line);
 	// if (!ft_check_player(parse))
 	// 	return (ft_free_parse(parse), NULL);

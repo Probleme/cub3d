@@ -12,24 +12,6 @@
 
 #include "../inc/cub3d.h"
 
-
-void ft_draw_colors(void* param)
-{
-	t_cube *cube = (t_cube *)param;
-	unsigned int i;
-
-	i = -1;
-	while (++i < WIDTH * HEIGHT)
-	{
-		if (i < WIDTH * (HEIGHT / 2))
-			mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->parse->floor);
-		else if (i > WIDTH * (HEIGHT / 2))
-			mlx_put_pixel(cube->mlx.img->screen, i, 0, cube->parse->ceil);
-	}
-	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(cube->mlx.mlx);
-}
-
 t_int_vect ft_getplayer_pos(char **map)
 {
 	t_int_vect pos;
@@ -113,6 +95,18 @@ void ft_init_images(t_cube *cube)
 	cube->mlx.img->rays = NULL;
 }
 
+void ft_destroy_textures(t_cube *cube)
+{
+	if (cube->mlx.img->north)
+		mlx_delete_texture(cube->mlx.img->north);
+	if (cube->mlx.img->south)
+		mlx_delete_texture(cube->mlx.img->south);
+	if (cube->mlx.img->east)
+		mlx_delete_texture(cube->mlx.img->east);
+	if (cube->mlx.img->west)
+		mlx_delete_texture(cube->mlx.img->west);
+}
+
 int main(int argc, char **argv)
 {
 	t_cube cube;
@@ -132,6 +126,9 @@ int main(int argc, char **argv)
 	// mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop(cube.mlx.mlx);
+	if (cube.rays)
+		free(cube.rays);
+	ft_destroy_textures(&cube);
 	mlx_terminate(cube.mlx.mlx);
 	return (EXIT_SUCCESS);
 }
