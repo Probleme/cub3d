@@ -91,6 +91,7 @@ void ft_draw_info(t_raycast *rays, float distance_proj_plane, int num_rays)
     }
 }
 
+<<<<<<< HEAD
 void ft_draw_walls(t_cube *cube, t_raycast *rays)
 {
     int i;
@@ -111,3 +112,25 @@ void ft_draw_walls(t_cube *cube, t_raycast *rays)
         i++;
     }
 }
+=======
+// void ft_draw_walls(t_cube *cube, t_raycast *rays)
+// {
+//     int i;
+
+//     rays = cube->rays;
+//     i = 0;
+//     ft_draw_info(rays, cube->distance_proj_plane, cube->num_rays);
+//     while (i < cube->num_rays)
+//     {
+//         if (rays[i].wall_direction == NORTH)
+//             ft_draw_column(cube, rays[i], cube->mlx.img->north, i);
+//         else if (rays[i].wall_direction == SOUTH)
+//             ft_draw_column(cube, rays[i], cube->mlx.img->south, i);
+//         else if (rays[i].wall_direction == EAST)
+//             ft_draw_column(cube, rays[i], cube->mlx.img->east, i);
+//         else if (rays[i].wall_direction == WEST)
+//             ft_draw_column(cube, rays[i], cube->mlx.img->west, i);
+//         i++;
+//     }
+// }
+>>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7

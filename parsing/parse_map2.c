@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/09/21 10:17:20 by ataouaf          ###   ########.fr       */
+=======
+/*   Updated: 2023/10/05 12:44:35 by abizyane         ###   ########.fr       */
+>>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +119,16 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 		}
 		i++;
 	}
+	//TODO: the last line in the map i not loaded
+	// int ii = 0;
+	// int jj;
+	// while (map[ii])
+	// {		
+	// 	write (1, "\n", 1);
+	// 	jj = 0;
+	// 	while (map[ii][jj])
+	// 		write (1, &map[ii][jj++], 1);
+	// 	ii++;
+	// }
 	return (map);
 }

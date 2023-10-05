@@ -3,10 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/09/21 10:33:04 by ataouaf          ###   ########.fr       */
+=======
+/*   Updated: 2023/10/05 12:23:34 by abizyane         ###   ########.fr       */
+>>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +116,7 @@ int	ft_get_map_height(char **map)
 	return (i);
 }
 
+<<<<<<< HEAD
 // void ft_remove_newlines(t_parse *parse)
 // {
 // 	int		i;
@@ -126,6 +131,22 @@ int	ft_get_map_height(char **map)
 // 		i++;
 // 	}
 // }
+=======
+void ft_remove_newlines(t_parse *parse)
+{
+	int		i;
+	char	*temp;
+
+	i = 0;
+	while (parse->map2d->map[i])
+	{
+		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
+		temp = ft_strjoin_opt(temp, "\0", 1);
+		parse->map2d->map[i] = temp;
+		i++;
+	}
+}
+>>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
 
 t_parse	*parsing(char *file)
 {
