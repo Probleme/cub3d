@@ -1,37 +1,51 @@
-CC := gcc
-NAME := cub
-CFLAGS := -Wextra -Wall -g -fsanitize=address -Ofast
-LIBMLX := $(HOME)/MLX42
-LIBS := libmlx42.a -ldl -lglfw -pthread -lm -lX11 -lXrandr -lXi -lXxf86vm -lXinerama -lXcursor
-SRCS := parsing/parse.c\
-		parsing/parse_map2.c\
-		parsing/utils.c\
-		parsing/rgb.c\
-    	parsing/fill_map.c\
-		parsing/parse_map1.c\
-		display/raycasting.c\
-		display/images.c\
-    	display/utils.c\
-		display/main.c\
-		display/minimap.c\
-		get_next_line/get_next_line.c\
-		get_next_line/get_next_line_utils.c
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
+#    Updated: 2023/10/05 08:24:07 by abizyane         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
+NAME	:= cub3D
+CFLAGS	:= -Wextra -Wall -Werror -g -Wunreachable-code -Ofast
+SANITIZE := -g -fsanitize=address,undefined
+LIBMLX	:= ./MLX42
 
-OBJS := ${SRCS:.c=.o}
+INCLUDE = ./inc
+OBJECTS = ./obj
+PARSING = $(addprefix parsing/, parse.c parse_map2.c utils.c rgb.c fill_map.c parse_map1.c)
+DISPLAY = $(addprefix display/, draw.c utils.c images.c minimap.c)
+GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
 
-all: $(NAME)
+HEADERS	:= -I ./include -I $(LIBMLX)/include
+LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl $(GFLWFLAGS) -lglfw -pthread -lm
 
-%.o: %.c cub3d.h
-	@$(CC) $(CFLAGS) -Imlx -o $@ -c $<
+FILES = $(PARSING) $(GNL) $(DISPLAY) display/main.c
+OBJS = $(addprefix $(OBJECTS)/, $(FILES:.c=.o))
+
+all: libmlx $(NAME)
+
+libmlx:
+	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
+
+$(OBJECTS)/%.o: %.c $(INCLUDE)/cub3d.h
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(SANITIZE) -o $@ -c $< $(HEADERS)
 
 $(NAME): $(OBJS)
-	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) $(framework) -L"/usr/lib64/libglfw.so.3" -o $(NAME)
+	$(CC) $(OBJS) $(LIBS) $(HEADERS) $(SANITIZE) -o $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
+	rm -rf $(OBJECTS)
+	rm -rf $(LIBMLX)/build
 
 fclean: clean
-	@rm -rf $(NAME)
+	rm -rf $(NAME)
 
 re: clean all
+
+.PHONY: all libmlx clean fclean re
