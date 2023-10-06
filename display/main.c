@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 12:37:27 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/05 15:09:59 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ void ft_init_player(t_cube *cube)
 		cube->player.angle = M_PI;
 	cube->player.move_speed = 2;
 	cube->player.rotation_speed = 4 * (M_PI / 180);	
-	cube->player.strafe_dir = 0;
 	cube->player.walk_dir = 0;
 	cube->player.turn_dir = 0;
 	cube->player.fov = (FOV_ANGLE * (M_PI / 180));
@@ -73,6 +72,7 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 		y = 0;
 		while (y < (int)img->width)
 		{
+			
 			mlx_put_pixel(img, y, x, color);
 			y++;
 		}

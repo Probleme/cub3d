@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 12:05:01 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:21:56 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,8 @@ typedef struct s_parse
 typedef struct s_player
 {
 	t_vect	pos;
-	double			turn_dir;
+	int				turn_dir;
 	int				walk_dir;
-	int				strafe_dir;
 	double			angle;
 	double			move_speed;
 	double			rotation_speed;

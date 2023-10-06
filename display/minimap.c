@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/05 12:04:03 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/05 14:14:42 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void    ft_draw_minimap(t_cube *cube)
         i++;
         start.y++;
     }
-}    //TODO: handle the walls collision and the edges of the map
+}
+
 void    ft_draw_player(t_cube *cube)
 {
     t_vect idx;
@@ -60,14 +61,18 @@ void    ft_draw_player(t_cube *cube)
         }
         idx.y++;
     }
-}   //TODO: add player field of view
+}
+
 void    ft_minimap(void *param)
 {
     t_cube *cube;
+    int x;
+    int y;
     
     cube = (t_cube *)param;
-    cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx,\
-        WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
+    x = WIDTH * MINI_SCALE;
+    y = HEIGHT * MINI_SCALE;
+    cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, x, y);
     ft_draw_minimap(cube);
     ft_draw_player(cube);
     //TODO: add minimap borders frame
