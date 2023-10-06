@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 15:09:59 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 09:09:10 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ void ft_init_player(t_cube *cube)
 		cube->player.angle = M_PI;
 	cube->player.move_speed = 2;
 	cube->player.rotation_speed = 4 * (M_PI / 180);	
-	cube->player.walk_dir = 0;
-	cube->player.turn_dir = 0;
 	cube->player.fov = (FOV_ANGLE * (M_PI / 180));
 	// cube->distance_proj_plane = (WIDTH / 2) / tan(cube->fov / 2);
 	// cube->num_rays = (WIDTH / WALL_STRIP_WIDTH);
@@ -72,7 +70,6 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 		y = 0;
 		while (y < (int)img->width)
 		{
-			
 			mlx_put_pixel(img, y, x, color);
 			y++;
 		}
@@ -113,10 +110,7 @@ int main(int argc, char **argv)
 	t_cube cube;
 
 	if (argc != 2)
-	{
-		printf("Error\n");
-		return (1);
-	}
+		return (write(2, "Error\n", 6), 1);
 	cube.parse = parsing(argv[1]);
 	if (!cube.parse)
 		return (1);

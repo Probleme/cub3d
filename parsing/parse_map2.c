@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 12:44:35 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 10:40:32 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int ft_get_height(char *line)
 			height++;
 		i++;
 	}
-	return (height);
+	return (height + 1);
 }
 
 static char **ft_allocation(char *line)
@@ -96,12 +96,11 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 {
 	char **map;
 	int i;
-	int pos_x;
-	int pos_y;
+	t_int_vect pos;
 
 	i = 0;
-	pos_x = 0;
-	pos_y = 0;
+	pos.x = 0;
+	pos.y = 0;
 	map = ft_allocation(line);
 	if (!map)
 		return (NULL);
@@ -109,22 +108,42 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 	{
 		if (line[i] == '\n')
 		{
-			ft_strlcpy2(map[pos_y++], line + pos_x, i - pos_x + 1);
-			pos_x = i + 1;
-			parse->map2d->length = ft_strlen(map[pos_y - 1]);
+			ft_strlcpy2(map[pos.y++], line + pos.x, i - pos.x + 1);
+			pos.x = i + 1;
+			parse->map2d->length = ft_strlen(map[pos.y - 1]);
 		}
 		i++;
 	}
-	//TODO: the last line in the map i not loaded
-	// int ii = 0;
-	// int jj;
-	// while (map[ii])
-	// {		
-	// 	write (1, "\n", 1);
-	// 	jj = 0;
-	// 	while (map[ii][jj])
-	// 		write (1, &map[ii][jj++], 1);
-	// 	ii++;
-	// }
+	//I added this two lines so we can get the last line
+	ft_strlcpy2(map[pos.y++], line + pos.x, i - pos.x + 1);
+	parse->map2d->length = ft_strlen(map[pos.y - 1]);
 	return (map);
 }
+
+// char	**read_map(char *map_name)
+// {
+// 	char	*str;
+// 	char	**arr;
+// 	int		i;
+// 	int		j;
+// 	int		fd;
+
+// 	i = 0;
+// 	j = 0;
+// 	fd = open(map_name, O_RDWR);
+// 	// skip_elements(fd);
+// 	str = get_next_line(fd, GNL_KEEP);
+// 	while (str)
+// 	{
+// 		i++;
+// 		free(str);
+// 		str = get_next_line(fd, GNL_KEEP);
+// 	}
+// 	arr = ft_calloc(i + 1, sizeof(char *));
+// 	close(fd);
+// 	fd = open(map_name, O_RDWR);
+// 	// skip_elements(fd);
+// 	while (i != j)
+// 		arr[j++] = get_next_line(fd, GNL_KEEP);
+// 	return (close(fd), arr);
+// }

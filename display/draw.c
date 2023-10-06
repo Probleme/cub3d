@@ -4,7 +4,7 @@
 static int ft_calculate_texture_height_pixels(mlx_texture_t *texture, t_raycast ray, int draw_height)
 {
     int height;
-    float height_divided;
+    double height_divided;
 
     if (ray.wall_height > HEIGHT)
         draw_height += (ray.wall_height - HEIGHT) / 2;
@@ -13,9 +13,9 @@ static int ft_calculate_texture_height_pixels(mlx_texture_t *texture, t_raycast 
     return (height);
 }
 
-static float ft_calculate_texture_width_pixels(t_raycast ray, int texture_width)
+static double ft_calculate_texture_width_pixels(t_raycast ray, int texture_width)
 {
-    float width_pixels;
+    double width_pixels;
 
     if (ray.hit_horizontal)
         width_pixels = fmod(ray.horizontal_wall_hit.x, TILE_SIZE) / TILE_SIZE;
@@ -35,7 +35,7 @@ int ft_get_colour_from_pixel(uint8_t *pixel)
     return (color);
 }
 
-static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, float current_height, int width_pixels)
+static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, double current_height, int width_pixels)
 {
     uint8_t *pixel;
     int pixel_texture_location;
@@ -52,7 +52,7 @@ void ft_draw_column(t_cube *cube, t_raycast ray, mlx_texture_t *texture, int x)
     int width;
     int current_height;
     int color;
-    float width_pixels;
+    double width_pixels;
 
     x = x * WALL_STRIP_WIDTH;
     width_pixels = ft_calculate_texture_width_pixels(ray, texture->width);
@@ -70,7 +70,7 @@ void ft_draw_column(t_cube *cube, t_raycast ray, mlx_texture_t *texture, int x)
     }
 }
 
-void ft_draw_info(t_raycast *rays, float distance_proj_plane, int num_rays)
+void ft_draw_info(t_raycast *rays, double distance_proj_plane, int num_rays)
 {
     t_raycast *ray;
     int i;
@@ -79,7 +79,7 @@ void ft_draw_info(t_raycast *rays, float distance_proj_plane, int num_rays)
     while (i < num_rays)
     {
         ray = &rays[i];
-        ray->wall_height = ((float)TILE_SIZE / ray->distance) * distance_proj_plane;
+        ray->wall_height = ((double)TILE_SIZE / ray->distance) * distance_proj_plane;
         ray->draw_start = (HEIGHT / 2) - (ray->wall_height / 2);
         ray->draw_end = ray->draw_start + ray->wall_height;
         if (ray->wall_height > HEIGHT)

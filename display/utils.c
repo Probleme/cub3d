@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 08:31:26 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:25:33 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,17 @@ static void	player_movements(t_cube *cube, t_vect *next_pos, t_vect *speed)
 			next_pos->y += speed->x;
 	}
 }
+
+// static double	closest_idx(double x)
+// {
+// 	double lowest;
+	
+// 	lowest = floor(x);
+// 	if (x - lowest > .5 )
+// 		return (lowest + 1);
+// 	else
+// 		return (lowest);
+// }
 
 static int	check_next_tile(t_cube *cube, double next_x, double next_y)
 {

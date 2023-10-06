@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 14:21:56 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 11:20:25 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_vect
 	double			y;
 }					t_vect;
 
-typedef struct s_int_vect //TODO: hadi kon ghi 7ayadnaha 
+typedef struct s_int_vect
 {
 	int				x;
 	int				y;
@@ -115,9 +115,7 @@ typedef struct s_parse
 
 typedef struct s_player
 {
-	t_vect	pos;
-	int				turn_dir;
-	int				walk_dir;
+	t_vect			pos;
 	double			angle;
 	double			move_speed;
 	double			rotation_speed;
