@@ -25,14 +25,9 @@ static double ft_calculate_texture_width_pixels(t_raycast ray, int texture_width
     return (width_pixels);
 }
 
-int ft_get_colour_from_pixel(uint8_t *pixel)
+int ft_get_colour_from_pixel(u_int8_t *pixel)
 {
-    int color;
-
-    color = pixel[0];
-    color = (color << 8) + pixel[1];
-    color = (color << 8) + pixel[2];
-    return (color);
+    return (pixel[0] << 24 | pixel[1] << 16 | pixel[2] << 8 | pixel[3]);
 }
 
 static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, double current_height, int width_pixels)
@@ -91,23 +86,23 @@ void ft_draw_info(t_raycast *rays, double distance_proj_plane, int num_rays)
     }
 }
 
-// void ft_draw_walls(t_cube *cube, t_raycast *rays)
-// {
-//     int i;
+void ft_draw_walls(t_cube *cube, t_raycast *rays)
+{
+    int i;
 
-//     rays = cube->rays;
-//     i = 0;
-//     ft_draw_info(rays, cube->distance_proj_plane, cube->num_rays);
-//     while (i < cube->num_rays)
-//     {
-//         if (rays[i].wall_direction == NORTH)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->north, i);
-//         else if (rays[i].wall_direction == SOUTH)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->south, i);
-//         else if (rays[i].wall_direction == EAST)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->east, i);
-//         else if (rays[i].wall_direction == WEST)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->west, i);
-//         i++;
-//     }
-// }
+    rays = cube->rays;
+    i = 0;
+    ft_draw_info(rays, cube->distance_proj_plane, cube->num_rays);
+    while (i < cube->num_rays)
+    {
+        if (rays[i].wall_direction == NORTH)
+            ft_draw_column(cube, rays[i], cube->mlx.img->north, i);
+        else if (rays[i].wall_direction == SOUTH)
+            ft_draw_column(cube, rays[i], cube->mlx.img->south, i);
+        else if (rays[i].wall_direction == EAST)
+            ft_draw_column(cube, rays[i], cube->mlx.img->east, i);
+        else if (rays[i].wall_direction == WEST)
+            ft_draw_column(cube, rays[i], cube->mlx.img->west, i);
+        i++;
+    }
+}

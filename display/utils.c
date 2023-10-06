@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 11:25:33 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 22:12:15 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 static void	player_rotation(t_cube *cube)
 {
 	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_LEFT))
-		cube->player.angle -= cube->player.rotation_speed;
+		cube->player.rotation_angle -= cube->player.rotation_speed;
 	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_RIGHT))
-		cube->player.angle += cube->player.rotation_speed;
+		cube->player.rotation_angle += cube->player.rotation_speed;
 }
 
 static void	player_movements(t_cube *cube, t_vect *next_pos, t_vect *speed)
@@ -75,8 +75,8 @@ void ft_player_movement(void *param)
 	t_vect	speed;
 	t_vect	next_pos;
 
-	speed.x = cosf(cube->player.angle) * cube->player.move_speed;
-	speed.y = sinf(cube->player.angle) * cube->player.move_speed;
+	speed.x = cosf(cube->player.rotation_angle) * cube->player.move_speed;
+	speed.y = sinf(cube->player.rotation_angle) * cube->player.move_speed;
 	next_pos.x = cube->player.pos.x;
 	next_pos.y = cube->player.pos.y;
 	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))

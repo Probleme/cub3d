@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 11:20:25 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 23:22:48 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@ typedef struct s_raycast
 	t_vect	vertical_step;
 	t_vect	vertical_wall_hit;
 	double		distance;
-	int		hit_vertical;
-	int		hit_horizontal;
-	int		ray_facing_up;
-	int		ray_facing_right;
+	bool		hit_vertical;
+	bool		hit_horizontal;
+	bool		ray_facing_up;
+	bool		ray_facing_right;
 	t_direction	wall_direction;
 	double		wall_height;
 	int			draw_start;
@@ -115,8 +115,11 @@ typedef struct s_parse
 
 typedef struct s_player
 {
-	t_vect			pos;
-	double			angle;
+	t_vect	pos;
+	double			turn_dir;
+	int				walk_dir;
+	int				strafe_dir;
+	double			rotation_angle;
 	double			move_speed;
 	double			rotation_speed;
 	double			fov;
@@ -128,12 +131,8 @@ typedef struct s_cube
 	t_parse			*parse;
 	t_raycast		*rays;
 	t_player		player;
-	// double			num_rays;
-	// float			distance_proj_plane;
-	// double			last_time;
-	// t_float_vect	pos_player;
-	// float			angle;
-	// float			fov;
+	double			num_rays;
+	float			distance_proj_plane;
 }					t_cube;
 
 char				*get_next_line(int fd, int clear);

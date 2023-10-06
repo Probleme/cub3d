@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+         #
+#    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/10/05 08:24:07 by abizyane         ###   ########.fr        #
+#    Updated: 2023/10/06 22:12:36 by ataouaf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ LIBMLX	:= ./MLX42
 INCLUDE = ./inc
 OBJECTS = ./obj
 PARSING = $(addprefix parsing/, parse.c parse_map2.c utils.c rgb.c fill_map.c parse_map1.c)
-DISPLAY = $(addprefix display/, draw.c utils.c images.c minimap.c)
+DISPLAY = $(addprefix display/, draw.c utils.c images.c minimap.c raycasting.c)
 GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include

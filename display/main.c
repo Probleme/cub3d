@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 09:09:10 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/06 22:28:36 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,22 @@ void ft_init_player(t_cube *cube)
 	cube->player.pos.x = pos.x * TILE_SIZE;
 	cube->player.pos.y = pos.y * TILE_SIZE;
 	if (cube->parse->map2d->map[pos.y][pos.x] == 'N')
-		cube->player.angle = M_PI + M_PI_2;
+		cube->player.rotation_angle = M_PI + M_PI_2;
 	else if (cube->parse->map2d->map[pos.y][pos.x] == 'E')
-		cube->player.angle = 0;
+		cube->player.rotation_angle = 0;
 	else if (cube->parse->map2d->map[pos.y][pos.x] == 'S')
-		cube->player.angle = M_PI_2;
+		cube->player.rotation_angle = M_PI_2;
 	else if (cube->parse->map2d->map[pos.y][pos.x] == 'W')
-		cube->player.angle = M_PI;
+		cube->player.rotation_angle = M_PI;
+	cube->player.turn_dir = 0;
+	cube->player.walk_dir = 0;
+	cube->player.strafe_dir = 0;
 	cube->player.move_speed = 2;
 	cube->player.rotation_speed = 4 * (M_PI / 180);	
 	cube->player.fov = (FOV_ANGLE * (M_PI / 180));
-	// cube->distance_proj_plane = (WIDTH / 2) / tan(cube->fov / 2);
-	// cube->num_rays = (WIDTH / WALL_STRIP_WIDTH);
-	// cube->rays = NULL;
+	cube->distance_proj_plane = (WIDTH / 2) / tan(cube->player.fov / 2);
+	cube->num_rays = (WIDTH / WALL_STRIP_WIDTH);
+	cube->rays = NULL;
 }
 
 mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
@@ -117,10 +120,10 @@ int main(int argc, char **argv)
 	ft_init_player(&cube);
 	ft_init_images(&cube);
 	ft_load_png(&cube);
-	// mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
-	// mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
+	// mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)
 		free(cube.rays);
