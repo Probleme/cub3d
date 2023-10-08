@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 00:31:18 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/08 04:24:52 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,9 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 
 void ft_init_images(t_cube *cube)
 {
+	void *cursor;
+	mlx_texture_t *texture;
+
 	cube->mlx.img = malloc(sizeof(t_img));
 	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", false)))
 		exit(printf("%s\n", mlx_strerror(mlx_errno)));
@@ -82,6 +85,18 @@ void ft_init_images(t_cube *cube)
 	cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
 	if (!cube->mlx.img->walls)
 		exit(printf("Failed to create walls image"));
+	if (cube->parse->north)
+		cube->mlx.img->north = mlx_load_png(cube->parse->north);
+	if (cube->parse->south)
+		cube->mlx.img->south = mlx_load_png(cube->parse->south);
+	if (cube->parse->east)
+		cube->mlx.img->east = mlx_load_png(cube->parse->east);
+	if (cube->parse->west)
+		cube->mlx.img->west = mlx_load_png(cube->parse->west);
+	texture = mlx_load_png("textures/sniper_standing.png");
+	cursor = mlx_create_cursor(texture);
+	mlx_delete_texture(texture);
+	mlx_set_cursor(cube->mlx.mlx, cursor);
 }
 
 void ft_destroy_textures(t_cube *cube)
@@ -104,13 +119,12 @@ int main(int argc, char **argv)
 		return (write(2, "Error\n", 6), 1);
 	cube.parse = parsing(argv[1]);
 	if (!cube.parse)
-		return (1);
+		exit (1);
 	ft_init_player(&cube);
 	cube.player.fov = (FOV_ANGLE * (M_PI / 180));
 	cube.player.distance_proj_plane = (WIDTH / 2) / tan(cube.player.fov / 2);
 	cube.rays = NULL;
 	ft_init_images(&cube);
-	ft_load_png(&cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);

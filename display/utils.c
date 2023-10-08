@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 22:12:15 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/08 04:08:11 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,29 @@ static void	player_movements(t_cube *cube, t_vect *next_pos, t_vect *speed)
 	}
 }
 
-// static double	closest_idx(double x)
-// {
-// 	double lowest;
-	
-// 	lowest = floor(x);
-// 	if (x - lowest > .5 )
-// 		return (lowest + 1);
-// 	else
-// 		return (lowest);
-// }
+static void mouse_movement(t_cube *cube)
+{
+	int mouse_x;
+	int mouse_y;
+	double angle;
+
+	mlx_get_mouse_pos(cube->mlx.mlx, &mouse_x, &mouse_y);
+	mlx_set_mouse_pos(cube->mlx.mlx, WIDTH / 2, HEIGHT / 2);
+	if (mouse_x > WIDTH / 2)
+	{
+		angle = cube->player.rotation_angle + (mouse_x - WIDTH / 2) * 0.01;
+		if (angle > 2 * M_PI)
+			angle -= 2 * M_PI;
+		cube->player.rotation_angle = angle;
+	}
+	else if (mouse_x < WIDTH / 2)
+	{
+		angle = cube->player.rotation_angle - (WIDTH / 2 - mouse_x) * 0.01;
+		if (angle < 0)
+			angle += 2 * M_PI;
+		cube->player.rotation_angle = angle;
+	}
+}
 
 static int	check_next_tile(t_cube *cube, double next_x, double next_y)
 {
@@ -83,6 +96,7 @@ void ft_player_movement(void *param)
 		exit(0);
 	player_movements(cube, &next_pos, &speed);
 	player_rotation(cube);
+	mouse_movement(cube);
 	if (check_next_tile(cube, next_pos.x, next_pos.y) || check_next_tile(cube, next_pos.x + 1, next_pos.y)\
 		|| check_next_tile(cube, next_pos.x - 1, next_pos.y) || check_next_tile(cube, next_pos.x, next_pos.y + 1)\
 			||check_next_tile(cube, next_pos.x, next_pos.y - 1))

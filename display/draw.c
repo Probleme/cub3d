@@ -103,7 +103,7 @@ void ft_draw_walls(void* param)
         i++;
     }
     mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->walls, 0, 0);
-    mlx_set_instance_depth(cube->mlx.img->walls->instances, 5);
+    mlx_set_instance_depth(cube->mlx.img->walls->instances, 2);
     free(cube->rays);
     cube->rays = NULL;
 }
