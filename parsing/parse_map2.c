@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 10:40:32 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/07 20:21:37 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 {
 	char **map;
 	int i;
-	t_int_vect pos;
+	t_vect pos;
+	(void)parse;
 
 	i = 0;
 	pos.x = 0;
@@ -108,15 +109,13 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 	{
 		if (line[i] == '\n')
 		{
-			ft_strlcpy2(map[pos.y++], line + pos.x, i - pos.x + 1);
+			ft_strlcpy2(map[(int)pos.y++], line + (int)pos.x, i - pos.x + 1);
 			pos.x = i + 1;
-			parse->map2d->length = ft_strlen(map[pos.y - 1]);
 		}
 		i++;
 	}
 	//I added this two lines so we can get the last line
-	ft_strlcpy2(map[pos.y++], line + pos.x, i - pos.x + 1);
-	parse->map2d->length = ft_strlen(map[pos.y - 1]);
+	ft_strlcpy2(map[(int)pos.y++], line + (int)pos.x, i - pos.x + 1);
 	return (map);
 }
 

@@ -6,13 +6,13 @@
 #    By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/10/06 22:12:36 by ataouaf          ###   ########.fr        #
+#    Updated: 2023/10/08 00:32:04 by ataouaf          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	:= cub3D
-CFLAGS	:= -Wextra -Wall -Werror -g -Wunreachable-code -Ofast
-SANITIZE := -g -fsanitize=address,undefined
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
+SANITIZE := #-g -fsanitize=address,undefined
 LIBMLX	:= ./MLX42
 
 INCLUDE = ./inc
@@ -24,7 +24,7 @@ GNL = $(addprefix get_next_line/, get_next_line.c get_next_line_utils.c)
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl $(GFLWFLAGS) -lglfw -pthread -lm
 
-FILES = $(PARSING) $(GNL) $(DISPLAY) display/main.c
+FILES = $(PARSING) $(GNL) $(DISPLAY) main.c
 OBJS = $(addprefix $(OBJECTS)/, $(FILES:.c=.o))
 
 all: libmlx $(NAME)

@@ -6,56 +6,45 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/06 22:28:36 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/08 00:31:18 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/cub3d.h"
-
-t_int_vect ft_getplayer_pos(char **map)
-{
-	t_int_vect pos;
-
-	pos.y = 0;
-	while (map[pos.y])
-	{
-		pos.x = 0;
-		while (map[pos.y][pos.x])
-		{
-			if (map[pos.y][pos.x] == 'N' || map[pos.y][pos.x] == 'S' || map[pos.y][pos.x] == 'E' || map[pos.y][pos.x] == 'W')
-				return (pos);
-			pos.x++;
-		}
-		pos.y++;
-	}
-	return (pos);
-}
-//TODO: delete the textures after rendering
+#include "inc/cub3d.h"
 
 void ft_init_player(t_cube *cube)
 {
-	t_int_vect pos;
+	t_vect pos;
+	char direction;
 
-	pos = ft_getplayer_pos(cube->parse->map2d->map);
-	cube->player.pos.x = pos.x * TILE_SIZE;
-	cube->player.pos.y = pos.y * TILE_SIZE;
-	if (cube->parse->map2d->map[pos.y][pos.x] == 'N')
-		cube->player.rotation_angle = M_PI + M_PI_2;
-	else if (cube->parse->map2d->map[pos.y][pos.x] == 'E')
-		cube->player.rotation_angle = 0;
-	else if (cube->parse->map2d->map[pos.y][pos.x] == 'S')
-		cube->player.rotation_angle = M_PI_2;
-	else if (cube->parse->map2d->map[pos.y][pos.x] == 'W')
-		cube->player.rotation_angle = M_PI;
-	cube->player.turn_dir = 0;
-	cube->player.walk_dir = 0;
-	cube->player.strafe_dir = 0;
-	cube->player.move_speed = 2;
-	cube->player.rotation_speed = 4 * (M_PI / 180);	
-	cube->player.fov = (FOV_ANGLE * (M_PI / 180));
-	cube->distance_proj_plane = (WIDTH / 2) / tan(cube->player.fov / 2);
-	cube->num_rays = (WIDTH / WALL_STRIP_WIDTH);
-	cube->rays = NULL;
+	pos.y = -1;
+	while (cube->parse->map2d->map[(int)++pos.y])
+	{
+		pos.x = -1;
+		while (cube->parse->map2d->map[(int)pos.y][(int)++pos.x])
+		{
+			if (cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'N' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'S' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'E' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'W')
+			{
+				cube->player.pos.x = pos.x * TILE_SIZE + (0.5 * TILE_SIZE);
+				cube->player.pos.y = pos.y * TILE_SIZE + (0.5 * TILE_SIZE);
+				direction = cube->parse->map2d->map[(int)pos.y][(int)pos.x];
+				if (direction == 'N')
+					cube->player.rotation_angle = M_PI * 1.5;
+				else if (direction == 'E')
+					cube->player.rotation_angle = M_PI * 2;
+				else if (direction == 'S')
+					cube->player.rotation_angle = M_PI * 0.5;
+				else if (direction == 'W')
+					cube->player.rotation_angle = M_PI;
+				else
+					exit(printf("Failed to set initial player rotation"));
+				cube->player.move_speed = 4;
+				cube->player.rotation_speed = 4 * (M_PI / 180);	
+				return ;
+			}
+		}
+	}
+	exit(printf("Failed to set initial player position"));
 }
 
 mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
@@ -84,7 +73,7 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 void ft_init_images(t_cube *cube)
 {
 	cube->mlx.img = malloc(sizeof(t_img));
-	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", true)))
+	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", false)))
 		exit(printf("%s\n", mlx_strerror(mlx_errno)));
 	cube->mlx.img->ceileing = ft_draw_background(cube->mlx.mlx, cube->parse->ceil);
 	cube->mlx.img->floor = ft_draw_background(cube->mlx.mlx, cube->parse->floor);
@@ -93,7 +82,6 @@ void ft_init_images(t_cube *cube)
 	cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
 	if (!cube->mlx.img->walls)
 		exit(printf("Failed to create walls image"));
-	cube->mlx.img->rays = NULL;
 }
 
 void ft_destroy_textures(t_cube *cube)
@@ -118,12 +106,15 @@ int main(int argc, char **argv)
 	if (!cube.parse)
 		return (1);
 	ft_init_player(&cube);
+	cube.player.fov = (FOV_ANGLE * (M_PI / 180));
+	cube.player.distance_proj_plane = (WIDTH / 2) / tan(cube.player.fov / 2);
+	cube.rays = NULL;
 	ft_init_images(&cube);
 	ft_load_png(&cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
-	// mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)
 		free(cube.rays);
