@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/05 12:23:34 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/08 04:39:20 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	ft_check_char(char *line)
 	i = 0;
 	while (line[i] && line[i] != '\n')
 	{
-		if (!ft_is_in_str(" 10NSEWP", line[i]))
+		if (!ft_is_in_str(" 210NSEW", line[i]))
 			return (0);
 		i++;
 	}
@@ -112,21 +112,6 @@ int	ft_get_map_height(char **map)
 	return (i);
 }
 
-void ft_remove_newlines(t_parse *parse)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (parse->map2d->map[i])
-	{
-		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
-		temp = ft_strjoin_opt(temp, "\0", 1);
-		parse->map2d->map[i] = temp;
-		i++;
-	}
-}
-
 t_parse	*parsing(char *file)
 {
 	t_parse	*parse;
@@ -142,9 +127,6 @@ t_parse	*parsing(char *file)
 		exit (EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(parse->map2d->map);
 	parse->map2d->height = ft_get_map_height(parse->map2d->map);
-	// ft_remove_newlines(parse);
 	free(line);
-	// if (!ft_check_player(parse))
-	// 	return (ft_free_parse(parse), NULL);
 	return (parse);
 }

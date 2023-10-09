@@ -80,6 +80,7 @@ void ft_draw_info(t_raycast *rays, double distance_proj_plane)
         i++;
     }
 }
+
 void ft_draw_walls(void* param)
 {
     t_cube *cube;
@@ -99,6 +100,8 @@ void ft_draw_walls(void* param)
             texture = cube->mlx.img->east;
         else if (cube->rays[i].wall_direction == WEST)
             texture = cube->mlx.img->west;
+        else if (cube->rays[i].wall_direction == DOOR)
+            texture = cube->mlx.img->door;
         ft_draw_column(cube, cube->rays[i], texture, i);
         i++;
     }

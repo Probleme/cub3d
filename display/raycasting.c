@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 09:02:26 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 00:09:24 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 06:21:05 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,14 @@ int	ft_check_is_wall(t_map2d *map, double x, double y)
 
 	if (x < 0 || x / TILE_SIZE >= map->width || y < 0 || y
 		/ TILE_SIZE >= map->height)
-		return (1);
+		return (0);
 	map_grid_index_x = floor(x / TILE_SIZE);
 	map_grid_index_y = floor(y / TILE_SIZE);
-	return (map->map[map_grid_index_y][map_grid_index_x] == '1');
+	if (map->map[map_grid_index_y][map_grid_index_x] == '2')
+		return 2;
+	if (map->map[map_grid_index_y][map_grid_index_x] == '1')
+		return 1;
+	return (0);
 }
 
 int	ft_is_in_range(t_vect intercept, t_map2d *map)
@@ -55,13 +59,14 @@ void	ft_find_horizontal_wall(t_cube *cube, t_raycast *ray)
 		check = intercept.y;
 		if (ray->ray_facing_up)
 			check--;
-		if (ft_check_is_wall(cube->parse->map2d, intercept.x, check))
+		if (ft_check_is_wall(cube->parse->map2d, intercept.x, check) != 0)
 		{
 			ray->hit_horizontal = 1;
 			ray->horizontal_wall_hit.x = intercept.x;
 			ray->horizontal_wall_hit.y = intercept.y;
 			return ;
 		}
+		
 		intercept.x += ray->horizontal_step.x;
 		intercept.y += ray->horizontal_step.y;
 	}
@@ -90,7 +95,7 @@ void	ft_find_vertical_wall(t_cube *cube, t_raycast *ray)
 		check = intercept.x;
 		if (!ray->ray_facing_right)
 			check--;
-		if (ft_check_is_wall(cube->parse->map2d, check, intercept.y))
+		if (ft_check_is_wall(cube->parse->map2d, check, intercept.y) != 0)
 		{
 			ray->hit_vertical = 1;
 			ray->vertical_wall_hit.x = intercept.x;
@@ -103,49 +108,67 @@ void	ft_find_vertical_wall(t_cube *cube, t_raycast *ray)
 	ray->hit_vertical = 0;
 }
 
-void	ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
+double ft_distance_between_points(double x1, double y1, double x2, double y2)
 {
-	double	horizontal_x_diff;
-	double	horizontal_y_diff;
-	double	vertical_x_diff;
-	double	vertical_y_diff;
-	double	horizontal_distance;
-	double	vertical_distance;
+	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
+}
 
-	horizontal_x_diff = rays->horizontal_wall_hit.x - player_pos.x;
-	horizontal_y_diff = rays->horizontal_wall_hit.y - player_pos.y;
-	vertical_x_diff = rays->vertical_wall_hit.x - player_pos.x;
-	vertical_y_diff = rays->vertical_wall_hit.y - player_pos.y;
-	horizontal_distance = horizontal_x_diff * horizontal_x_diff
-		+ horizontal_y_diff * horizontal_y_diff;
-	vertical_distance = vertical_x_diff * vertical_x_diff + vertical_y_diff
-		* vertical_y_diff;
-	if (horizontal_distance < vertical_distance)
+void ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
+{
+	double horizontal_distance = MAXFLOAT;
+	double vertical_distance = MAXFLOAT;
+
+	if (rays->hit_horizontal)
+		horizontal_distance = ft_distance_between_points(player_pos.x, player_pos.y, rays->horizontal_wall_hit.x, rays->horizontal_wall_hit.y);
+	if (rays->hit_vertical)
+		vertical_distance = ft_distance_between_points(player_pos.x, player_pos.y, rays->vertical_wall_hit.x, rays->vertical_wall_hit.y);
+	if (horizontal_distance > vertical_distance)
 	{
-		rays->distance = sqrt(horizontal_distance);
-		rays->hit_vertical = 0;
+		rays->distance = vertical_distance;
+		rays->hit_horizontal = 0;
 	}
 	else
 	{
-		rays->distance = sqrt(vertical_distance);
-		rays->hit_horizontal = 0;
+		rays->distance = horizontal_distance;
+		rays->hit_vertical = 0;
 	}
 }
 
-void	ft_hit_wall_direction(t_raycast *ray)
+void	ft_hit_wall_direction(t_raycast *ray, t_cube *cube)
 {
 	if (ray->hit_horizontal)
 	{
 		if (ray->ray_facing_up)
-			ray->wall_direction = NORTH;
+		{
+			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x, ray->horizontal_wall_hit.y - 1. / TILE_SIZE) == 2)
+				ray->wall_direction = DOOR;
+			else
+				ray->wall_direction = NORTH;
+		}
 		else
-			ray->wall_direction = SOUTH;
+		{
+			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x, ray->horizontal_wall_hit.y + 1. / TILE_SIZE) == 2)
+				ray->wall_direction = DOOR;
+			else
+				ray->wall_direction = SOUTH;
+		}
 		return ;
 	}
 	if (ray->ray_facing_right)
-		ray->wall_direction = EAST;
+	{
+		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x + 1. / TILE_SIZE, ray->vertical_wall_hit.y) == 2)
+			ray->wall_direction = DOOR;
+		else
+			ray->wall_direction = EAST;
+	}
 	else
-		ray->wall_direction = WEST;
+	{
+		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x - 1. / TILE_SIZE, ray->vertical_wall_hit.y) == 2)
+			ray->wall_direction = DOOR;
+		else
+			ray->wall_direction = WEST;
+	}
+	return ;
 }
 
 static void	ft_ray_values(t_cube *cube, t_raycast *ray, double r_angle)
@@ -168,7 +191,7 @@ static void	ft_ray_values(t_cube *cube, t_raycast *ray, double r_angle)
 	ft_find_vertical_wall(cube, ray);
 	ft_get_distance_to_wall(ray, cube->player.pos);
 	ray->distance *= cos(ray->ray_angle - cube->player.rotation_angle);
-	ft_hit_wall_direction(ray);
+	ft_hit_wall_direction(ray, cube);
 }
 
 void	ft_cast_rays(void *param)

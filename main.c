@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 04:24:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 05:56:41 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,13 @@ void ft_init_player(t_cube *cube)
 					cube->player.rotation_angle = M_PI;
 				else
 					exit(printf("Failed to set initial player rotation"));
-				cube->player.move_speed = 4;
+				cube->player.move_speed = 3;
 				cube->player.rotation_speed = 4 * (M_PI / 180);	
 				return ;
 			}
 		}
 	}
-	exit(printf("Failed to set initial player position"));
+	exit(printf("Failed to set initial player positionlk"));
 }
 
 mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
@@ -72,9 +72,6 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 
 void ft_init_images(t_cube *cube)
 {
-	void *cursor;
-	mlx_texture_t *texture;
-
 	cube->mlx.img = malloc(sizeof(t_img));
 	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", false)))
 		exit(printf("%s\n", mlx_strerror(mlx_errno)));
@@ -93,10 +90,9 @@ void ft_init_images(t_cube *cube)
 		cube->mlx.img->east = mlx_load_png(cube->parse->east);
 	if (cube->parse->west)
 		cube->mlx.img->west = mlx_load_png(cube->parse->west);
-	texture = mlx_load_png("textures/sniper_standing.png");
-	cursor = mlx_create_cursor(texture);
-	mlx_delete_texture(texture);
-	mlx_set_cursor(cube->mlx.mlx, cursor);
+	cube->mlx.img->door = mlx_load_png("textures/door.png");
+	cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
+	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
 }
 
 void ft_destroy_textures(t_cube *cube)
@@ -109,6 +105,8 @@ void ft_destroy_textures(t_cube *cube)
 		mlx_delete_texture(cube->mlx.img->east);
 	if (cube->mlx.img->west)
 		mlx_delete_texture(cube->mlx.img->west);
+	if (cube->mlx.img->door)
+		mlx_delete_texture(cube->mlx.img->door);
 }
 
 int main(int argc, char **argv)
@@ -129,6 +127,7 @@ int main(int argc, char **argv)
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)
 		free(cube.rays);

@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 04:08:11 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/08 18:15:50 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,15 +55,11 @@ static void mouse_movement(t_cube *cube)
 	if (mouse_x > WIDTH / 2)
 	{
 		angle = cube->player.rotation_angle + (mouse_x - WIDTH / 2) * 0.01;
-		if (angle > 2 * M_PI)
-			angle -= 2 * M_PI;
 		cube->player.rotation_angle = angle;
 	}
 	else if (mouse_x < WIDTH / 2)
 	{
 		angle = cube->player.rotation_angle - (WIDTH / 2 - mouse_x) * 0.01;
-		if (angle < 0)
-			angle += 2 * M_PI;
 		cube->player.rotation_angle = angle;
 	}
 }

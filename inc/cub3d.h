@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 04:22:38 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 04:57:15 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct s_img
 	mlx_texture_t	*east;
 	mlx_texture_t	*west;
 	mlx_texture_t	*south;
+	mlx_texture_t	*door;
 	mlx_image_t		*screen;
 	mlx_image_t		*ceileing;
 	mlx_image_t		*floor;
@@ -65,6 +66,7 @@ typedef struct s_map2d
 {
 	int				width;
 	int				height;
+	char			content;
 	char			**map;
 }					t_map2d;
 
@@ -73,7 +75,8 @@ typedef enum e_direction
 	NORTH,
 	EAST,
 	SOUTH,
-	WEST
+	WEST,
+	DOOR
 }					t_direction;
 
 typedef struct s_raycast
@@ -154,5 +157,6 @@ void				ft_draw_walls(void *param);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);
+void				ft_doors(void *param);
 
 #endif

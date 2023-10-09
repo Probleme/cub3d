@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/08 00:29:47 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/08 18:06:47 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void    ft_draw_minimap(t_cube *cube) //TODO : if start.y or start.x is < 0 it c
 			idx.y = floor(start.y / TILE_SIZE);
 			if (cube->parse->map2d->map[(int)idx.y][(int)idx.x] == '1')
 				mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0xD1D1D1FF);
+			else if (cube->parse->map2d->map[(int)idx.y][(int)idx.x] == '2')
+				mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0x5472AE);
 			else
 				mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0x040101FF);
 			j++;
@@ -65,16 +67,16 @@ void    ft_draw_player(t_cube *cube)
 void    ft_minimap(void *param)
 {
 	t_cube *cube;
-	int x;
-	int y;
+	// int x;
+	// int y;
 	
 	cube = (t_cube *)param;
-	x = WIDTH * MINI_SCALE;
-	y = HEIGHT * MINI_SCALE;
-	cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, x, y);
+	// x = WIDTH * MINI_SCALE;
+	// y = HEIGHT * MINI_SCALE;
 	ft_draw_minimap(cube);
 	ft_draw_player(cube);
 	//TODO: add minimap borders frame
-	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
+	// cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
+	// mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
 	
 }
