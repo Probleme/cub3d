@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/08 04:39:20 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 18:25:08 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ t_parse	*parsing(char *file)
 	if (!line)
 		return (NULL);
 	parse->map2d->map = ft_parse_map2d(line, parse);
-	if (!parse->map2d->map)
+	if (!parse->map2d->map || ft_check_map(parse->map2d->map))
 		exit (EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(parse->map2d->map);
 	parse->map2d->height = ft_get_map_height(parse->map2d->map);

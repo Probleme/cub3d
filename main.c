@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 05:56:41 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 18:13:34 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void ft_init_player(t_cube *cube)
 		pos.x = -1;
 		while (cube->parse->map2d->map[(int)pos.y][(int)++pos.x])
 		{
-			if (cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'N' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'S' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'E' || cube->parse->map2d->map[(int)pos.y][(int)pos.x] == 'W')
+			if (is_player(cube->parse->map2d->map[(int)pos.y][(int)pos.x]))
 			{
 				cube->player.pos.x = pos.x * TILE_SIZE + (0.5 * TILE_SIZE);
 				cube->player.pos.y = pos.y * TILE_SIZE + (0.5 * TILE_SIZE);
@@ -127,7 +127,8 @@ int main(int argc, char **argv)
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
-	mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
+	// mlx_loop_hook(cube.mlx.mlx, &ft_animate_sprites, &cube);
+	// mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)
 		free(cube.rays);

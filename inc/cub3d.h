@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 04:57:15 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 18:27:25 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <string.h>
 # include <unistd.h>
 
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1440
+# define HEIGHT 900
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
 # define WALL_STRIP_WIDTH 1
@@ -141,6 +141,7 @@ int					ft_atoi(const char *str);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				**ft_split(char const *s, char c);
 int					ft_is_only(char *str, char c);
+int					is_player(char c);
 
 t_parse				*parsing(char *file);
 char				*ft_parse_map(t_parse *parse, char *line);
@@ -154,9 +155,12 @@ char				**ft_parse_map2d(char *line, t_parse *parse);
 void				ft_load_png(t_cube *cube);
 void				ft_cast_rays(void *param);
 void				ft_draw_walls(void *param);
+int 				ft_check_map(char **map);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);
 void				ft_doors(void *param);
+void			    ft_animate_sprites(t_cube *cube);
+
 
 #endif

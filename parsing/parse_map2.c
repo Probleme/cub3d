@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/07 20:21:37 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/09 18:16:32 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,6 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 		}
 		i++;
 	}
-	//I added this two lines so we can get the last line
 	ft_strlcpy2(map[(int)pos.y++], line + (int)pos.x, i - pos.x + 1);
 	return (map);
 }
