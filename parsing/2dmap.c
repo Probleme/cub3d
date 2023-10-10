@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 18:39:03 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:42:05 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int ft_check_map(char **map)
 		while (map[i][j])
 		{
 			// printf("%d, %d\n", i, j);
-			if (map[i][j] == '0' && check_directions(map, i, j))
+			if ((map[i][j] == '0' || map[i][j] == '2') && check_directions(map, i, j))
 				return (write(2, "Map Error!!\n", 12));
 			j++;
 		}

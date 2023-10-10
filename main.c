@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 18:33:53 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:51:41 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ void ft_init_images(t_cube *cube)
 	cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
 	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
 	// cube->mlx.img->gun = init_animation(cube);
+	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
 }
 
 void ft_destroy_textures(t_cube *cube)

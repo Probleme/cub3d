@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/09 19:04:03 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:49:11 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,11 @@ void    ft_draw_minimap(t_cube *cube, t_vect start, int i, int j)
 
 	idx.x = floor(start.x / TILE_SIZE);
 	idx.y = floor(start.y / TILE_SIZE);
+	if (idx.x > cube->parse->map2d->width || idx.y > cube->parse->map2d->height || idx.x < 0 || idx.y < 0)
+	{
+		mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0xD1D1D1FF);
+		return ;
+	}
 	if (cube->parse->map2d->map[(int)idx.y][(int)idx.x] == '1')
 		mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0xD1D1D1FF);
 	else if (cube->parse->map2d->map[(int)idx.y][(int)idx.x] == '2')
@@ -55,15 +60,15 @@ void    ft_minimap(void *param)
 	
 	cube = (t_cube *)param;
 	start.y = cube->player.pos.y - (HEIGHT * MINI_SCALE) / 2;
-	if (start.y < 0)
-		start.y = 0;
+	// if (start.y < 0)
+	// 	start.y = 0;
 	i = 0;
 	while (i < HEIGHT * MINI_SCALE)
 	{
 		j = 0;
 		start.x = cube->player.pos.x - (WIDTH * MINI_SCALE) / 2;
-		if (start.x < 0)
-			start.x = 0;
+		// if (start.x < 0)
+		// 	start.x = 0;
 		while (j < WIDTH * MINI_SCALE)
 		{
 			ft_draw_minimap(cube, start, i, j);
