@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 18:27:25 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:35:54 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,22 @@ typedef struct s_vect
 	double			y;
 }					t_vect;
 
+typedef struct s_door
+{
+	int				index;
+	int				x;
+	int				y;
+	int				state;
+	struct s_door	*nxt;
+}				t_door;
+
+typedef struct s_image
+{
+	mlx_image_t		*shotgun;
+	int				state;
+	struct s_image	*nxt;
+}				t_image;
+
 typedef struct s_img
 {
 	mlx_texture_t	*north;
@@ -54,6 +70,7 @@ typedef struct s_img
 	mlx_image_t		*floor;
 	mlx_image_t		*walls;
 	mlx_image_t		*mini_map;
+	t_image			*gun;
 }					t_img;
 
 typedef struct s_mlx
@@ -106,6 +123,7 @@ typedef struct s_parse
 	char			*west;
 	int				floor;
 	int				ceil;
+	t_door			*doors;
 }					t_parse;
 
 typedef struct s_player
@@ -159,8 +177,9 @@ int 				ft_check_map(char **map);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);
-void				ft_doors(void *param);
 void			    ft_animate_sprites(t_cube *cube);
+void    			init_doors(t_cube *cube);
+void   				ft_doors(void *param);
 
 
 #endif

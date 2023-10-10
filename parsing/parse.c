@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 18:25:08 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:03:19 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ int	ft_init_struct(t_parse **parse)
 	(*parse)->map2d->map = NULL;
 	(*parse)->map2d->width = 0;
 	(*parse)->map2d->height = 0;
+	(*parse)->doors = NULL;
 	return (1);
 }
 

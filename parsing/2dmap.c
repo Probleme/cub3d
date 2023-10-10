@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 19:09:57 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:39:03 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ int	is_player(char c)
 static int	check_directions(char **map, int i, int j)
 {
 	if (!map[i + 1] || (map[i + 1][j] != '1' && map[i + 1][j] != '0'\
-		&& !is_player(map[i + 1][j])))
+		&& !is_player(map[i + 1][j]) && map[i + 1][j] != '2'))
 			return (1);
 	else if (!map[i - 1] || (map[i - 1][j] != '1' && map[i - 1][j] != '0'\
-		&& !is_player(map[i - 1][j])))
+		&& !is_player(map[i - 1][j]) && map[i - 1][j] != '2'))
 			return (1);
 	else if (!map[i][j + 1] || (map[i][j + 1] != '1' && map[i][j + 1] != '0'\
-		&& !is_player(map[i][j + 1])))
+		&& !is_player(map[i][j + 1]) && map[i][j + 1] != '2'))
 			return (1);
 	else if (!map[i][j - 1] || (map[i][j - 1] != '1' && map[i][j - 1] != '0'\
-		&& !is_player(map[i][j - 1])))
+		&& !is_player(map[i][j - 1]) && map[i][j - 1] != '2'))
 			return (1);
 	else
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 18:13:34 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 18:33:53 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ void ft_init_images(t_cube *cube)
 	cube->mlx.img->door = mlx_load_png("textures/door.png");
 	cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
 	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
+	// cube->mlx.img->gun = init_animation(cube);
 }
 
 void ft_destroy_textures(t_cube *cube)
@@ -123,12 +124,13 @@ int main(int argc, char **argv)
 	cube.player.distance_proj_plane = (WIDTH / 2) / tan(cube.player.fov / 2);
 	cube.rays = NULL;
 	ft_init_images(&cube);
+	init_doors(&cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_player_movement, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
 	// mlx_loop_hook(cube.mlx.mlx, &ft_animate_sprites, &cube);
-	// mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)
 		free(cube.rays);
