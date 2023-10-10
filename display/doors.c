@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 18:40:06 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/10 20:14:55 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static void	lstadd_door(t_door **head, int x, int y, int index)
 			tmp = tmp->nxt;
 		tmp->nxt = new;
 	}
-	new->nxt = (*head);
 }
 
 // void	lstclear_doors(t_door **head, t_cube *cube)
@@ -99,8 +98,8 @@ static int	in_door_range(t_cube *cube, t_door *curr_door)
 	int	x;
 	int	y;
 
-	x = (int)cube->player.pos.x;
-	y = (int)cube->player.pos.y;
+	x = (int)cube->player.pos.x / TILE_SIZE;
+	y = (int)cube->player.pos.y / TILE_SIZE;
 	if (curr_door->y == y && (curr_door->x == (x + 1) || curr_door->x == (x - 1)))
 		return (1);
 	else if (curr_door->x == x && (curr_door->y == (y + 1) || curr_door->y == (y - 1)))
@@ -126,13 +125,10 @@ void    ft_doors(void *param)
 			door->state = 1;
 			map[door->y][door->x] = '0';
 		}
-		else if (door->state)
+		else if (door->state && !in_door_range(cube, door))
 		{
-			if (!in_door_range(cube, door))
-			{
 				door->state = 0;
 				map[door->y][door->x] = '2';	
-			}
 		}
 		door = door->nxt;
 	}
