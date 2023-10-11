@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 18:55:54 by abizyane         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #ifndef CUB3D_H
 # define CUB3D_H
@@ -145,7 +134,7 @@ typedef struct s_player
 	double			fov;
 }					t_player;
 
-typedef struct s_player
+typedef struct s_cube
 {
 	t_mlx			mlx;
 	t_parse			*parse;
@@ -193,49 +182,4 @@ void				init_animation(t_cube *cube);
 void			    ft_animate_sprites(void *param);
 
 
-typedef struct s_cube
-{
-	t_mlx			mlx;
-	t_parse			*parse;
-	t_raycast		*rays;
-	t_player		player;
-	float			num_rays;
-	float			distance_proj_plane;
-	double			last_time;
-	t_float_vect	pos_player;
-	float			angle;
-	float			fov;
-}					t_cube;
-
-char				*get_next_line(int fd, int clear);
-char				*ft_strjoin_opt(char *s1, char *s2, int free_s1);
-
-size_t				ft_strlen(const char *str);
-char				*ft_strchr(char *s, int c);
-char				*ft_substr(char const *s, unsigned int start, size_t len);
-char				*ft_strdup(const char *s1);
-int					ft_isdigit(int c);
-void				*ft_calloc(size_t count, size_t size);
-void				*ft_memset(void *b, int c, size_t len);
-char				*ft_strappend(char **dest, char *str);
-int					ft_atoi(const char *str);
-int					ft_strncmp(const char *s1, const char *s2, size_t n);
-char				**ft_split(char const *s, char c);
-int					ft_is_only(char *str, char c);
-
-t_parse				*parsing(char *file);
-char				*ft_parse_map(t_parse *parse, char *line);
-char				*ft_extract_texture(t_parse *parse, char *line);
-void				*ft_extract_color(t_parse *parse, char *line);
-int					ft_fill_map(t_parse *parse, char **line, int fd);
-char				*ft_rgb_to_hexa_dec(char *rgb);
-int					ft_check_content(t_parse *parse);
-int					ft_check_char(char *line);
-char				**ft_parse_map2d(char *line, t_parse *parse);
-void ft_load_png(t_cube *cube);
-void				ft_cast_rays(void *param);
-void ft_draw_walls(t_cube *cube, t_raycast *rays);
-// void ft_load_png(t_cube *cube);
-// uint32_t			ft_pixel(uint32_t r, uint32_t g, uint32_t b, uint32_t a);
-void ft_player_movement(void *param);
 #endif
