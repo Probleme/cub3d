@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 02:00:42 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/11 18:55:04 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void ft_init_images(t_cube *cube)
 		exit(ft_dprintf(2, "Failed to create mini map image\n"));
 	if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20) == -1)
 		exit(ft_dprintf(2, "Failed to draw mini map\n"));
-	// cube->mlx.img->gun = init_animation(cube);
+	init_animation(cube);
 	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
 }
 
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 	mlx_loop_hook(cube.mlx.mlx, &ft_minimap, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_cast_rays, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_draw_walls, &cube);
-	// mlx_loop_hook(cube.mlx.mlx, &ft_animate_sprites, &cube);
+	mlx_loop_hook(cube.mlx.mlx, &ft_animate_sprites, &cube);
 	mlx_loop_hook(cube.mlx.mlx, &ft_doors, &cube);
 	mlx_loop(cube.mlx.mlx);
 	if (cube.rays)

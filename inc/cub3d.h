@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 05:56:52 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/11 18:55:54 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,8 @@ typedef struct s_image
 {
 	mlx_image_t		*shotgun;
 	int				state;
+	int				i;
+	int				j;
 	struct s_image	*nxt;
 }				t_image;
 
@@ -180,14 +182,15 @@ char				**ft_parse_map2d(char *line, t_parse *parse);
 void				ft_cast_rays(void *param);
 void				ft_draw_walls(void *param);
 int 				ft_check_map(char **map);
-char	*ft_get_str(char *line);
-t_rgb *ft_get_rgb(char *line);
+char				*ft_get_str(char *line);
+t_rgb 				*ft_get_rgb(char *line);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);
-void			    ft_animate_sprites(t_cube *cube);
 void    			init_doors(t_cube *cube);
 void   				ft_doors(void *param);
+void				init_animation(t_cube *cube);
+void			    ft_animate_sprites(void *param);
 
 
 typedef struct s_cube

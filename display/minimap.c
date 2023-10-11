@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/11 02:04:23 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/11 19:24:06 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_draw_minimap(t_cube *cube, t_vect start, int i, int j)
 
 	idx.x = floor(start.x / TILE_SIZE);
 	idx.y = floor(start.y / TILE_SIZE);
-	if (idx.x > cube->parse->map2d->width || idx.y > cube->parse->map2d->height
+	if (idx.x >= cube->parse->map2d->width || idx.y >= cube->parse->map2d->height
 		|| idx.x < 0 || idx.y < 0)
 	{
 		mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0xD1D1D1FF);
@@ -40,10 +40,10 @@ void	ft_draw_player(t_cube *cube)
 	pos.x = (WIDTH * MINI_SCALE) / 2;
 	pos.y = (HEIGHT * MINI_SCALE) / 2;
 	idx.y = pos.y;
-	while (idx.y < pos.y + 8 && idx.y < HEIGHT)
+	while (idx.y < pos.y + 5 && idx.y < HEIGHT)
 	{
 		idx.x = pos.x;
-		while (idx.x < pos.x + 8 && idx.x < WIDTH)
+		while (idx.x < pos.x + 5 && idx.x < WIDTH)
 		{
 			mlx_put_pixel(cube->mlx.img->mini_map, idx.x, idx.y, 0xF72200FF);
 			idx.x++;
