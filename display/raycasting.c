@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 09:02:26 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 06:21:05 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/10 21:09:32 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,6 +215,7 @@ void	ft_cast_rays(void *param)
 	{
 		mlx_delete_image(cube->mlx.mlx, cube->mlx.img->walls);
 		cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
+		cube->mlx.img->walls->enabled = true;
 		if (!cube->mlx.img->walls)
 			exit(printf("Failed to create walls image"));
 	}

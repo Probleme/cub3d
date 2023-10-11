@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 20:24:21 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 17:10:59 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <string.h>
 # include <unistd.h>
 
-# define WIDTH 1440
+# define WIDTH 1640
 # define HEIGHT 900
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
@@ -55,6 +55,8 @@ typedef struct s_image
 {
 	mlx_image_t		*shotgun;
 	int				state;
+	int				i;
+	int				j;
 	struct s_image	*nxt;
 }				t_image;
 
@@ -177,9 +179,11 @@ int 				ft_check_map(char **map);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);
-void			    ft_animate_sprites(t_cube *cube);
+void			    ft_animate_sprites(void *param);
 void    			init_doors(t_cube *cube);
 void   				ft_doors(void *param);
+void				init_animation(t_cube *cube);
+
 
 
 #endif

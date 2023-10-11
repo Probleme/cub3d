@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 19:11:34 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 11:58:52 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,11 @@ static int	check_next_tile(t_cube *cube, double next_x, double next_y)
 
 void ft_player_movement(void *param)
 {
-	t_cube *cube = (t_cube *)param;
+	t_cube *cube;
 	t_vect	speed;
 	t_vect	next_pos;
 
+	cube = (t_cube *)param;
 	speed.x = cosf(cube->player.rotation_angle) * cube->player.move_speed;
 	speed.y = sinf(cube->player.rotation_angle) * cube->player.move_speed;
 	next_pos.x = cube->player.pos.x;

@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 20:14:55 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 11:45:27 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,19 @@ static void	lstadd_door(t_door **head, int x, int y, int index)
 	}
 }
 
-// void	lstclear_doors(t_door **head, t_cube *cube)
-// {
-// 	t_door	*tmp;
-// 	t_door	*next;
+void	lstclear_doors(t_door **head)
+{
+	t_door	*tmp;
+	t_door	*next;
 
-// 	tmp = (*head);
-// 	while (tmp)
-// 	{
-// 		next = tmp->nxt;
-// 		free(tmp);
-// 		tmp = next;
-// 	}
-// }
+	tmp = (*head);
+	while (tmp)
+	{
+		next = tmp->nxt;
+		free(tmp);
+		tmp = next;
+	}
+}
 
 void    init_doors(t_cube *cube)
 {

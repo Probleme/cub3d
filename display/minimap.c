@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/10 20:49:11 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 16:51:28 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ void    ft_draw_player(t_cube *cube)
 	pos.x = (WIDTH * MINI_SCALE) / 2;
 	pos.y = (HEIGHT * MINI_SCALE) / 2;
 	idx.y = pos.y;
-	while (idx.y < pos.y + 8 && idx.y < HEIGHT)
+	while (idx.y < pos.y + 5 && idx.y < HEIGHT)
 	{
 		idx.x = pos.x;
-		while (idx.x < pos.x + 8 && idx.x < WIDTH)
+		while (idx.x < pos.x + 5 && idx.x < WIDTH)
 		{
 			mlx_put_pixel(cube->mlx.img->mini_map, idx.x, idx.y, 0xF72200FF);
 			idx.x++;
@@ -60,15 +60,11 @@ void    ft_minimap(void *param)
 	
 	cube = (t_cube *)param;
 	start.y = cube->player.pos.y - (HEIGHT * MINI_SCALE) / 2;
-	// if (start.y < 0)
-	// 	start.y = 0;
 	i = 0;
 	while (i < HEIGHT * MINI_SCALE)
 	{
 		j = 0;
 		start.x = cube->player.pos.x - (WIDTH * MINI_SCALE) / 2;
-		// if (start.x < 0)
-		// 	start.x = 0;
 		while (j < WIDTH * MINI_SCALE)
 		{
 			ft_draw_minimap(cube, start, i, j);
