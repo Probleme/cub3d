@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 20:24:21 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 05:56:52 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 42
 # endif
+
+typedef struct s_rgb
+{
+	int				red;
+	int				green;
+	int				blue;
+}					t_rgb;
 
 typedef struct s_vect
 {
@@ -121,9 +128,9 @@ typedef struct s_parse
 	char			*south;
 	char			*east;
 	char			*west;
-	int				floor;
-	int				ceil;
 	t_door			*doors;
+	t_rgb			*floor_rgb;
+	t_rgb			*ceil_rgb;
 }					t_parse;
 
 typedef struct s_player
@@ -149,7 +156,7 @@ char				*ft_strjoin_opt(char *s1, char *s2, int free_s1);
 
 size_t				ft_strlen(const char *str);
 char				*ft_strchr(char *s, int c);
-char				*ft_substr(char const *s, unsigned int start, size_t len);
+// char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strdup(const char *s1);
 int					ft_isdigit(int c);
 void				*ft_calloc(size_t count, size_t size);
@@ -160,20 +167,21 @@ int					ft_strncmp(const char *s1, const char *s2, size_t n);
 char				**ft_split(char const *s, char c);
 int					ft_is_only(char *str, char c);
 int					is_player(char c);
+int	ft_dprintf(int fd, const char *str, ...);
 
 t_parse				*parsing(char *file);
 char				*ft_parse_map(t_parse *parse, char *line);
-char				*ft_extract_texture(t_parse *parse, char *line);
-void				*ft_extract_color(t_parse *parse, char *line);
-int					ft_fill_map(t_parse *parse, char **line, int fd);
+void				*ft_extract_texture(t_parse *parse, char *line);
 char				*ft_rgb_to_hexa_dec(char *rgb);
 int					ft_check_content(t_parse *parse);
 int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line, t_parse *parse);
-void				ft_load_png(t_cube *cube);
+// void				ft_load_png(t_cube *cube);
 void				ft_cast_rays(void *param);
 void				ft_draw_walls(void *param);
 int 				ft_check_map(char **map);
+char	*ft_get_str(char *line);
+t_rgb *ft_get_rgb(char *line);
 
 void				ft_player_movement(void *param);
 void				ft_minimap(void *param);

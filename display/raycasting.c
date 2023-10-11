@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 09:02:26 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/09 06:21:05 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/11 01:51:59 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ int	ft_check_is_wall(t_map2d *map, double x, double y)
 	map_grid_index_x = floor(x / TILE_SIZE);
 	map_grid_index_y = floor(y / TILE_SIZE);
 	if (map->map[map_grid_index_y][map_grid_index_x] == '2')
-		return 2;
+		return (2);
 	if (map->map[map_grid_index_y][map_grid_index_x] == '1')
-		return 1;
+		return (1);
 	return (0);
 }
 
@@ -66,7 +66,6 @@ void	ft_find_horizontal_wall(t_cube *cube, t_raycast *ray)
 			ray->horizontal_wall_hit.y = intercept.y;
 			return ;
 		}
-		
 		intercept.x += ray->horizontal_step.x;
 		intercept.y += ray->horizontal_step.y;
 	}
@@ -108,20 +107,26 @@ void	ft_find_vertical_wall(t_cube *cube, t_raycast *ray)
 	ray->hit_vertical = 0;
 }
 
-double ft_distance_between_points(double x1, double y1, double x2, double y2)
+double	ft_distance_between_points(double x1, double y1, double x2, double y2)
 {
 	return (sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2)));
 }
 
-void ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
+void	ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
 {
-	double horizontal_distance = MAXFLOAT;
-	double vertical_distance = MAXFLOAT;
+	double	horizontal_distance;
+	double	vertical_distance;
 
+	horizontal_distance = MAXFLOAT;
+	vertical_distance = MAXFLOAT;
 	if (rays->hit_horizontal)
-		horizontal_distance = ft_distance_between_points(player_pos.x, player_pos.y, rays->horizontal_wall_hit.x, rays->horizontal_wall_hit.y);
+		horizontal_distance = ft_distance_between_points(player_pos.x,
+				player_pos.y, rays->horizontal_wall_hit.x,
+				rays->horizontal_wall_hit.y);
 	if (rays->hit_vertical)
-		vertical_distance = ft_distance_between_points(player_pos.x, player_pos.y, rays->vertical_wall_hit.x, rays->vertical_wall_hit.y);
+		vertical_distance = ft_distance_between_points(player_pos.x,
+				player_pos.y, rays->vertical_wall_hit.x,
+				rays->vertical_wall_hit.y);
 	if (horizontal_distance > vertical_distance)
 	{
 		rays->distance = vertical_distance;
@@ -140,14 +145,16 @@ void	ft_hit_wall_direction(t_raycast *ray, t_cube *cube)
 	{
 		if (ray->ray_facing_up)
 		{
-			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x, ray->horizontal_wall_hit.y - 1. / TILE_SIZE) == 2)
+			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x,
+					ray->horizontal_wall_hit.y - 1. / TILE_SIZE) == 2)
 				ray->wall_direction = DOOR;
 			else
 				ray->wall_direction = NORTH;
 		}
 		else
 		{
-			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x, ray->horizontal_wall_hit.y + 1. / TILE_SIZE) == 2)
+			if (ft_check_is_wall(cube->parse->map2d, ray->horizontal_wall_hit.x,
+					ray->horizontal_wall_hit.y + 1. / TILE_SIZE) == 2)
 				ray->wall_direction = DOOR;
 			else
 				ray->wall_direction = SOUTH;
@@ -156,14 +163,16 @@ void	ft_hit_wall_direction(t_raycast *ray, t_cube *cube)
 	}
 	if (ray->ray_facing_right)
 	{
-		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x + 1. / TILE_SIZE, ray->vertical_wall_hit.y) == 2)
+		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x + 1.
+				/ TILE_SIZE, ray->vertical_wall_hit.y) == 2)
 			ray->wall_direction = DOOR;
 		else
 			ray->wall_direction = EAST;
 	}
 	else
 	{
-		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x - 1. / TILE_SIZE, ray->vertical_wall_hit.y) == 2)
+		if (ft_check_is_wall(cube->parse->map2d, ray->vertical_wall_hit.x - 1.
+				/ TILE_SIZE, ray->vertical_wall_hit.y) == 2)
 			ray->wall_direction = DOOR;
 		else
 			ray->wall_direction = WEST;
@@ -203,7 +212,7 @@ void	ft_cast_rays(void *param)
 	cube = (t_cube *)param;
 	cube->rays = ft_calloc(WIDTH + 1, sizeof(t_raycast));
 	if (!cube->rays)
-		exit(printf("Failed to allocate memory for rays"));
+		exit(ft_dprintf(2, "Failed to allocate memory for rays"));
 	i = -1;
 	while (++i < WIDTH)
 	{
@@ -216,6 +225,6 @@ void	ft_cast_rays(void *param)
 		mlx_delete_image(cube->mlx.mlx, cube->mlx.img->walls);
 		cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
 		if (!cube->mlx.img->walls)
-			exit(printf("Failed to create walls image"));
+			exit(ft_dprintf(2, "Failed to create walls image"));
 	}
 }

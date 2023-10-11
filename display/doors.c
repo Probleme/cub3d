@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 20:14:55 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 01:52:33 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,11 @@ static void	lstadd_door(t_door **head, int x, int y, int index)
 // 	}
 // }
 
-void    init_doors(t_cube *cube)
+void	init_doors(t_cube *cube)
 {
-	int i;
-	int j;
-	int count;
+	int	i;
+	int	j;
+	int	count;
 
 	i = 0;
 	count = 0;
@@ -100,18 +100,20 @@ static int	in_door_range(t_cube *cube, t_door *curr_door)
 
 	x = (int)cube->player.pos.x / TILE_SIZE;
 	y = (int)cube->player.pos.y / TILE_SIZE;
-	if (curr_door->y == y && (curr_door->x == (x + 1) || curr_door->x == (x - 1)))
+	if (curr_door->y == y && (curr_door->x == (x + 1) || curr_door->x == (x
+				- 1)))
 		return (1);
-	else if (curr_door->x == x && (curr_door->y == (y + 1) || curr_door->y == (y - 1)))
+	else if (curr_door->x == x && (curr_door->y == (y + 1) || curr_door->y == (y
+				- 1)))
 		return (1);
 	else if (x == curr_door->x && y == curr_door->y)
 		return (1);
 	return (0);
 }
 
-void    ft_doors(void *param)
+void	ft_doors(void *param)
 {
-	t_door  *door;
+	t_door	*door;
 	char	**map;
 	t_cube	*cube;
 
@@ -127,8 +129,8 @@ void    ft_doors(void *param)
 		}
 		else if (door->state && !in_door_range(cube, door))
 		{
-				door->state = 0;
-				map[door->y][door->x] = '2';	
+			door->state = 0;
+			map[door->y][door->x] = '2';
 		}
 		door = door->nxt;
 	}

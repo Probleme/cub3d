@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/10 20:54:22 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 01:52:36 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include"../inc/cub3d.h"
+#include "../inc/cub3d.h"
 
 t_image	*lstnew_image(char *img)
 {
@@ -71,39 +71,26 @@ void	lstclear_images(t_image **head, t_cube *cube)
 
 void	init_animation(t_cube *cube)
 {
-		int			i;
-		t_image		*gun;
-		static char **images{"textures/shotgun1.png",
-							"textures/shotgun2.png",
-							"textures/shotgun3.png",
-							"textures/shotgun4.png",
-							"textures/shotgun5.png"};
-		
-		i = 0;
-		while (i < 5)
-			lstadd_image(gun, images[i++]);
+	int		i;
+	t_image	*gun;
 
-
-	
-		cube->mlx.img->gun.image = mlx_new_image(cube->mlx.mlx, 400, 300);
-		mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->gun->shotgun1, WIDTH / 2, HEIGHT - 100);
-		cube->mlx.img->gun->state = 0;
-		mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun.shotgun1);
-
-		
-
+	static char **images{"textures/shotgun1.png", "textures/shotgun2.png",
+		"textures/shotgun3.png", "textures/shotgun4.png",
+		"textures/shotgun5.png"};
+	i = 0;
+	while (i < 5)
+		lstadd_image(gun, images[i++]);
+	cube->mlx.img->gun.image = mlx_new_image(cube->mlx.mlx, 400, 300);
+	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->gun->shotgun1, WIDTH / 2,
+		HEIGHT - 100);
+	cube->mlx.img->gun->state = 0;
+	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun.shotgun1);
 }
-
 
 void	ft_animate_sprites(t_cube *cube)
 {
 	load_images(cube);
 	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_BACKSPACE))
 	{
-		
-
 	}
-
-	
-
 }
