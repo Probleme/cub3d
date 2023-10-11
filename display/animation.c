@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/11 18:52:27 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 19:27:57 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_shoot(t_cube *cube, t_image *image)
 		}
 		else
 		{
-			if (image->j == 20)
+			if (image->j == 100)
 			{
 				image->i++;
 				image->j = 0;
