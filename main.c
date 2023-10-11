@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 11:45:04 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/11 18:55:04 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,34 @@ void ft_init_player(t_cube *cube)
 				else if (direction == 'W')
 					cube->player.rotation_angle = M_PI;
 				else
-					exit(printf("Failed to set initial player rotation"));
+					exit(ft_dprintf(2, "Failed to set initial player rotation\n"));
 				cube->player.move_speed = 3;
 				cube->player.rotation_speed = 4 * (M_PI / 180);	
 				return ;
 			}
 		}
 	}
-	exit(printf("Failed to set initial player positionlk"));
+	exit(ft_dprintf(2, "Failed to set initial player position\n"));
 }
 
-mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
+mlx_image_t *ft_draw_background(mlx_t *mlx, t_rgb *color)
 {
 	mlx_image_t *img;
+	int col;
 	int x;
 	int y;
 
 	img = mlx_new_image(mlx, WIDTH, HEIGHT / 2);
 	if (!img)
-		exit(printf("Failed to create background image"));
+		exit(ft_dprintf(2, "Failed to create background image\n"));
+	col = ((unsigned int)color->red << 24) | ((unsigned int)color->green << 16) | ((unsigned int)color->blue << 8) | 255;
 	x = 0;
 	while (x < (int)img->height)
 	{
 		y = 0;
 		while (y < (int)img->width)
 		{
-			mlx_put_pixel(img, y, x, color);
+			mlx_put_pixel(img, y, x, col);
 			y++;
 		}
 		x++;
@@ -73,26 +75,51 @@ mlx_image_t *ft_draw_background(mlx_t *mlx, int color)
 void ft_init_images(t_cube *cube)
 {
 	cube->mlx.img = malloc(sizeof(t_img));
+	if (!cube->mlx.img)
+		exit(ft_dprintf(2, "Failed to create image structure\n"));
 	if (!(cube->mlx.mlx = mlx_init(WIDTH, HEIGHT, "Cub3D", false)))
-		exit(printf("%s\n", mlx_strerror(mlx_errno)));
-	cube->mlx.img->ceileing = ft_draw_background(cube->mlx.mlx, cube->parse->ceil);
-	cube->mlx.img->floor = ft_draw_background(cube->mlx.mlx, cube->parse->floor);
-	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->ceileing, 0, 0);
-	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->floor, 0, HEIGHT / 2);
+		exit(ft_dprintf(2, "%s\n", mlx_strerror(mlx_errno)));
+	cube->mlx.img->ceileing = ft_draw_background(cube->mlx.mlx, cube->parse->ceil_rgb);
+	cube->mlx.img->floor = ft_draw_background(cube->mlx.mlx, cube->parse->floor_rgb);
+	if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->ceileing, 0, 0) == -1)
+		exit(ft_dprintf(2, "Failed to draw ceileing\n"));
+	if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->floor, 0, HEIGHT / 2) == -1)
+		exit(ft_dprintf(2, "Failed to draw floor"));
 	cube->mlx.img->walls = mlx_new_image(cube->mlx.mlx, WIDTH, HEIGHT);
 	if (!cube->mlx.img->walls)
-		exit(printf("Failed to create walls image"));
+		exit(ft_dprintf(2, "Failed to create walls image\n"));
 	if (cube->parse->north)
+	{
 		cube->mlx.img->north = mlx_load_png(cube->parse->north);
+		if (!cube->mlx.img->north)
+			exit(ft_dprintf(2, "Failed to load north texture\n"));
+	}
 	if (cube->parse->south)
+	{
 		cube->mlx.img->south = mlx_load_png(cube->parse->south);
+		if (!cube->mlx.img->south)
+			exit(ft_dprintf(2, "Failed to load south texture\n"));
+	}
 	if (cube->parse->east)
+	{
 		cube->mlx.img->east = mlx_load_png(cube->parse->east);
+		if (!cube->mlx.img->east)
+			exit(ft_dprintf(2, "Failed to load east texture\n"));
+	}
 	if (cube->parse->west)
+	{
 		cube->mlx.img->west = mlx_load_png(cube->parse->west);
-	cube->mlx.img->door = mlx_load_png("textures/door.png");
+		if (!cube->mlx.img->west)
+			exit(ft_dprintf(2, "Failed to load west texture\n"));
+	}
+	cube->mlx.img->door = mlx_load_png("./textures/door.png");
+	if (!cube->mlx.img->door)
+		exit(ft_dprintf(2, "Failed to load door texture\n"));
 	cube->mlx.img->mini_map = mlx_new_image(cube->mlx.mlx, WIDTH * MINI_SCALE, HEIGHT * MINI_SCALE);
-	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
+	if (!cube->mlx.img->mini_map)
+		exit(ft_dprintf(2, "Failed to create mini map image\n"));
+	if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20) == -1)
+		exit(ft_dprintf(2, "Failed to draw mini map\n"));
 	init_animation(cube);
 	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
 }
@@ -116,7 +143,7 @@ int main(int argc, char **argv)
 	t_cube cube;
 
 	if (argc != 2)
-		return (write(2, "Error\n", 6), 1);
+		return (ft_dprintf(2, "Error\nInvalid number of arguments\n"));
 	cube.parse = parsing(argv[1]);
 	if (!cube.parse)
 		exit (1);

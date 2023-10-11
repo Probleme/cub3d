@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/11 02:01:17 by ataouaf           #+#    #+#             */
+/*   Updated: 2023/10/11 02:01:18 by ataouaf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../inc/cub3d.h"
 
@@ -105,7 +117,8 @@ void ft_draw_walls(void* param)
         ft_draw_column(cube, cube->rays[i], texture, i);
         i++;
     }
-    mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->walls, 0, 0);
+    if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->walls, 0, 0) == -1)
+        exit(ft_dprintf(2, "Failed to draw walls"));
     mlx_set_instance_depth(cube->mlx.img->walls->instances, 2);
     free(cube->rays);
     cube->rays = NULL;
