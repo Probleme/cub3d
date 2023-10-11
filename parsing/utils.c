@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 04:16:23 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/20 07:19:20 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/11 06:18:26 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,84 +97,6 @@ char	**ft_split(char const *s, char c)
 	return (str);
 }
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	if (n == 0)
-		return (0);
-	while (i < n && (s1[i] || s2[i]))
-	{
-		if (s1[i] != s2[i])
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		i++;
-	}
-	return (0);
-}
-
-int	ft_atoi(const char *str)
-{
-	int					i;
-	unsigned long long	r;
-	int					s;
-
-	i = 0;
-	r = 0;
-	s = 1;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			s *= -1;
-		i++;
-	}
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		r = r * 10 + str[i] - '0';
-		i++;
-	}
-	return (r * s);
-}
-
-char	*ft_strappend(char **dest, char *str)
-{
-	char	*old_dest;
-
-	old_dest = *dest;
-	*dest = ft_strjoin_opt(*dest, str, 0);
-	free(old_dest);
-	return (*dest);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	int		i;
-	char	*str;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	str = malloc(ft_strlen(s1) + 1);
-	if (!str)
-		return (NULL);
-	while (s1[i])
-	{
-		str[i] = s1[i];
-		i++;
-	}
-	str[i] = '\0';
-	return (str);
-}
-
-int	ft_isdigit(int c)
-{
-	if (c >= 48 && c <= 57)
-		return (1);
-	return (0);
-}
-
 void	*ft_memset(void *b, int c, size_t len)
 {
 	unsigned char	*str;
@@ -187,39 +109,5 @@ void	*ft_memset(void *b, int c, size_t len)
 		str[i] = (unsigned char)c;
 		i++;
 	}
-	return (str);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*res;
-
-	res = malloc(count * size);
-	if (!res)
-		return (0);
-	ft_memset(res, 0, (count * size));
-	return (res);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	lens;
-	char	*str;
-
-	if (!s)
-		return (0);
-	i = 0;
-	lens = ft_strlen(s);
-	if (lens <= start)
-		return (ft_strdup(""));
-	if (len >= ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (0);
-	while (s[start] && len--)
-		str[i++] = s[start++];
-	str[i] = '\0';
 	return (str);
 }

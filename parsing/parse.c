@@ -3,42 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/21 10:33:04 by ataouaf          ###   ########.fr       */
-=======
-/*   Updated: 2023/10/05 12:23:34 by abizyane         ###   ########.fr       */
->>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
+/*   Updated: 2023/10/11 06:18:32 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-int	ft_init_struct(t_parse **parse)
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*res;
+
+	res = malloc(count * size);
+	if (!res)
+		return (0);
+	ft_memset(res, 0, (count * size));
+	return (res);
+}
+
+static int	ft_init_struct(t_parse **parse)
 {
 	*parse = malloc(sizeof(t_parse));
 	if (!(*parse))
-		return (0);
+		exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 	(*parse)->map2d = malloc(sizeof(t_map2d));
 	if (!((*parse)->map2d))
-		return (free(*parse), 0);
+		exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 	(*parse)->north = NULL;
 	(*parse)->south = NULL;
 	(*parse)->east = NULL;
 	(*parse)->west = NULL;
-	(*parse)->floor = -1;
-	(*parse)->ceil = -1;
+	(*parse)->ceil_rgb = NULL;
+	(*parse)->floor_rgb = NULL;
 	(*parse)->map2d->map = NULL;
 	(*parse)->map2d->width = 0;
 	(*parse)->map2d->height = 0;
+	(*parse)->doors = NULL;
 	return (1);
 }
 
 int	ft_check_content(t_parse *parse)
 {
-	int count;
+	int	count;
 
 	count = 0;
 	if (parse->north)
@@ -49,26 +57,12 @@ int	ft_check_content(t_parse *parse)
 		count++;
 	if (parse->west)
 		count++;
-	if (parse->floor != -1)
+	if (parse->ceil_rgb)
 		count++;
-	if (parse->ceil != -1)
+	if (parse->floor_rgb)
 		count++;
 	if (count == 6)
 		return (1);
-	return (0);
-}
-
-int	ft_is_in_str(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == c)
-			return (1);
-		i++;
-	}
 	return (0);
 }
 
@@ -79,14 +73,14 @@ int	ft_check_char(char *line)
 	i = 0;
 	while (line[i] && line[i] != '\n')
 	{
-		if (!ft_is_in_str(" 10NSEWP", line[i]))
+		if (!ft_strchr("012NSEW ", line[i]))
 			return (0);
 		i++;
 	}
 	return (1);
 }
 
-int	ft_get_map_width(char **map)
+static int	ft_get_map_width(char **map)
 {
 	int	i;
 	int	j;
@@ -106,52 +100,11 @@ int	ft_get_map_width(char **map)
 	return (max);
 }
 
-int	ft_get_map_height(char **map)
-{
-	int	i;
-
-	i = 0;
-	while (map[i])
-		i++;
-	return (i);
-}
-
-<<<<<<< HEAD
-// void ft_remove_newlines(t_parse *parse)
-// {
-// 	int		i;
-// 	char	*temp;
-
-// 	i = 0;
-// 	while (parse->map2d->map[i])
-// 	{
-// 		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
-// 		temp = ft_strjoin_opt(temp, "\0", 1);
-// 		parse->map2d->map[i] = temp;
-// 		i++;
-// 	}
-// }
-=======
-void ft_remove_newlines(t_parse *parse)
-{
-	int		i;
-	char	*temp;
-
-	i = 0;
-	while (parse->map2d->map[i])
-	{
-		temp = ft_substr(parse->map2d->map[i], 0, ft_strlen(parse->map2d->map[i]) - 1);
-		temp = ft_strjoin_opt(temp, "\0", 1);
-		parse->map2d->map[i] = temp;
-		i++;
-	}
-}
->>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
-
 t_parse	*parsing(char *file)
 {
 	t_parse	*parse;
 	char	*line;
+	int		i;
 
 	if (!ft_init_struct(&parse))
 		return (NULL);
@@ -159,13 +112,12 @@ t_parse	*parsing(char *file)
 	if (!line)
 		return (NULL);
 	parse->map2d->map = ft_parse_map2d(line, parse);
-	if (!parse->map2d->map)
-		exit (EXIT_FAILURE);
+	if (!parse->map2d->map || ft_check_map(parse->map2d->map))
+		exit(EXIT_FAILURE);
 	parse->map2d->width = ft_get_map_width(parse->map2d->map);
-	parse->map2d->height = ft_get_map_height(parse->map2d->map);
-	// ft_remove_newlines(parse);
+	i = -1;
+	while (parse->map2d->map[++i])
+		parse->map2d->height++;
 	free(line);
-	// if (!ft_check_player(parse))
-	// 	return (ft_free_parse(parse), NULL);
 	return (parse);
 }

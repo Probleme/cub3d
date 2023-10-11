@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/11 02:01:17 by ataouaf           #+#    #+#             */
+/*   Updated: 2023/10/11 02:01:18 by ataouaf          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 
 #include "../inc/cub3d.h"
 
 static int ft_calculate_texture_height_pixels(mlx_texture_t *texture, t_raycast ray, int draw_height)
 {
     int height;
-    float height_divided;
+    double height_divided;
 
     if (ray.wall_height > HEIGHT)
         draw_height += (ray.wall_height - HEIGHT) / 2;
@@ -13,9 +25,9 @@ static int ft_calculate_texture_height_pixels(mlx_texture_t *texture, t_raycast 
     return (height);
 }
 
-static float ft_calculate_texture_width_pixels(t_raycast ray, int texture_width)
+static double ft_calculate_texture_width_pixels(t_raycast ray, int texture_width)
 {
-    float width_pixels;
+    double width_pixels;
 
     if (ray.hit_horizontal)
         width_pixels = fmod(ray.horizontal_wall_hit.x, TILE_SIZE) / TILE_SIZE;
@@ -25,17 +37,7 @@ static float ft_calculate_texture_width_pixels(t_raycast ray, int texture_width)
     return (width_pixels);
 }
 
-int ft_get_colour_from_pixel(uint8_t *pixel)
-{
-    int color;
-
-    color = pixel[0];
-    color = (color << 8) + pixel[1];
-    color = (color << 8) + pixel[2];
-    return (color);
-}
-
-static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, float current_height, int width_pixels)
+static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, double current_height, int width_pixels)
 {
     uint8_t *pixel;
     int pixel_texture_location;
@@ -44,7 +46,7 @@ static int ft_get_texture_pixel_color(mlx_texture_t *texture, t_raycast ray, flo
     pixel_texture_location += width_pixels;
     pixel_texture_location *= texture->bytes_per_pixel;
     pixel = &texture->pixels[pixel_texture_location];
-    return (ft_get_colour_from_pixel(pixel));
+    return ((unsigned int)pixel[0] << 24 | (unsigned int)pixel[1] << 16 | (unsigned int)pixel[2] << 8 | (unsigned int)pixel[3]);
 }
 
 void ft_draw_column(t_cube *cube, t_raycast ray, mlx_texture_t *texture, int x)
@@ -52,7 +54,7 @@ void ft_draw_column(t_cube *cube, t_raycast ray, mlx_texture_t *texture, int x)
     int width;
     int current_height;
     int color;
-    float width_pixels;
+    double width_pixels;
 
     x = x * WALL_STRIP_WIDTH;
     width_pixels = ft_calculate_texture_width_pixels(ray, texture->width);
@@ -70,16 +72,16 @@ void ft_draw_column(t_cube *cube, t_raycast ray, mlx_texture_t *texture, int x)
     }
 }
 
-void ft_draw_info(t_raycast *rays, float distance_proj_plane, int num_rays)
+void ft_draw_info(t_raycast *rays, double distance_proj_plane)
 {
     t_raycast *ray;
     int i;
 
     i = 0;
-    while (i < num_rays)
+    while (i < WIDTH)
     {
         ray = &rays[i];
-        ray->wall_height = ((float)TILE_SIZE / ray->distance) * distance_proj_plane;
+        ray->wall_height = ((double)TILE_SIZE / ray->distance) * distance_proj_plane;
         ray->draw_start = (HEIGHT / 2) - (ray->wall_height / 2);
         ray->draw_end = ray->draw_start + ray->wall_height;
         if (ray->wall_height > HEIGHT)
@@ -91,46 +93,33 @@ void ft_draw_info(t_raycast *rays, float distance_proj_plane, int num_rays)
     }
 }
 
-<<<<<<< HEAD
-void ft_draw_walls(t_cube *cube, t_raycast *rays)
+void ft_draw_walls(void* param)
 {
+    t_cube *cube;
+    mlx_texture_t *texture;
     int i;
 
-    rays = cube->rays;
+    cube = (t_cube *)param;
     i = 0;
-    ft_draw_info(rays, cube->distance_proj_plane, cube->num_rays);
-    while (i < cube->num_rays)
+    ft_draw_info(cube->rays, cube->player.distance_proj_plane);
+    while (i < WIDTH)
     {
-        if (rays[i].wall_direction == NORTH)
-            ft_draw_column(cube, rays[i], cube->mlx.img->north, i);
-        else if (rays[i].wall_direction == SOUTH)
-            ft_draw_column(cube, rays[i], cube->mlx.img->south, i);
-        else if (rays[i].wall_direction == EAST)
-            ft_draw_column(cube, rays[i], cube->mlx.img->east, i);
-        else if (rays[i].wall_direction == WEST)
-            ft_draw_column(cube, rays[i], cube->mlx.img->west, i);
+        if (cube->rays[i].wall_direction == NORTH)
+            texture = cube->mlx.img->north;
+        else if (cube->rays[i].wall_direction == SOUTH)
+            texture = cube->mlx.img->south;
+        else if (cube->rays[i].wall_direction == EAST)
+            texture = cube->mlx.img->east;
+        else if (cube->rays[i].wall_direction == WEST)
+            texture = cube->mlx.img->west;
+        else if (cube->rays[i].wall_direction == DOOR)
+            texture = cube->mlx.img->door;
+        ft_draw_column(cube, cube->rays[i], texture, i);
         i++;
     }
+    if (mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->walls, 0, 0) == -1)
+        exit(ft_dprintf(2, "Failed to draw walls"));
+    mlx_set_instance_depth(cube->mlx.img->walls->instances, 2);
+    free(cube->rays);
+    cube->rays = NULL;
 }
-=======
-// void ft_draw_walls(t_cube *cube, t_raycast *rays)
-// {
-//     int i;
-
-//     rays = cube->rays;
-//     i = 0;
-//     ft_draw_info(rays, cube->distance_proj_plane, cube->num_rays);
-//     while (i < cube->num_rays)
-//     {
-//         if (rays[i].wall_direction == NORTH)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->north, i);
-//         else if (rays[i].wall_direction == SOUTH)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->south, i);
-//         else if (rays[i].wall_direction == EAST)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->east, i);
-//         else if (rays[i].wall_direction == WEST)
-//             ft_draw_column(cube, rays[i], cube->mlx.img->west, i);
-//         i++;
-//     }
-// }
->>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7

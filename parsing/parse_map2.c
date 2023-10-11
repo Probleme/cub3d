@@ -3,47 +3,43 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/09/21 10:17:20 by ataouaf          ###   ########.fr       */
-=======
-/*   Updated: 2023/10/05 12:44:35 by abizyane         ###   ########.fr       */
->>>>>>> ca246a9c0555e22559a5a417e874b1675d44c3f7
+/*   Updated: 2023/10/11 04:44:32 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static int ft_get_width(char *line)
+static int	ft_get_width(char *line)
 {
-    int i;
-    int current_width;
-    int max_width;
+	int	i;
+	int	current_width;
+	int	max_width;
 
-    i = 0;
-    current_width = 0;
-    max_width = 0;
-    while (line[i])
-    {
-        if (line[i] == '\n')
-        {
-            if (current_width > max_width)
-                max_width = current_width;
-            current_width = 0;
-        }
-        else
-            current_width++;
-        i++;
-    }
-    return (max_width);
+	i = 0;
+	current_width = 0;
+	max_width = 0;
+	while (line[i])
+	{
+		if (line[i] == '\n')
+		{
+			if (current_width > max_width)
+				max_width = current_width;
+			current_width = 0;
+		}
+		else
+			current_width++;
+		i++;
+	}
+	return (max_width);
 }
 
-static int ft_get_height(char *line)
+static int	ft_get_height(char *line)
 {
-	int i;
-	int height;
+	int	i;
+	int	height;
 
 	i = 0;
 	height = 0;
@@ -53,27 +49,27 @@ static int ft_get_height(char *line)
 			height++;
 		i++;
 	}
-	return (height);
+	return (height + 1);
 }
 
-static char **ft_allocation(char *line)
+static char	**ft_allocation(char *line)
 {
-	char **map;
-	int width;
-	int height;
-	int i;
+	char	**map;
+	int		width;
+	int		height;
+	int		i;
 
 	width = ft_get_width(line);
 	height = ft_get_height(line);
 	map = malloc(sizeof(char *) * (height + 1));
 	if (!map)
-		return (NULL);
+		exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 	i = 0;
 	while (i < height)
 	{
 		map[i] = malloc(sizeof(char) * (width + 1));
 		if (!map[i])
-			return (NULL);
+			exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 		ft_memset(map[i], ' ', width);
 		map[i++][width] = 0;
 	}
@@ -96,16 +92,16 @@ int	ft_strlcpy2(char *dst, const char *src, int size)
 	return (ft_strlen(src));
 }
 
-char **ft_parse_map2d(char *line, t_parse *parse)
+char	**ft_parse_map2d(char *line, t_parse *parse)
 {
-	char **map;
-	int i;
-	int pos_x;
-	int pos_y;
+	char	**map;
+	int		i;
+	t_vect	pos;
 
+	(void)parse;
 	i = 0;
-	pos_x = 0;
-	pos_y = 0;
+	pos.x = 0;
+	pos.y = 0;
 	map = ft_allocation(line);
 	if (!map)
 		return (NULL);
@@ -113,22 +109,11 @@ char **ft_parse_map2d(char *line, t_parse *parse)
 	{
 		if (line[i] == '\n')
 		{
-			ft_strlcpy2(map[pos_y++], line + pos_x, i - pos_x + 1);
-			pos_x = i + 1;
-			parse->map2d->length = ft_strlen(map[pos_y - 1]);
+			ft_strlcpy2(map[(int)pos.y++], line + (int)pos.x, i - pos.x + 1);
+			pos.x = i + 1;
 		}
 		i++;
 	}
-	//TODO: the last line in the map i not loaded
-	// int ii = 0;
-	// int jj;
-	// while (map[ii])
-	// {		
-	// 	write (1, "\n", 1);
-	// 	jj = 0;
-	// 	while (map[ii][jj])
-	// 		write (1, &map[ii][jj++], 1);
-	// 	ii++;
-	// }
+	ft_strlcpy2(map[(int)pos.y++], line + (int)pos.x, i - pos.x + 1);
 	return (map);
 }
