@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/12 03:43:27 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/12 16:47:28 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,16 @@
 
 static t_image	*lstnew_image(char *img, t_mlx	ptr)
 {
-	t_image	*new;
+	t_image			*new;
+	mlx_texture_t	*tmp;
 
 	new = ft_calloc(sizeof(t_image), 1);
 	if (!new)
 		return (NULL);
 	new->shotgun = mlx_new_image(ptr.mlx, 400, 400);
-	new->shotgun = mlx_texture_to_image(ptr.mlx, mlx_load_png(img));
+	tmp = mlx_load_png(img);
+	new->shotgun = mlx_texture_to_image(ptr.mlx, tmp);
+	free (tmp);
 	mlx_image_to_window(ptr.mlx, new->shotgun, WIDTH / 2 - 100, HEIGHT - 175);
 	new->shotgun->enabled = false;
 	new->state = 0;
@@ -76,7 +79,8 @@ void	lstclear_images(t_image **head, t_cube *cube)
 
 void	init_animation(t_cube *cube)
 {
-		int		i;
+		int				i;
+		mlx_texture_t	*tmp;
 
 		static char *images[] = {"textures/shotgun1.png",
 							"textures/shotgun2.png",
@@ -89,6 +93,10 @@ void	init_animation(t_cube *cube)
 			lstadd_image(&cube->mlx.img->gun, images[i++], cube->mlx);
 		cube->mlx.img->gun->shotgun->enabled = true;
 		cube->mlx.img->head = cube->mlx.img->gun;
+		tmp = mlx_load_png("textures/target.png");
+		cube->mlx.img->target = mlx_texture_to_image(cube->mlx.mlx, tmp);
+		free (tmp);
+		mlx_image_to_window(cube->mlx.mlx , cube->mlx.img->target, WIDTH / 2 , HEIGHT / 2);
 }
 
 void	ft_shoot(t_cube *cube, t_image *image)
@@ -126,4 +134,3 @@ void	ft_animate_sprites(void *param)
 			cube->mlx.img->gun->state = 1;
 	ft_shoot(cube, cube->mlx.img->head);
 }
-// daba hahya mgada ghir howa zaydin fiha chi l3ibat b7al linkedlist makayench lach wghandir chi textures okhrayen
