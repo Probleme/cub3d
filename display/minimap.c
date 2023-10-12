@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 08:56:32 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/11 20:35:21 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/12 22:30:55 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	ft_draw_minimap(t_cube *cube, t_vect start, int i, int j)
+static void	ft_draw_minimap(t_cube *cube, t_vect start, int i, int j)
 {
 	t_vect	idx;
 
 	idx.x = floor(start.x / TILE_SIZE);
 	idx.y = floor(start.y / TILE_SIZE);
-	if (idx.x >= cube->parse->map2d->width || idx.y >= cube->parse->map2d->height
-		|| idx.x < 0 || idx.y < 0)
+	if (idx.x >= cube->parse->map2d->width
+		|| idx.y >= cube->parse->map2d->height || idx.x < 0 || idx.y < 0)
 	{
 		mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0xD1D1D1FF);
 		return ;
@@ -32,7 +32,7 @@ void	ft_draw_minimap(t_cube *cube, t_vect start, int i, int j)
 		mlx_put_pixel(cube->mlx.img->mini_map, j, i, 0x040101FF);
 }
 
-void	ft_draw_player(t_cube *cube)
+static void	ft_draw_player(t_cube *cube)
 {
 	t_vect	idx;
 	t_vect	pos;

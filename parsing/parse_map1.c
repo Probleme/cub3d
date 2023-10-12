@@ -6,11 +6,48 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 05:56:41 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 22:15:03 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	lens;
+	char	*str;
+
+	if (!s)
+		return (0);
+	i = 0;
+	lens = ft_strlen(s);
+	if (lens <= start)
+		return (ft_strdup(""));
+	if (len >= ft_strlen(s + start))
+		len = ft_strlen(s + start);
+	str = (char *)malloc((len + 1) * sizeof(char));
+	if (!str)
+		return (0);
+	while (s[start] && len--)
+		str[i++] = s[start++];
+	str[i] = '\0';
+	return (str);
+}
+
+int	ft_is_only(char *str, char c)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != c && str[i] != '\n')
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static int	ft_get_infos(t_parse *parse, char **line, int fd)
 {

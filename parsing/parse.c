@@ -6,22 +6,11 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 06:18:32 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 22:15:22 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*res;
-
-	res = malloc(count * size);
-	if (!res)
-		return (0);
-	ft_memset(res, 0, (count * size));
-	return (res);
-}
 
 static int	ft_init_struct(t_parse **parse)
 {

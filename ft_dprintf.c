@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 23:15:59 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/10 23:29:34 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 22:12:56 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,14 @@ int	ft_atoi(const char *str)
 		sign = -1;
 		i++;
 	}
-	else if (str [i] == '+')
+	else if (str[i] == '+')
 	{
 		sign = 1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		result = (result * 10) +(str[i] - '0');
+		result = (result * 10) + (str[i] - '0');
 		i++;
 	}
 	return (sign * result);
@@ -103,6 +103,6 @@ int	ft_dprintf(int fd, const char *str, ...)
 			write(fd, str, 1);
 		str++;
 	}
-    va_end(args);
-    return (fd);
+	va_end(args);
+	return (fd);
 }

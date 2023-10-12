@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/15 00:52:48 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 01:52:33 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 23:21:04 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,6 @@ static t_door	*lstnew_door(int x, int y, int index)
 	return (new);
 }
 
-t_door	*find_door(t_door *head, int index)
-{
-	t_door	*tmp;
-
-	tmp = head;
-	if (!head || !tmp->nxt)
-		return (head);
-	while (tmp->index != index && tmp->nxt->index > tmp->index)
-		tmp = tmp->nxt;
-	if (tmp->index != index)
-		return (NULL);
-	return (tmp);
-}
-
 static void	lstadd_door(t_door **head, int x, int y, int index)
 {
 	t_door	*new;
@@ -57,20 +43,6 @@ static void	lstadd_door(t_door **head, int x, int y, int index)
 		tmp->nxt = new;
 	}
 }
-
-// void	lstclear_doors(t_door **head, t_cube *cube)
-// {
-// 	t_door	*tmp;
-// 	t_door	*next;
-
-// 	tmp = (*head);
-// 	while (tmp)
-// 	{
-// 		next = tmp->nxt;
-// 		free(tmp);
-// 		tmp = next;
-// 	}
-// }
 
 void	init_doors(t_cube *cube)
 {
