@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 16:14:25 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:25:06 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ typedef struct s_door
 
 typedef struct s_image
 {
-	mlx_image_t		*shotgun;
+	mlx_image_t		*shotgun[5];
 	int				state;
 	int				i;
 	int				j;
-	struct s_image	*nxt;
+	int				curr;
 }				t_image;
 
 typedef struct s_img
@@ -80,7 +80,6 @@ typedef struct s_img
 	mlx_image_t		*walls;
 	mlx_image_t		*mini_map;
 	t_image			*gun;
-	t_image			*head;
 	mlx_image_t		*target;
 }					t_img;
 

@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 16:47:40 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/12 20:27:11 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,6 +136,8 @@ void ft_destroy_textures(t_cube *cube)
 		mlx_delete_texture(cube->mlx.img->west);
 	if (cube->mlx.img->door)
 		mlx_delete_texture(cube->mlx.img->door);
+	// if (cube->mlx.img->target)
+	// 	mlx_delete_image(cube->mlx.img->target);
 }
 
 int main(int argc, char **argv)
