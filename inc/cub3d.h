@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 23:23:13 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 02:25:50 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <string.h>
 # include <unistd.h>
 
-# define WIDTH 1440
+# define WIDTH 1200
 # define HEIGHT 900
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
@@ -108,17 +108,17 @@ typedef enum e_direction
 
 typedef struct s_raycast
 {
-	double			ray_angle;
 	t_vect			horizontal_step;
 	t_vect			horizontal_wall_hit;
 	t_vect			vertical_step;
 	t_vect			vertical_wall_hit;
+	t_direction		wall_direction;
+	double			ray_angle;
 	double			distance;
 	int				hit_vertical;
 	int				hit_horizontal;
 	int				ray_facing_up;
 	int				ray_facing_right;
-	t_direction		wall_direction;
 	double			wall_height;
 	int				draw_start;
 	int				draw_end;
@@ -195,5 +195,7 @@ void				ft_animate_sprites(void *param);
 void				ft_find_horizontal_wall(t_cube *cube, t_raycast *ray);
 void				ft_find_vertical_wall(t_cube *cube, t_raycast *ray);
 int					ft_check_is_wall(t_map2d *map, double x, double y);
+mlx_image_t			*ft_draw_background(mlx_t *mlx, t_rgb *color);
+void				ft_init_player(t_cube *cube);
 
 #endif
