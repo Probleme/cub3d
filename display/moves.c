@@ -1,23 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   moves.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 01:51:57 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:14:05 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	player_rotation(t_cube *cube)
+void	*ft_extract_texture(t_parse *parse, char *line)
 {
-	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_LEFT))
-		cube->player.rotation_angle -= cube->player.rotation_speed;
-	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_RIGHT))
-		cube->player.rotation_angle += cube->player.rotation_speed;
+	char	**texture;
+
+	texture = NULL;
+	if (!ft_strncmp("NO", line, 2))
+		texture = &(parse->north);
+	if (!ft_strncmp("SO", line, 2))
+		texture = &(parse->south);
+	if (!ft_strncmp("WE", line, 2))
+		texture = &(parse->west);
+	if (!ft_strncmp("EA", line, 2))
+		texture = &(parse->east);
+	if (texture)
+	{
+		if (*texture != NULL)
+			exit(ft_dprintf(2,
+					"Error\nYou can't set a texture more than once\n"));
+		*texture = ft_get_str(line);
+		if (!*texture)
+			return (0);
+	}
+	return (*texture);
 }
 
 static void	player_movements(t_cube *cube, t_vect *next_pos, t_vect *speed)
@@ -42,6 +59,10 @@ static void	player_movements(t_cube *cube, t_vect *next_pos, t_vect *speed)
 		next_pos->x -= speed->y;
 		next_pos->y += speed->x;
 	}
+	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_LEFT))
+		cube->player.rotation_angle -= cube->player.rotation_speed;
+	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_RIGHT))
+		cube->player.rotation_angle += cube->player.rotation_speed;
 }
 
 static void	mouse_movement(t_cube *cube)
@@ -93,7 +114,6 @@ void	ft_player_movement(void *param)
 	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_ESCAPE))
 		exit(0);
 	player_movements(cube, &next_pos, &speed);
-	player_rotation(cube);
 	mouse_movement(cube);
 	if (check_next_tile(cube, next_pos.x, next_pos.y) || check_next_tile(cube,
 			next_pos.x + 1, next_pos.y) || check_next_tile(cube, next_pos.x - 1,

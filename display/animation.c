@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/13 15:14:01 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:54:55 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static int	ft_rotation_angle(t_cube *cube, char direction)
 {
 	if (direction == 'N')
-		cube->player.rotation_angle = M_PI * 1.5;
+		cube->player.rotation_angle = M_PI + M_PI_2;
 	else if (direction == 'E')
-		cube->player.rotation_angle = M_PI * 2;
+		cube->player.rotation_angle = M_PI + M_PI;
 	else if (direction == 'S')
-		cube->player.rotation_angle = M_PI * 0.5;
+		cube->player.rotation_angle = M_PI_2;
 	else if (direction == 'W')
 		cube->player.rotation_angle = M_PI;
 	else
@@ -58,6 +58,9 @@ void	ft_init_player(t_cube *cube)
 void	init_animation(t_cube *cube, int i)
 {
 	mlx_texture_t	*tmp;
+	static char		*images[] = {"textures/shotgun1.png", 
+		"textures/shotgun2.png", "textures/shotgun3.png",
+		"textures/shotgun4.png", "textures/shotgun5.png"};
 
 	cube->mlx.img->gun = ft_calloc(1, sizeof(t_image));
 	if (!cube->mlx.img->gun)
@@ -65,9 +68,10 @@ void	init_animation(t_cube *cube, int i)
 	while (++i < 5)
 	{
 		cube->mlx.img->gun->shotgun[i] = mlx_new_image(cube->mlx.mlx, 400, 400);
+		tmp = mlx_load_png(images[i]);
 		cube->mlx.img->gun->shotgun[i] = mlx_texture_to_image(cube->mlx.mlx,
-				cube->mlx.img->sprite[i]);
-		mlx_delete_texture(cube->mlx.img->sprite[i]);
+				tmp);
+		mlx_delete_texture(tmp);
 		mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->gun->shotgun[i], WIDTH
 			/ 2 - 100, HEIGHT - 175);
 		cube->mlx.img->gun->shotgun[i]->enabled = false;

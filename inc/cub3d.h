@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 15:24:13 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:11:01 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_image
 	mlx_image_t		*shotgun[5];
 	int				state;
 	int				i;
-	int				j;
 	int				curr;
 }					t_image;
 
@@ -74,14 +73,13 @@ typedef struct s_img
 	mlx_texture_t	*west;
 	mlx_texture_t	*south;
 	mlx_texture_t	*door;
-	mlx_texture_t	*sprite[5];
 	mlx_image_t		*screen;
 	mlx_image_t		*ceileing;
 	mlx_image_t		*floor;
 	mlx_image_t		*walls;
 	mlx_image_t		*mini_map;
-	t_image			*gun;
 	mlx_image_t		*target;
+	t_image			*gun;
 }					t_img;
 
 typedef struct s_mlx
@@ -162,6 +160,7 @@ size_t				ft_strlen(const char *str);
 char				*ft_strchr(char *s, int c);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 char				*ft_strdup(const char *s1);
+int					ft_isdigit(int c);
 void				*ft_calloc(size_t count, size_t size);
 void				*ft_memset(void *b, int c, size_t len);
 char				*ft_strappend(char **dest, char *str);
@@ -171,23 +170,17 @@ char				**ft_split(char const *s, char c);
 int					ft_is_only(char *str, char c);
 int					is_player(char c);
 int					ft_dprintf(int fd, const char *str, ...);
-void				ft_free_map2d(char **map2d);
 
 t_parse				*parsing(char *file);
 char				*ft_parse_map(t_parse *parse, char *line);
 void				*ft_extract_texture(t_parse *parse, char *line);
+char				*ft_rgb_to_hexa_dec(char *rgb);
 int					ft_check_content(t_parse *parse);
 int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line, t_parse *parse);
-
-mlx_image_t			*ft_draw_background(mlx_t *mlx, t_rgb *color);
-void				ft_init_player(t_cube *cube);
 void				ft_cast_rays(void *param);
-void				ft_find_horizontal_wall(t_cube *cube, t_raycast *ray);
-void				ft_find_vertical_wall(t_cube *cube, t_raycast *ray);
-int					ft_check_is_wall(t_map2d *map, double x, double y);
 void				ft_draw_walls(void *param);
-int					ft_check_map(char **map);
+int					ft_check_map(char **map, t_vect max);
 char				*ft_get_str(char *line);
 t_rgb				*ft_get_rgb(char *line);
 
@@ -197,5 +190,14 @@ void				init_doors(t_cube *cube);
 void				ft_doors(void *param);
 void				init_animation(t_cube *cube, int i);
 void				ft_animate_sprites(void *param);
+
+void				ft_find_horizontal_wall(t_cube *cube, t_raycast *ray);
+void				ft_find_vertical_wall(t_cube *cube, t_raycast *ray);
+int					ft_check_is_wall(t_map2d *map, double x, double y);
+mlx_image_t			*ft_draw_background(mlx_t *mlx, t_rgb *color);
+void				ft_init_player(t_cube *cube);
+int					ft_get_width(char *line);
+int					ft_get_height(char *line);
+int					check_commas(char *rgb_str);
 
 #endif

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 09:02:26 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 16:02:06 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:54:55 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static void	ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
+void	ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
 {
 	double	horizontal_distance;
 	double	vertical_distance;
@@ -38,7 +38,7 @@ static void	ft_get_distance_to_wall(t_raycast *rays, t_vect player_pos)
 	}
 }
 
-static int	ft_hit_wall_direction2(t_raycast *ray, t_cube *cube)
+int	ft_hit_wall_direction2(t_raycast *ray, t_cube *cube)
 {
 	if (ray->ray_facing_right)
 	{
@@ -60,7 +60,7 @@ static int	ft_hit_wall_direction2(t_raycast *ray, t_cube *cube)
 	return (0);
 }
 
-static int	ft_hit_wall_direction(t_raycast *ray, t_cube *cube)
+int	ft_hit_wall_direction(t_raycast *ray, t_cube *cube)
 {
 	if (ray->hit_horizontal)
 	{

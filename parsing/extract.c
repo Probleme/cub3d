@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   extract.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 22:14:49 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:14:00 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,55 +32,6 @@ char	*ft_get_str(char *line)
 	return (ft_substr(line, i, size));
 }
 
-void	*ft_extract_texture(t_parse *parse, char *line)
-{
-	char	**texture;
-
-	texture = NULL;
-	if (!ft_strncmp("NO", line, 2))
-		texture = &(parse->north);
-	if (!ft_strncmp("SO", line, 2))
-		texture = &(parse->south);
-	if (!ft_strncmp("WE", line, 2))
-		texture = &(parse->west);
-	if (!ft_strncmp("EA", line, 2))
-		texture = &(parse->east);
-	if (texture)
-	{
-		if (*texture != NULL)
-			exit(ft_dprintf(2,
-					"Error\nYou can't set a texture more than once\n"));
-		*texture = ft_get_str(line);
-		if (!*texture)
-			return (0);
-	}
-	return (*texture);
-}
-
-static char	**ft_split_color(char *rgb_str)
-{
-	char	**rgb;
-	int		i;
-	int		j;
-
-	i = -1;
-	j = -1;
-	rgb = ft_split(rgb_str, ',');
-	if (!rgb)
-		return ((void *)0);
-	while (rgb[++i])
-	{
-		while (rgb[i][++j])
-			if (!(rgb[i][j] >= '0' && rgb[i][j] <= '9'))
-				exit(ft_dprintf(2,
-						"Error\nRGB string format must be number\n"));
-		j = -1;
-	}
-	if (i != 3)
-		exit(ft_dprintf(2, "Error\nRGB string format is not valid\n"));
-	return (rgb);
-}
-
 static void	ft_free_split(char **rgb)
 {
 	int	i;
@@ -93,6 +44,44 @@ static void	ft_free_split(char **rgb)
 	}
 	free(rgb);
 	rgb = NULL;
+}
+
+static int	array_len(char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+static char	**ft_split_color(char *rgb_str)
+{
+	char	**rgb;
+	char	**rgb_splited;
+	int		i;
+	int		j;
+
+	i = -1;
+	j = -1;
+	rgb = ft_split(rgb_str, ',');
+	if (!rgb)
+		return ((void *)0);
+	while (rgb[++i])
+	{
+		rgb_splited = ft_split(rgb[i], ' ');
+		while (rgb_splited[0][++j])
+			if (!(rgb_splited[0][j] >= '0' && rgb_splited[0][j] <= '9')
+					|| array_len(rgb_splited) != 1)
+				exit(ft_dprintf(2,
+						"Error\nRGB string format is invalid\n"));
+		ft_free_split(rgb_splited);
+		j = -1;
+	}
+	if (i != 3 || check_commas(rgb_str))
+		exit(ft_dprintf(2, "Error\nRGB string format is not valid\n"));
+	return (rgb);
 }
 
 t_rgb	*ft_get_rgb(char *line)
@@ -115,8 +104,8 @@ t_rgb	*ft_get_rgb(char *line)
 	color->red = ft_atoi(rgb[0]);
 	color->green = ft_atoi(rgb[1]);
 	color->blue = ft_atoi(rgb[2]);
-	if ((color->red < 0 || color->red > 255) && (color->green < 0
-			|| color->green > 255) && (color->blue < 0 || color->blue > 255))
+	if (color->red < 0 || color->red > 255 || color->green < 0
+		|| color->green > 255 || color->blue < 0 || color->blue > 255)
 		exit(ft_dprintf(2, "Error\nRGB must be in 0 - 255 range\n"));
 	free(rgb_str);
 	ft_free_split(rgb);

@@ -3,35 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 15:25:50 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:11:45 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/cub3d.h"
 
-static void	ft_load_sprites(t_cube *cube)
-{
-	cube->mlx.img->sprite[0] = mlx_load_png("./textures/shotgun1.png");
-	if (!cube->mlx.img->sprite[0])
-		exit(ft_dprintf(2, "Failed to load sprite1 texture\n"));
-	cube->mlx.img->sprite[1] = mlx_load_png("./textures/shotgun2.png");
-	if (!cube->mlx.img->sprite[1])
-		exit(ft_dprintf(2, "Failed to load sprite2 texture\n"));
-	cube->mlx.img->sprite[2] = mlx_load_png("./textures/shotgun3.png");
-	if (!cube->mlx.img->sprite[2])
-		exit(ft_dprintf(2, "Failed to load sprite3 texture\n"));
-	cube->mlx.img->sprite[3] = mlx_load_png("./textures/shotgun4.png");
-	if (!cube->mlx.img->sprite[3])
-		exit(ft_dprintf(2, "Failed to load sprite4 texture\n"));
-	cube->mlx.img->sprite[4] = mlx_load_png("./textures/shotgun5.png");
-	if (!cube->mlx.img->sprite[4])
-		exit(ft_dprintf(2, "Failed to load sprite5 texture\n"));
-}
-
-static void	ft_load_png(t_cube *cube)
+void	ft_load_png(t_cube *cube)
 {
 	cube->mlx.img->north = mlx_load_png(cube->parse->north);
 	if (!cube->mlx.img->north)
@@ -48,10 +29,9 @@ static void	ft_load_png(t_cube *cube)
 	cube->mlx.img->door = mlx_load_png("./textures/door.png");
 	if (!cube->mlx.img->door)
 		exit(ft_dprintf(2, "Failed to load door texture\n"));
-	ft_load_sprites(cube);
 }
 
-static void	ft_init_images(t_cube *cube)
+void	ft_init_images(t_cube *cube)
 {
 	cube->mlx.img = malloc(sizeof(t_img));
 	if (!cube->mlx.img)
@@ -96,14 +76,8 @@ void	ft_destroy_textures(t_cube *cube)
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[2]);
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[3]);
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[4]);
-	free(cube->mlx.img->gun);
-	ft_free_map2d(cube->parse->map2d->map);
-	free(cube->parse->map2d);
 	free(cube->parse->ceil_rgb);
 	free(cube->parse->floor_rgb);
-	free(cube->parse);
-	free(cube->mlx.img);
-	free(cube->mlx.mlx);
 }
 
 int	main(int argc, char **argv)
@@ -130,5 +104,5 @@ int	main(int argc, char **argv)
 		free(cube.rays);
 	ft_destroy_textures(&cube);
 	mlx_terminate(cube.mlx.mlx);
-	return (EXIT_SUCCESS);
+	exit (EXIT_SUCCESS);
 }
