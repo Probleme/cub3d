@@ -6,13 +6,13 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 19:33:23 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:42:00 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-void	*ft_extract_texture(t_parse *parse, char *line)
+void	*ft_extract_texture(t_parse *parse, char *line) //this function needs refactoring
 {
 	char	**texture;
 

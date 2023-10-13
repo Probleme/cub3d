@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 07:23:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 13:19:27 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:52:12 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,16 @@ static int	ft_get_infos(t_parse *parse, char **line, int fd)
 {
 	while (*line != NULL)
 	{
-		if (!ft_strncmp("F", *line, 1))
+		if ((!ft_strncmp("F ", *line, 2) && parse->floor_rgb)
+			|| (!ft_strncmp("C ", *line, 2) && parse->ceil_rgb))
+			exit(ft_dprintf(2,
+					"Error\nYou can't set a color more than once\n"));
+		if (!ft_strncmp("F ", *line, 2))
 			parse->floor_rgb = ft_get_rgb(*line);
-		else if (!ft_strncmp("C", *line, 1))
+		else if (!ft_strncmp("C ", *line, 2))
 			parse->ceil_rgb = ft_get_rgb(*line);
-		else if (!ft_strncmp("NO", *line, 2) || !ft_strncmp("SO", *line, 2)
-			|| !ft_strncmp("WE", *line, 2) || !ft_strncmp("EA", *line, 2))
+		else if (!ft_strncmp("NO ", *line, 3) || !ft_strncmp("SO ", *line, 3)
+			|| !ft_strncmp("WE ", *line, 3) || !ft_strncmp("EA ", *line, 3))
 			ft_extract_texture(parse, *line);
 		else if (!(ft_strlen(*line) == 1 && (*line)[0] == '\n'))
 			return (1);
