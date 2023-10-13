@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 09:02:26 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 23:35:49 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:09:08 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ static void	ft_ray_values(t_cube *cube, t_raycast *ray, double r_angle)
 	r_angle = fmodf(r_angle, 2 * M_PI);
 	if (r_angle < 0)
 		r_angle += (2 * M_PI);
+	else
+		r_angle -= (2 * M_PI) * (r_angle > (2 * M_PI));
 	ray->ray_angle = r_angle;
 	if (ray->ray_angle > 0 && ray->ray_angle < M_PI)
 		ray->ray_facing_up = 0;
@@ -121,8 +123,8 @@ void	ft_cast_rays(void *param)
 	i = -1;
 	while (++i < WIDTH)
 	{
-		ray_angle = (cube->player.rotation_angle - cube->player.fov / 2)
-			+ ((double)i / WIDTH) * cube->player.fov;
+		ray_angle = cube->player.rotation_angle + atan((i - (WIDTH / 2))
+				/ cube->player.distance_proj_plane);
 		ft_ray_values(cube, &cube->rays[i], ray_angle);
 	}
 	if (cube->mlx.img->walls)

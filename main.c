@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 02:25:08 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:14:14 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,19 +58,6 @@ void	ft_init_images(t_cube *cube)
 	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
 }
 
-void	ft_free_map2d(char **map2d)
-{
-	int	i;
-
-	i = 0;
-	while (map2d[i])
-	{
-		free(map2d[i]);
-		i++;
-	}
-	free(map2d);
-}
-
 void	ft_destroy_textures(t_cube *cube)
 {
 	mlx_delete_texture(cube->mlx.img->north);
@@ -89,18 +76,16 @@ void	ft_destroy_textures(t_cube *cube)
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[2]);
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[3]);
 	mlx_delete_image(cube->mlx.mlx, cube->mlx.img->gun->shotgun[4]);
-	free(cube->mlx.img->gun);
-	ft_free_map2d(cube->parse->map2d->map);
-	free(cube->parse->map2d);
 	free(cube->parse->ceil_rgb);
 	free(cube->parse->floor_rgb);
-	free(cube->parse);
-	free(cube->mlx.img);
-	free(cube->mlx.mlx);
 }
-
+void leak()
+{
+	system("leaks cub3D");
+}
 int	main(int argc, char **argv)
 {
+	atexit(leak);
 	t_cube	cube;
 
 	if (argc != 2)
@@ -123,5 +108,5 @@ int	main(int argc, char **argv)
 		free(cube.rays);
 	ft_destroy_textures(&cube);
 	mlx_terminate(cube.mlx.mlx);
-	return (EXIT_SUCCESS);
+	exit (EXIT_SUCCESS);
 }
