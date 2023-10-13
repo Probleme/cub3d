@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 14:16:11 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:11:01 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,5 +198,6 @@ mlx_image_t			*ft_draw_background(mlx_t *mlx, t_rgb *color);
 void				ft_init_player(t_cube *cube);
 int					ft_get_width(char *line);
 int					ft_get_height(char *line);
+int					check_commas(char *rgb_str);
 
 #endif

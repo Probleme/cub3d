@@ -6,11 +6,34 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 14:21:50 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:45:48 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+static int	count_player(char **map)
+{
+	int	i;
+	int	j;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (map[i])
+	{
+		j = 0;
+		while (map[i][j])
+		{
+			if (map[i][j] == 'N' || map[i][j] == 'E'
+				|| map[i][j] == 'W' || map[i][j] == 'S')
+				count++;
+			j++;
+		}
+		i++;
+	}
+	return (count);
+}
 
 int	is_player(char c)
 {
@@ -65,9 +88,11 @@ int	ft_check_map(char **map, t_vect max)
 		{
 			if ((map[i][j] == '0' || map[i][j] == '2') && check_directions(map,
 					i, j, max))
-				exit(ft_dprintf(2, "Error\nMap is not closed\n"));
-			if (is_player(map[i][j]) && (check_directions(map, i, j, max)))
+				exit(ft_dprintf(2, "Error\nThe Map is invalid\n"));
+			if (is_player(map[i][j]) && check_directions(map, i, j, max))
 				exit(ft_dprintf(2, "Error\nThe player position is invalid\n"));
+			if (is_player(map[i][j]) && count_player(map) != 1)
+				exit(ft_dprintf(2, "Error\nOnly one Player is available\n"));
 			if (map[i][j] == '2' && check_door(map, i, j))
 				exit(ft_dprintf(2, "Error\nThe door must be between walls\n"));
 			j++;

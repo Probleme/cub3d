@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/13 14:28:22 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:54:55 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 static int	ft_rotation_angle(t_cube *cube, char direction)
 {
 	if (direction == 'N')
-		cube->player.rotation_angle = M_PI * 1.5;
+		cube->player.rotation_angle = M_PI + M_PI_2;
 	else if (direction == 'E')
-		cube->player.rotation_angle = M_PI * 2;
+		cube->player.rotation_angle = M_PI + M_PI;
 	else if (direction == 'S')
-		cube->player.rotation_angle = M_PI * 0.5;
+		cube->player.rotation_angle = M_PI_2;
 	else if (direction == 'W')
 		cube->player.rotation_angle = M_PI;
 	else

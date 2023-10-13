@@ -6,11 +6,29 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 14:32:37 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 18:09:10 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+int	check_commas(char *rgb_str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (rgb_str[i])
+	{
+		if (rgb_str[i] == ',')
+			count++;
+		i++;
+	}
+	if (count == 2)
+		return (0);
+	return (count);
+}
 
 static int	ft_init_struct(t_parse **parse)
 {

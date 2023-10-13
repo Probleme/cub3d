@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 16:14:14 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:11:45 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,9 @@ void	ft_destroy_textures(t_cube *cube)
 	free(cube->parse->ceil_rgb);
 	free(cube->parse->floor_rgb);
 }
-void leak()
-{
-	system("leaks cub3D");
-}
+
 int	main(int argc, char **argv)
 {
-	atexit(leak);
 	t_cube	cube;
 
 	if (argc != 2)
