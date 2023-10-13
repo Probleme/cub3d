@@ -6,11 +6,24 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/11 06:36:06 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 01:51:38 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:23:58 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+void	ft_free_map2d(char **map2d)
+{
+	int	i;
+
+	i = 0;
+	while (map2d[i])
+	{
+		free(map2d[i]);
+		i++;
+	}
+	free(map2d);
+}
 
 int	is_player(char c)
 {

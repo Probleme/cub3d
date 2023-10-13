@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/12 22:46:08 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 23:06:48 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:50:53 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_check_is_wall(t_map2d *map, double x, double y)
 	return (0);
 }
 
-void	ft_horizontal_ray(t_cube *cube, t_raycast *ray, t_vect *intercept)
+static void	ft_horizontal_ray(t_cube *cube, t_raycast *ray, t_vect *intercept)
 {
 	intercept->y = floor(cube->player.pos.y / TILE_SIZE) * TILE_SIZE;
 	if (!ray->ray_facing_up)
@@ -71,7 +71,7 @@ void	ft_find_horizontal_wall(t_cube *cube, t_raycast *ray)
 	ray->hit_horizontal = 0;
 }
 
-void	ft_vertical_wall(t_cube *cube, t_raycast *ray, t_vect *intercept)
+static void	ft_vertical_wall(t_cube *cube, t_raycast *ray, t_vect *intercept)
 {
 	intercept->x = floor(cube->player.pos.x / TILE_SIZE) * TILE_SIZE;
 	if (ray->ray_facing_right)

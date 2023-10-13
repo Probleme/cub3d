@@ -6,7 +6,7 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/13 02:13:19 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:14:01 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,15 @@ void	init_animation(t_cube *cube, int i)
 {
 	mlx_texture_t	*tmp;
 
-	static char *images[] = {"textures/shotgun1.png", "textures/shotgun2.png",
-		"textures/shotgun3.png", "textures/shotgun4.png",
-		"textures/shotgun5.png"};
 	cube->mlx.img->gun = ft_calloc(1, sizeof(t_image));
 	if (!cube->mlx.img->gun)
 		exit(ft_dprintf(2, "Failed to allocate memory\n"));
 	while (++i < 5)
 	{
 		cube->mlx.img->gun->shotgun[i] = mlx_new_image(cube->mlx.mlx, 400, 400);
-		tmp = mlx_load_png(images[i]);
 		cube->mlx.img->gun->shotgun[i] = mlx_texture_to_image(cube->mlx.mlx,
-				tmp);
-		mlx_delete_texture(tmp);
+				cube->mlx.img->sprite[i]);
+		mlx_delete_texture(cube->mlx.img->sprite[i]);
 		mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->gun->shotgun[i], WIDTH
 			/ 2 - 100, HEIGHT - 175);
 		cube->mlx.img->gun->shotgun[i]->enabled = false;

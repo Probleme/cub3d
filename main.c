@@ -6,13 +6,32 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:49:47 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 02:25:08 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 15:25:50 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "inc/cub3d.h"
 
-void	ft_load_png(t_cube *cube)
+static void	ft_load_sprites(t_cube *cube)
+{
+	cube->mlx.img->sprite[0] = mlx_load_png("./textures/shotgun1.png");
+	if (!cube->mlx.img->sprite[0])
+		exit(ft_dprintf(2, "Failed to load sprite1 texture\n"));
+	cube->mlx.img->sprite[1] = mlx_load_png("./textures/shotgun2.png");
+	if (!cube->mlx.img->sprite[1])
+		exit(ft_dprintf(2, "Failed to load sprite2 texture\n"));
+	cube->mlx.img->sprite[2] = mlx_load_png("./textures/shotgun3.png");
+	if (!cube->mlx.img->sprite[2])
+		exit(ft_dprintf(2, "Failed to load sprite3 texture\n"));
+	cube->mlx.img->sprite[3] = mlx_load_png("./textures/shotgun4.png");
+	if (!cube->mlx.img->sprite[3])
+		exit(ft_dprintf(2, "Failed to load sprite4 texture\n"));
+	cube->mlx.img->sprite[4] = mlx_load_png("./textures/shotgun5.png");
+	if (!cube->mlx.img->sprite[4])
+		exit(ft_dprintf(2, "Failed to load sprite5 texture\n"));
+}
+
+static void	ft_load_png(t_cube *cube)
 {
 	cube->mlx.img->north = mlx_load_png(cube->parse->north);
 	if (!cube->mlx.img->north)
@@ -29,9 +48,10 @@ void	ft_load_png(t_cube *cube)
 	cube->mlx.img->door = mlx_load_png("./textures/door.png");
 	if (!cube->mlx.img->door)
 		exit(ft_dprintf(2, "Failed to load door texture\n"));
+	ft_load_sprites(cube);
 }
 
-void	ft_init_images(t_cube *cube)
+static void	ft_init_images(t_cube *cube)
 {
 	cube->mlx.img = malloc(sizeof(t_img));
 	if (!cube->mlx.img)
@@ -56,19 +76,6 @@ void	ft_init_images(t_cube *cube)
 	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->mini_map, 30, 20);
 	init_animation(cube, -1);
 	mlx_set_cursor_mode(cube->mlx.mlx, MLX_MOUSE_HIDDEN);
-}
-
-void	ft_free_map2d(char **map2d)
-{
-	int	i;
-
-	i = 0;
-	while (map2d[i])
-	{
-		free(map2d[i]);
-		i++;
-	}
-	free(map2d);
 }
 
 void	ft_destroy_textures(t_cube *cube)
