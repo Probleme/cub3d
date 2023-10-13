@@ -6,11 +6,22 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 03:04:46 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/09/19 05:37:16 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 22:15:57 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*res;
+
+	res = malloc(count * size);
+	if (!res)
+		return (0);
+	ft_memset(res, 0, (count * size));
+	return (res);
+}
 
 char	*ft_get_line(char *save)
 {

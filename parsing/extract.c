@@ -6,48 +6,11 @@
 /*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 06:15:01 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/12 22:14:49 by ataouaf          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	i;
-	size_t	lens;
-	char	*str;
-
-	if (!s)
-		return (0);
-	i = 0;
-	lens = ft_strlen(s);
-	if (lens <= start)
-		return (ft_strdup(""));
-	if (len >= ft_strlen(s + start))
-		len = ft_strlen(s + start);
-	str = (char *)malloc((len + 1) * sizeof(char));
-	if (!str)
-		return (0);
-	while (s[start] && len--)
-		str[i++] = s[start++];
-	str[i] = '\0';
-	return (str);
-}
-
-int	ft_is_only(char *str, char c)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] != c && str[i] != '\n')
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 char	*ft_get_str(char *line)
 {
@@ -69,9 +32,9 @@ char	*ft_get_str(char *line)
 	return (ft_substr(line, i, size));
 }
 
-void *ft_extract_texture(t_parse *parse, char *line)
+void	*ft_extract_texture(t_parse *parse, char *line)
 {
-	char **texture;
+	char	**texture;
 
 	texture = NULL;
 	if (!ft_strncmp("NO", line, 2))
@@ -94,8 +57,45 @@ void *ft_extract_texture(t_parse *parse, char *line)
 	return (*texture);
 }
 
+static char	**ft_split_color(char *rgb_str)
+{
+	char	**rgb;
+	int		i;
+	int		j;
 
-t_rgb  *ft_get_rgb(char *line)
+	i = -1;
+	j = -1;
+	rgb = ft_split(rgb_str, ',');
+	if (!rgb)
+		return ((void *)0);
+	while (rgb[++i])
+	{
+		while (rgb[i][++j])
+			if (!(rgb[i][j] >= '0' && rgb[i][j] <= '9'))
+				exit(ft_dprintf(2,
+						"Error\nRGB string format must be number\n"));
+		j = -1;
+	}
+	if (i != 3)
+		exit(ft_dprintf(2, "Error\nRGB string format is not valid\n"));
+	return (rgb);
+}
+
+static void	ft_free_split(char **rgb)
+{
+	int	i;
+
+	i = -1;
+	while (rgb[++i])
+	{
+		free(rgb[i]);
+		rgb[i] = NULL;
+	}
+	free(rgb);
+	rgb = NULL;
+}
+
+t_rgb	*ft_get_rgb(char *line)
 {
 	char	**rgb;
 	char	*rgb_str;
@@ -107,16 +107,8 @@ t_rgb  *ft_get_rgb(char *line)
 	j = -1;
 	rgb_str = ft_get_str(line);
 	if (!rgb_str)
-		return ((void *)0);
-	rgb = ft_split(rgb_str, ',');
-	if (!rgb)
-		return ((void *)0);
-	while (rgb[++i])
-		while (rgb[i][++j])
-			if (!(rgb[i][j] >= '0' && rgb[i][j] <= '9'))
-				exit(ft_dprintf(2, "Error\nRGB string format is not valid\n"));
-	if (i != 3)
-		exit(ft_dprintf(2, "Error\nRGB string format is not valid\n"));
+		exit(ft_dprintf(2, "Error\ncan't get RGB string\n"));
+	rgb = ft_split_color(rgb_str);
 	color = malloc(sizeof(t_rgb));
 	if (!color)
 		return ((void *)0);
@@ -127,6 +119,6 @@ t_rgb  *ft_get_rgb(char *line)
 			|| color->green > 255) && (color->blue < 0 || color->blue > 255))
 		exit(ft_dprintf(2, "Error\nRGB must be in 0 - 255 range\n"));
 	free(rgb_str);
-	free(rgb);
+	ft_free_split(rgb);
 	return (color);
 }

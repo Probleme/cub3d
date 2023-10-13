@@ -3,151 +3,119 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/11 19:27:57 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:28:22 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static t_image	*lstnew_image(char *img, t_mlx	ptr)
+static int	ft_rotation_angle(t_cube *cube, char direction)
 {
-	t_image	*new;
-
-	new = ft_calloc(sizeof(t_image), 1);
-	if (!new)
-		return (NULL);
-	new->shotgun = mlx_new_image(ptr.mlx, 400, 400);
-	new->shotgun = mlx_texture_to_image(ptr.mlx, mlx_load_png(img));
-	mlx_image_to_window(ptr.mlx, new->shotgun, WIDTH / 2 - 100, HEIGHT - 180);
-	new->shotgun->enabled = false;
-	new->state = 0;
-	new->i = 0;
-	new->j = 0;
-	new->nxt = NULL;
-	return (new);
-}
-
-t_image	*last_image(t_image *head)
-{
-	t_image	*tmp;
-
-	tmp = head;
-	if (!head || !tmp->nxt)
-		return (head);
-	while (tmp && tmp->nxt)
-		tmp = tmp->nxt;
-	return (tmp);
-}
-
-static void	lstadd_image(t_image **head, char *img, t_mlx ptr)
-{
-	t_image	*new;
-	t_image	*tmp;
-
-	new = lstnew_image(img, ptr);
-	tmp = *head;
-	if (!tmp)
-		(*head) = new;
+	if (direction == 'N')
+		cube->player.rotation_angle = M_PI * 1.5;
+	else if (direction == 'E')
+		cube->player.rotation_angle = M_PI * 2;
+	else if (direction == 'S')
+		cube->player.rotation_angle = M_PI * 0.5;
+	else if (direction == 'W')
+		cube->player.rotation_angle = M_PI;
 	else
-	{
-		while (tmp && tmp->nxt)
-			tmp = tmp->nxt;
-		tmp->nxt = new;
-	}
+		exit(ft_dprintf(2, "Failed to set initial player rotation\n"));
+	return (1);
 }
 
-void	lstclear_images(t_image **head, t_cube *cube)
+void	ft_init_player(t_cube *cube)
 {
-	t_image	*tmp;
-	t_image	*next;
+	t_vect	pos;
+	char	direction;
 
-	tmp = (*head);
-	while (tmp)
+	pos.y = -1;
+	cube->player.move_speed = 4;
+	cube->player.rotation_speed = 4 * (M_PI / 180);
+	cube->player.fov = (FOV_ANGLE * (M_PI / 180));
+	cube->player.distance_proj_plane = (WIDTH / 2) / tan(cube->player.fov / 2);
+	while (cube->parse->map2d->map[(int)++pos.y])
 	{
-		next = tmp->nxt;
-		mlx_delete_image(cube->mlx.mlx, tmp->shotgun);
-		free(tmp);
-		tmp = next;
-	}
-}
-
-void	ft_shoot(t_cube *cube, t_image *image)
-{
-    while(cube->mlx.img->gun)    
-	{
-		if (image->i == 6)
+		pos.x = -1;
+		while (cube->parse->map2d->map[(int)pos.y][(int)++pos.x])
 		{
-			cube->mlx.img->gun->shotgun->enabled = false;
-			cube->mlx.img->gun = cube->mlx.img->gun->nxt;
-			puts("xxxxxxx");
-			if (cube->mlx.img->gun)
- 				cube->mlx.img->gun->shotgun->enabled = true;
-			image->i = 0;
-		}
-		else
-		{
-			if (image->j == 100)
+			if (is_player(cube->parse->map2d->map[(int)pos.y][(int)pos.x]))
 			{
-				image->i++;
-				image->j = 0;
+				cube->player.pos.x = pos.x * TILE_SIZE + (0.5 * TILE_SIZE);
+				cube->player.pos.y = pos.y * TILE_SIZE + (0.5 * TILE_SIZE);
+				direction = cube->parse->map2d->map[(int)pos.y][(int)pos.x];
+				if (ft_rotation_angle(cube, direction))
+					return ;
 			}
-			else
-				image->j++;
 		}
 	}
-	image->state = 0;
-	cube->mlx.img->gun = image;
-	cube->mlx.img->gun->shotgun->enabled = true;
-	// int i = 0;
-	
-	// while (cube->mlx.img->gun)
-	// {
-	// 	if (i == 0)
- 	// 	{
-	// 		cube->mlx.img->gun->shotgun->enabled = false;
-	// 		cube->mlx.img->gun = cube->mlx.img->gun->nxt;
-	// 		if (cube->mlx.img->gun)
- 	// 			cube->mlx.img->gun->shotgun->enabled = true;
-	// 		i = 500;
-	// 		puts("hhhh");
-	// 	}
-	// 	else
-	// 		i--;
-	// }
-
+	exit(ft_dprintf(2, "Failed to set initial player position\n"));
 }
 
-void	init_animation(t_cube *cube)
+void	init_animation(t_cube *cube, int i)
 {
-		int		i;
+	mlx_texture_t	*tmp;
+	static char		*images[] = {"textures/shotgun1.png", 
+		"textures/shotgun2.png", "textures/shotgun3.png",
+		"textures/shotgun4.png", "textures/shotgun5.png"};
 
-		static char *images[] = {"textures/shotgun1.png",
-							"textures/shotgun2.png",
-							"textures/shotgun3.png",
-							"textures/shotgun4.png",
-							"textures/shotgun5.png"};	
-		cube->mlx.img->gun = NULL;
-		i = 0;
-		while (i < 5)
-			lstadd_image(&cube->mlx.img->gun, images[i++], cube->mlx);
-		cube->mlx.img->gun->shotgun->enabled = true;
+	cube->mlx.img->gun = ft_calloc(1, sizeof(t_image));
+	if (!cube->mlx.img->gun)
+		exit(ft_dprintf(2, "Failed to allocate memory\n"));
+	while (++i < 5)
+	{
+		cube->mlx.img->gun->shotgun[i] = mlx_new_image(cube->mlx.mlx, 400, 400);
+		tmp = mlx_load_png(images[i]);
+		cube->mlx.img->gun->shotgun[i] = mlx_texture_to_image(cube->mlx.mlx,
+				tmp);
+		mlx_delete_texture(tmp);
+		mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->gun->shotgun[i], WIDTH
+			/ 2 - 100, HEIGHT - 175);
+		cube->mlx.img->gun->shotgun[i]->enabled = false;
+	}
+	cube->mlx.img->gun->shotgun[0]->enabled = true;
+	tmp = mlx_load_png("textures/target.png");
+	cube->mlx.img->target = mlx_texture_to_image(cube->mlx.mlx, tmp);
+	mlx_delete_texture(tmp);
+	mlx_image_to_window(cube->mlx.mlx, cube->mlx.img->target, WIDTH / 2, HEIGHT
+		/ 2);
+}
+
+static void	ft_shoot(t_cube *cube)
+{
+	if (cube->mlx.img->gun->state == 1 && cube->mlx.img->gun->i == 3)
+	{
+		cube->mlx.img->gun->shotgun[cube->mlx.img->gun->curr]->enabled = false;
+		cube->mlx.img->gun->curr++;
+		if (cube->mlx.img->gun->curr == 5)
+		{
+			cube->mlx.img->gun->state = 0;
+			cube->mlx.img->gun->curr = 0;
+			cube->mlx.img->gun->shotgun[cube->mlx.img->gun->curr]->enabled = 1;
+			return ;
+		}
+		cube->mlx.img->gun->state = 1;
+		cube->mlx.img->gun->shotgun[cube->mlx.img->gun->curr]->enabled = true;
+		cube->mlx.img->gun->i = 0;
+	}
+	else if (cube->mlx.img->gun->state != 0)
+	{
+		cube->mlx.img->gun->i++;
+		cube->mlx.img->gun->state = 1;
+	}
 }
 
 void	ft_animate_sprites(void *param)
 {
-	static t_image		*image;
 	t_cube	*cube;
 
 	cube = (t_cube *)param;
-	image = cube->mlx.img->gun;
-	if (mlx_is_key_down(cube->mlx.mlx, MLX_KEY_SPACE) ||
-			mlx_is_mouse_down(cube->mlx.mlx, MLX_MOUSE_BUTTON_LEFT))
-	{
-		puts("hhh");
+	if (cube->mlx.img->gun->state != 1 && (mlx_is_key_down(cube->mlx.mlx,
+				MLX_KEY_SPACE) || mlx_is_mouse_down(cube->mlx.mlx,
+				MLX_MOUSE_BUTTON_LEFT)))
 		cube->mlx.img->gun->state = 1;
-		ft_shoot(cube, image);
-	}	
+	ft_shoot(cube);
 }
