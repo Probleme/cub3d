@@ -6,13 +6,13 @@
 #    By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/09/07 23:49:52 by ataouaf           #+#    #+#              #
-#    Updated: 2023/10/13 14:25:08 by abizyane         ###   ########.fr        #
+#    Updated: 2023/10/13 20:07:16 by abizyane         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= cub3D
 CFLAGS	= -Wextra -Wall -Werror -Ofast
-SANITIZE = #-g -fsanitize=address,undefined
+SANITIZE = -g -fsanitize=address,undefined
 LIBMLX	= ./MLX42
 
 INCLUDE = ./inc

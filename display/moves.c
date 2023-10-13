@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/07 23:56:38 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 18:14:05 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 19:33:23 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ static int	check_next_tile(t_cube *cube, double next_x, double next_y)
 	if (y > cube->parse->map2d->height || y < 0 || x > cube->parse->map2d->width
 		|| x < 0)
 		return (1);
-	if (!cube->parse->map2d->map[y][x] || cube->parse->map2d->map[y][x] == '1')
+	if (!cube->parse->map2d->map[y][x] || cube->parse->map2d->map[y][x] == '1'
+			|| cube->parse->map2d->map[y][x] == ' ')
 		return (1);
 	return (0);
 }

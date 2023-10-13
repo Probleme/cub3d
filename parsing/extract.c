@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/09 02:10:37 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 18:14:00 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:13:24 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ static int	array_len(char **str)
 	int	i;
 
 	i = 0;
+	if (!str)
+		return (i);
 	while (str[i])
 		i++;
 	return (i);
@@ -71,9 +73,9 @@ static char	**ft_split_color(char *rgb_str)
 	while (rgb[++i])
 	{
 		rgb_splited = ft_split(rgb[i], ' ');
-		while (rgb_splited[0][++j])
-			if (!(rgb_splited[0][j] >= '0' && rgb_splited[0][j] <= '9')
-					|| array_len(rgb_splited) != 1)
+		while (!rgb_splited[0] || rgb_splited[0][++j])
+			if (!rgb_splited[0] || !(rgb_splited[0][j] >= '0' && \
+				rgb_splited[0][j] <= '9') || array_len(rgb_splited) != 1)
 				exit(ft_dprintf(2,
 						"Error\nRGB string format is invalid\n"));
 		ft_free_split(rgb_splited);

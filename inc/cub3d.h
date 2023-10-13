@@ -6,7 +6,7 @@
 /*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 18:11:01 by abizyane         ###   ########.fr       */
+/*   Updated: 2023/10/13 20:11:19 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <string.h>
 # include <unistd.h>
 
-# define WIDTH 1200
+# define WIDTH 1440
 # define HEIGHT 900
 # define TILE_SIZE 64
 # define FOV_ANGLE 60
