@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 06:06:43 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/13 02:25:50 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:16:11 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ typedef struct s_image
 	mlx_image_t		*shotgun[5];
 	int				state;
 	int				i;
-	int				j;
 	int				curr;
 }					t_image;
 
@@ -79,8 +78,8 @@ typedef struct s_img
 	mlx_image_t		*floor;
 	mlx_image_t		*walls;
 	mlx_image_t		*mini_map;
-	t_image			*gun;
 	mlx_image_t		*target;
+	t_image			*gun;
 }					t_img;
 
 typedef struct s_mlx
@@ -181,7 +180,7 @@ int					ft_check_char(char *line);
 char				**ft_parse_map2d(char *line, t_parse *parse);
 void				ft_cast_rays(void *param);
 void				ft_draw_walls(void *param);
-int					ft_check_map(char **map);
+int					ft_check_map(char **map, t_vect max);
 char				*ft_get_str(char *line);
 t_rgb				*ft_get_rgb(char *line);
 
@@ -197,5 +196,7 @@ void				ft_find_vertical_wall(t_cube *cube, t_raycast *ray);
 int					ft_check_is_wall(t_map2d *map, double x, double y);
 mlx_image_t			*ft_draw_background(mlx_t *mlx, t_rgb *color);
 void				ft_init_player(t_cube *cube);
+int					ft_get_width(char *line);
+int					ft_get_height(char *line);
 
 #endif

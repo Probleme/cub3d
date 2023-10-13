@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   animation.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/09 18:03:29 by abizyane          #+#    #+#             */
-/*   Updated: 2023/10/13 02:13:19 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:28:22 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ void	ft_init_player(t_cube *cube)
 void	init_animation(t_cube *cube, int i)
 {
 	mlx_texture_t	*tmp;
+	static char		*images[] = {"textures/shotgun1.png", 
+		"textures/shotgun2.png", "textures/shotgun3.png",
+		"textures/shotgun4.png", "textures/shotgun5.png"};
 
-	static char *images[] = {"textures/shotgun1.png", "textures/shotgun2.png",
-		"textures/shotgun3.png", "textures/shotgun4.png",
-		"textures/shotgun5.png"};
 	cube->mlx.img->gun = ft_calloc(1, sizeof(t_image));
 	if (!cube->mlx.img->gun)
 		exit(ft_dprintf(2, "Failed to allocate memory\n"));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 05:58:09 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/12 22:15:22 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:32:37 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,31 +69,11 @@ int	ft_check_char(char *line)
 	return (1);
 }
 
-static int	ft_get_map_width(char **map)
-{
-	int	i;
-	int	j;
-	int	max;
-
-	i = 0;
-	max = 0;
-	while (map[i])
-	{
-		j = 0;
-		while (map[i][j])
-			j++;
-		if (j > max)
-			max = j;
-		i++;
-	}
-	return (max);
-}
-
 t_parse	*parsing(char *file)
 {
 	t_parse	*parse;
 	char	*line;
-	int		i;
+	t_vect	max;
 
 	if (!ft_init_struct(&parse))
 		return (NULL);
@@ -101,12 +81,12 @@ t_parse	*parsing(char *file)
 	if (!line)
 		return (NULL);
 	parse->map2d->map = ft_parse_map2d(line, parse);
-	if (!parse->map2d->map || ft_check_map(parse->map2d->map))
+	parse->map2d->height = ft_get_height(line);
+	parse->map2d->width = ft_get_width(line);
+	max.x = parse->map2d->width - 1;
+	max.y = parse->map2d->height - 1;
+	if (!parse->map2d->map || ft_check_map(parse->map2d->map, max))
 		exit(EXIT_FAILURE);
-	parse->map2d->width = ft_get_map_width(parse->map2d->map);
-	i = -1;
-	while (parse->map2d->map[++i])
-		parse->map2d->height++;
 	free(line);
 	return (parse);
 }

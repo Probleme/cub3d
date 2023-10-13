@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ataouaf <ataouaf@student.42.fr>            +#+  +:+       +#+        */
+/*   By: abizyane <abizyane@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/10 05:29:39 by ataouaf           #+#    #+#             */
-/*   Updated: 2023/10/11 04:44:32 by ataouaf          ###   ########.fr       */
+/*   Updated: 2023/10/13 14:24:49 by abizyane         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/cub3d.h"
 
-static int	ft_get_width(char *line)
+int	ft_get_width(char *line)
 {
 	int	i;
 	int	current_width;
@@ -36,7 +36,7 @@ static int	ft_get_width(char *line)
 	return (max_width);
 }
 
-static int	ft_get_height(char *line)
+int	ft_get_height(char *line)
 {
 	int	i;
 	int	height;
@@ -61,13 +61,13 @@ static char	**ft_allocation(char *line)
 
 	width = ft_get_width(line);
 	height = ft_get_height(line);
-	map = malloc(sizeof(char *) * (height + 1));
+	map = ft_calloc(height + 2, sizeof(char *));
 	if (!map)
 		exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 	i = 0;
 	while (i < height)
 	{
-		map[i] = malloc(sizeof(char) * (width + 1));
+		map[i] = ft_calloc(width + 2, sizeof(char));
 		if (!map[i])
 			exit(ft_dprintf(2, "Error\nMalloc failed\n"));
 		ft_memset(map[i], ' ', width);
